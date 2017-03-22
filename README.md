@@ -11,12 +11,12 @@
 
 ## What is missing (ToDo)
 
-  ++ more routes
-  ++ authentication
-  ++ routes with and without authentication
-  ++ using https (because its 2017!)
-  ++ database example
-  ++ nginx as loadbalancer example for multiple instances
+  + more routes
+  + authentication
+  + routes with and without authentication
+  + using https (because its 2017!)
+  + database example
+  + nginx as loadbalancer example for multiple instances
 
 ## Installing
 
@@ -26,17 +26,3 @@
   4. `node app.js`
   5. Open <http://localhost:8000/hello/42> in your browser
   6. Open <http://localhost:8000/documentation> in your browser
-
-
-
-- api
-  -- app.js
-  -- README.md
-  -- package.json
-  -- .gitignore
-  - modules
-    -- routes.js
-  - config
-    -- config.js
-  - pugins
-    -- plugins.js

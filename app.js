@@ -21,9 +21,9 @@ server.register([plugins.inert, plugins.vision, plugins.swagger], (err) => {
   // Start server
   server.start( (err) => {
     if (err) {
-        console.log(err);
+      console.log(err);
     } else {
-        console.log('Server running at:', server.info.uri);
+      console.log('Server running at:', server.info.uri);
     }
   });
 });
