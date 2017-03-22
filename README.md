@@ -11,7 +11,7 @@
 
 ## What is missing (ToDo)
 
-  + more routes
+  + ~~more routes~~
   + authentication
   + routes with and without authentication
   + using https (because its 2017!)

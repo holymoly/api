@@ -8,7 +8,7 @@ var routes = {};
 // localhost:8000/
 routes.root = {
   method: 'GET',
-  path:'/', 
+  path:'/',
   config: {
     handler: function (request, reply) {
       return reply('welcome to the root');
@@ -24,7 +24,7 @@ routes.root = {
 // localhost:8000/hello
 routes.hello = {
   method: 'GET',
-  path:'/hello', 
+  path:'/hello',
   config: {
     handler: function (request, reply) {
       return reply('Hi, nice to meet you!');
@@ -40,7 +40,7 @@ routes.hello = {
 // localhost:8000/hello/{id}
 routes.hello_id = {
   method: 'GET',
-  path:'/hello/{id}', 
+  path:'/hello/{id}',
   config: {
     handler: function (request, reply) {
       return reply('hello id: ' + request.params.id);
@@ -51,7 +51,7 @@ routes.hello_id = {
     validate: {
       params: {
         // Validate the id parameter
-        id : Joi.number() 
+        id : Joi.number()
           .required()
           .description('the id for the todo item'),
       }

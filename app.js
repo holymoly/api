@@ -20,7 +20,7 @@ server.register([plugins.inert, plugins.vision, plugins.swagger], (err) => {
   server.route(routes.root);
   server.route(routes.hello);
   server.route(routes.hello_id);
-  
+
   // Start server
   server.start( (err) => {
     if (err) {
