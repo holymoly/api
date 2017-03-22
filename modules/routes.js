@@ -26,6 +26,7 @@ routes.hello = {
   method: 'GET',
   path:'/hello',
   config: {
+    auth: 'simple',
     handler: function (request, reply) {
       return reply('Hi, nice to meet you!');
     },

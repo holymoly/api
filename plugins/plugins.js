@@ -4,6 +4,10 @@ const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 const Pack = require('../package');
 
+// Basic Auth
+const BasicAuth = require('hapi-auth-basic');
+
+// Shown in Documentation
 const options = {
   info: {
     'title': 'Test API Documentation',
@@ -21,5 +25,7 @@ plugins.swagger = {
   'register': HapiSwagger,
   'options': options
 }
+
+plugins.basicAuth = BasicAuth
 
 module.exports = plugins;

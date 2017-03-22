@@ -1,7 +1,7 @@
 # Sample hapi REST Api server
 
 ## What it does
-
+  + basic authentication on `http://localhost:8000/hello` the rest is  without
   + provides a route `http://localhost:8000/hello/{id}`
   + replys with `hello id: 42` where 42 ist the {id}
   + uses swagger for api documentation `http://localhost:8000/documentation`
@@ -12,11 +12,12 @@
 ## What is missing (ToDo)
 
   + ~~more routes~~
-  + authentication
-  + routes with and without authentication
+  + ~~authentication~~
+  + ~~routes with and without authentication~~
   + using https (because its 2017!)
   + database example
-  + nginx as loadbalancer example for multiple instances
+  + nginx as loadbalancer
+  + example for multiple instances
 
 ## Installing
 

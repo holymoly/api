@@ -4,7 +4,9 @@
   "description": "hapi api demo",
   "main": "app.js",
   "dependencies": {
+    "bcrypt": "^1.0.2",
     "hapi": "^16.1.0",
+    "hapi-auth-basic": "^4.2.0",
     "hapi-swagger": "^7.7.0",
     "inert": "^4.1.0",
     "joi": "^10.2.2",
