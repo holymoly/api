@@ -17,7 +17,10 @@ server.connection(config.server);
 // register plugins
 server.register([plugins.inert, plugins.vision, plugins.swagger], (err) => {
   // Add the route
+  server.route(routes.root);
   server.route(routes.hello);
+  server.route(routes.hello_id);
+  
   // Start server
   server.start( (err) => {
     if (err) {
