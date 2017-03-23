@@ -1,5 +1,10 @@
 # Sample hapi REST Api server
 
+## **** Check branches to see "advanced" Setups ****
+  + master          > simple example with one route
+  + 1.more-routes   > simple exmple with more routes
+  + 2.basic-auth    > implemented basic auth for one route
+  
 ## What it does
 
   + provides a route `http://localhost:8000/hello/{id}`
