@@ -10,6 +10,10 @@
     "joi": "^10.2.2",
     "vision": "^4.1.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/holymoly/api.git"
+  },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
