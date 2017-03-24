@@ -11,7 +11,7 @@ const users = {
 };
 
 // Validating function used for Basic Auth
-exports.validate = function (request, username, password, callback) {
+exports.validate = (request, username, password, callback) => {
   const user = users[username];
   if (!user) {
     return callback(null, false);

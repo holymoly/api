@@ -10,6 +10,7 @@
     "hapi-swagger": "^7.7.0",
     "inert": "^4.1.0",
     "joi": "^10.2.2",
+    "mariasql": "^0.2.6",
     "vision": "^4.1.1"
   },
   "devDependencies": {},
