@@ -2,8 +2,14 @@
 // Parameter validation
 const Joi = require('joi');
 
-// mariaDb 
-const mariadb = require('./mariadb');
+// mariaDb
+const mariadb = require('./mariadb/mariadb');
+
+// Load logger
+var logger = require('../modules/logger').logRoutes;
+
+// Load query
+const query = require('./mariadb/query');
 
 var routes = {};
 
@@ -14,6 +20,7 @@ routes.root = {
   path:'/',
   config: {
     handler: (request, reply) => {
+      logger.debug('Reply with: ' + 'welcome to the root');
       return reply('welcome to the root');
     },
     description: 'answer if root path was called',
@@ -31,6 +38,7 @@ routes.hello = {
   config: {
     auth: 'simple',
     handler: (request, reply) => {
+      logger.debug('Reply with: ' + 'Hi, nice to meet you!');
       return reply('Hi, nice to meet you!');
     },
     description: 'Get back id',
@@ -47,6 +55,7 @@ routes.hello_id = {
   path:'/hello/{id}',
   config: {
     handler: (request, reply) => {
+      logger.debug('Reply with: ' + 'hello id: ' + request.params.id);
       return reply('hello id: ' + request.params.id);
     },
     description: 'Get back id',
@@ -63,17 +72,18 @@ routes.hello_id = {
   }
 }
 
-// localhost:8000/hello/{id}
+// localhost:8000/databases
 routes.databases = {
   method: 'GET',
   path:'/databases',
   config: {
     handler: (request, reply) => {
-      return mariadb.query('SHOW DATABASES;','', (err, result) => {
+      return mariadb.query(query.databases,'', (err, result) => {
         if (err) {
+          logger.error('Query Error:'  + err);
           return reply (err);
         } else {
-          console.log('Result: ' + result);
+          logger.debug('Query Result: ' + result);
           return reply (result);
         }
       });

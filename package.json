@@ -11,7 +11,8 @@
     "inert": "^4.1.0",
     "joi": "^10.2.2",
     "mariasql": "^0.2.6",
-    "vision": "^4.1.1"
+    "vision": "^4.1.1",
+    "winston": "^2.3.1"
   },
   "devDependencies": {},
   "scripts": {

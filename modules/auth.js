@@ -1,4 +1,8 @@
+
 const Bcrypt = require('bcrypt');
+
+//Load logger
+var logger = require('../modules/logger').logAuth;
 
 // User for testing
 const users = {
@@ -11,13 +15,21 @@ const users = {
 };
 
 // Validating function used for Basic Auth
-exports.validate = (request, username, password, callback) => {
-  const user = users[username];
+var validate = (request, username, password, callback) => {
+  logger.debug('Validation of User: ' + username);
+
+  const user = users[username]; // get user information for validation
   if (!user) {
+    logger.error('User: ' + username + 'does not exists');
     return callback(null, false);
   }
 
   Bcrypt.compare(password, user.password, (err, isValid) => {
+    logger.debug('Paswword for User was valid: ' + isValid);
     callback(err, isValid, { id: user.id, name: user.name });
   });
+};
+
+module.exports = {
+  validate,
 };
