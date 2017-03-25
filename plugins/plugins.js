@@ -12,7 +12,8 @@ const options = {
   info: {
     'title': 'Test API Documentation',
     'version': Pack.version,
-  }
+  },
+  grouping: 'tags'
 };
 
 var plugins = {};

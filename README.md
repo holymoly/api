@@ -1,6 +1,10 @@
 # Sample hapi REST Api server
+Self teaching hapi
 
 ## What it does
+  + query mariadb for existing databases `http://localhost:8000/databases`
+  + uses winston for logging
+  + log output seperated by module
   + basic authentication on `http://localhost:8000/hello` the rest is  without
   + provides a route `http://localhost:8000/hello/{id}`
   + replys with `hello id: 42` where 42 ist the {id}
@@ -8,14 +12,17 @@
   + uses joi to verify {id} is a number
   + seperates routes in a file `/modules/routes.js`
   + seperates plugin in a file `/pugins/plugins.js`
+  + swagger documentation grouped by tag
 
 ## What is missing (ToDo)
 
+  + seperate handlers from routes
   + ~~more routes~~
   + ~~authentication~~
   + ~~routes with and without authentication~~
   + using https (because its 2017!)
-  + database example
+  + ~~database example~~
+  + automated testing
   + nginx as loadbalancer
   + example for multiple instances
 

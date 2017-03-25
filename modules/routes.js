@@ -43,7 +43,7 @@ routes.hello = {
     },
     description: 'Get back id',
     notes: 'Returns a welcome message',
-    tags: ['api'], // Tags for swagger
+    tags: ['api','auth'], // Tags for swagger
     validate: {
     }
   }
