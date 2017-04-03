@@ -7,10 +7,10 @@ var fs = require('fs');
 const hapiServer = {
   port: 8000,
   //Uncomment for https
-  //tls:{
-  //  key: fs.readFileSync('./config/certs/mariadb-backend-server-key.pem'),
-  //  cert: fs.readFileSync('./config/certs/mariadb-backend-server-cert.pem')
-  //},
+  tls:{
+    key: fs.readFileSync('./config/certs/mariadb-backend-server-key.pem'),
+    cert: fs.readFileSync('./config/certs/mariadb-backend-server-cert.pem')
+  },
   host: 'localhost',
 }
 
