@@ -1,5 +1,6 @@
 'use strict';
 
+// Load hapi module
 const hapi = require('hapi');
 
 // Load Config
@@ -8,13 +9,13 @@ var config = require('./config/config');
 // plugins
 var plugins = require('./plugins/plugins');
 
-//Load routes definition
-var routes = require('./modules/routes');
+// Load routes definition
+var routes = require('./modules/routes/routes');
 
-//Load routes auth
+// Load routes auth
 var auth = require('./modules/auth');
 
-//Load logger
+// Load logger
 var logger = require('./modules/logger').logApp;
 
 // Create a server with a host and port
@@ -22,21 +23,27 @@ const server = new hapi.Server();
 server.connection(config.hapiServer);
 
 // register plugins
-server.register([plugins.inert, plugins.vision, plugins.swagger, plugins.basicAuth], (err) => {
+server.register(plugins, (err) => {
   logger.info('Hapi Server registered plugins');
   if (err) {
     logger.error(err);
     throw err;
   }
 
-  server.auth.strategy('simple', 'basic', { validateFunc: auth.validate });
+  // Activate simple auth
+  server.auth.strategy('simple', 'basic', {
+    validateFunc: auth.validate
+  });
 
-  // Add the route
-  server.route(routes.root);
-  server.route(routes.hello); // With basic authentication
-  server.route(routes.hello_id); // with variabl id
-  server.route(routes.databases); // gets databases
-  logger.info('Added routes');
+  // Activate session auth
+  server.auth.strategy('session', 'cookie',{
+    cookie: 'api-session',
+    password: 'SuperMegaHyperAwesomeSecretPassword',
+    isSecure: true
+  })
+
+  // Add all routes,
+  server.route(routes);
 
   // Start server
   server.start( (err) => {

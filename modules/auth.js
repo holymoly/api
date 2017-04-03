@@ -1,3 +1,4 @@
+'use strict';
 
 const Bcrypt = require('bcrypt');
 
@@ -10,7 +11,8 @@ const users = {
     username: 'john',
     password: '$2a$10$iqJSHD.BGr0E2IxQwYgJmeP3NvhPrXAeLSaGCj6IR/XU5QtjVu5Tm',   // 'secret'
     name: 'John Doe',
-    id: '2133d32a'
+    id: '2133d32a',
+    scope: 'admin'
   }
 };
 
@@ -26,7 +28,9 @@ var validate = (request, username, password, callback) => {
 
   Bcrypt.compare(password, user.password, (err, isValid) => {
     logger.debug('Paswword for User was valid: ' + isValid);
-    callback(err, isValid, { id: user.id, name: user.name });
+    // Set cookie
+    request.cookieAuth.set({ id: user.id, name: user.name, scope: user.scope });
+    callback(err, isValid, { id: user.id, name: user.name, scope: user.scope });
   });
 };
 

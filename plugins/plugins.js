@@ -1,8 +1,10 @@
+'use strict';
 // Api Documentation /documentation
 const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 const Pack = require('../package');
+const Cookie = require('hapi-auth-cookie');
 
 // Basic Auth
 const BasicAuth = require('hapi-auth-basic');
@@ -13,20 +15,26 @@ const options = {
     'title': 'Test API Documentation',
     'version': Pack.version,
   },
-  grouping: 'tags'
+  //grouping: 'tags'
 };
 
-var plugins = {};
+const inert = Inert
 
-plugins.inert = Inert
+const vision = Vision
 
-plugins.vision = Vision
-
-plugins.swagger = {
+const swagger = {
   'register': HapiSwagger,
   'options': options
 }
 
-plugins.basicAuth = BasicAuth
+const basicAuth = BasicAuth
 
-module.exports = plugins;
+const cookie = Cookie
+
+module.exports = [
+	inert,
+	vision,
+	swagger,
+	basicAuth,
+  cookie
+];
