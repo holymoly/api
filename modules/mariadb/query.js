@@ -3,11 +3,6 @@
 // Get all dbs from mariadb
 const databases = 'SHOW DATABASES;';
 
-// Creat new User in Users Table
-var createUser = `INSERT INTO
-    Users (firstname,lastname,username,email)
-    VALUES (:firstname,:lastname,:username,:email);`
-
 // Returns all User in Users Table
 const getUsers = `SELECT * FROM users;`
 
@@ -20,11 +15,24 @@ var getUserFilterUserId = `SELECT * FROM users WHERE user_id = :value;`
 // Deletes a User by email
 var deleteUser = `DELETE FROM users WHERE email = :email;`
 
+// Returns a Hash filtered by email
+var getHashByEmail = `SELECT hash FROM passwords WHERE email = :value;`
+
+// Returns a Hash filtered by email
+var getUserGroup = `SELECT isGuest,isUser,isAdmin FROM groups WHERE email = :value;`
+
+// Create User
+var createUser = `INSERT INTO test.users (firstname, lastname, username, email) VALUE ( :firstname, :lastname, :username, :email);
+INSERT INTO test.passwords (hash, email) VALUE (:hash, :email);
+INSERT INTO test.groups (email, isGuest, isUser, isAdmin) VALUE (:email, :isGuest, :isUser, :isAdmin);`
+
 module.exports = {
   databases,
   createUser,
   getUsers,
   getUserFilterEmail,
   getUserFilterUserId,
-  deleteUser
+  deleteUser,
+  getHashByEmail,
+  getUserGroup
 };

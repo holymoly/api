@@ -45,6 +45,11 @@ server.register(plugins, (err) => {
   // Add all routes,
   server.route(routes);
 
+  // Start Server
+  start();
+});
+
+function start(){
   // Start server
   server.start( (err) => {
     if (err) {
@@ -54,6 +59,21 @@ server.register(plugins, (err) => {
       logger.info('Server running at:', server.info.uri);
     }
   });
-});
+}
 
+function stop(){
+  // Start server
+  server.stop( (err) => {
+    if (err) {
+      logger.error(err);
+      throw err;
+    } else {
+      logger.info('Server stoped!');
+    }
+  });
+}
+
+
+module.exports.start = start;
+module.exports.stop = stop;
 

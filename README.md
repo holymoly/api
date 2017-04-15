@@ -2,25 +2,26 @@
 Self teaching hapi
 
 ## What it does
+
   + query mariadb for existing databases `http://localhost:8000/databases`
   + uses winston for logging
-  + log output seperated by module
-  + basic authentication on `http://localhost:8000/hello` the rest is  without
-  + provides a route `http://localhost:8000/hello/{id}`
+  + log output seperated by module (auth, routes, db, logger)
+  + basic authentication on `http://localhost:8000/login` to receive a cookie
+  + provides a route `http://localhost:8000/hello/{id}` available after cookie was received
   + replys with `hello id: 42` where 42 ist the {id}
   + uses swagger for api documentation `http://localhost:8000/documentation`
-  + uses joi to verify {id} is a number
+  + uses joi to verify parameters
   + seperates routes in a file `/modules/routes.js`
   + seperates plugin in a file `/pugins/plugins.js`
   + swagger documentation grouped by tag
 
 ## What is missing (ToDo)
 
-  + seperate handlers from routes
+  + ~~seperate handlers from routes~~
   + ~~more routes~~
   + ~~authentication~~
   + ~~routes with and without authentication~~
-  + using https (because its 2017!)
+  + ~~using https~~ (because its 2017!)
   + ~~database example~~
   + automated testing
   + nginx as loadbalancer
@@ -32,5 +33,6 @@ Self teaching hapi
   2. `git clone https://github.com/holymoly/api`
   3. `cd api && npm install`
   4. `node app.js`
-  5. Open <http://localhost:8000/hello/42> in your browser
-  6. Open <http://localhost:8000/documentation> in your browser
+  5. Open <http://localhost:8000/login> in your browser
+  6. Open <http://localhost:8000/hello/42> in your browser
+  7. Open <http://localhost:8000/documentation> in your browser

@@ -3,7 +3,7 @@
 // Load logger
 const logger = require('../logger').logRoutes;
 
-// Load query
+// Load sql queries
 const handler = require('./config/handler');
 
 // Load auth config
@@ -26,15 +26,18 @@ module.exports = [
     }
   }
 
-  // localhost:8000/hello
+  // localhost:8000/login
   ,{
     method: 'GET',
-    path:'/hello',
+    path:'/login',
     config: {
-      auth: auth.hello,
-      handler: handler.get_hello,
-      description: 'Get a warm welcome',
-      notes: 'Returns a welcome message',
+      auth: auth.login,
+      handler: handler.get_login,
+      description: 'Used for initial authentification',
+      notes: `Use Basic Authentification with email and password. Returns a
+      cookie with the session information on success. Also returns a json with
+      authenticate = true/false. Cookie must be used to authenticate against
+      routes with Cookie Auth`,
       tags: ['api','auth','scope'], // Tags for swagger
     }
   },
@@ -72,7 +75,7 @@ module.exports = [
     config: {
       handler: handler.post_user,
       description: 'Create a user',
-      notes: 'Returns id',
+      notes: 'Creates user, set groups and store hashed password in database',
       tags: ['api', 'database', 'users'], // Tags for swagger
       validate: validate.post_user
     }

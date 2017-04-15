@@ -1,7 +1,7 @@
 'use strict';
 
 // localhost:8000/hello
-const hello = {
+const login = {
   strategy: 'simple',
   scope: ['admin','user'] // admin only
 }
@@ -13,6 +13,6 @@ const hello_id = {
 }
 
 module.exports = {
-  hello,
+  login,
   hello_id
 };

@@ -15,7 +15,7 @@ const options = {
     'title': 'Test API Documentation',
     'version': Pack.version,
   },
-  //grouping: 'tags'
+  grouping: 'tags'
 };
 
 const inert = Inert
