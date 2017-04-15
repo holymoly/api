@@ -20,6 +20,10 @@
     "assert": "^1.4.1",
     "vows": "^0.8.1"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/holymoly/api.git"
+  },
   "scripts": {
     "test": "node_modules/vows/bin/vows test/*",
     "start": "node app.js"
