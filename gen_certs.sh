@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 mkdir /var/db/mysql/ssl
 
@@ -27,4 +27,4 @@ openssl rsa -in /var/db/mysql/ssl/client-key.pem -out /var/db/mysql/ssl/client-k
 openssl x509 -req -in /var/db/mysql/ssl/client-req.pem -days 365000 -CA /var/db/mysql/ssl/ca-cert.pem -CAkey /var/db/mysql/ssl/ca-key.pem -set_serial 01 -out /var/db/mysql/ssl/client-cert.pem
 
 #Verify certificates
-openssl verify -CAfile var/db/mysql/ssl/ca-cert.pem var/db/mysql/ssl/server-cert.pem var/db/mysql/ssl/client-cert.pem
+openssl verify -CAfile /var/db/mysql/ssl/ca-cert.pem /var/db/mysql/ssl/server-cert.pem /var/db/mysql/ssl/client-cert.pem

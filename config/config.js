@@ -8,8 +8,8 @@ const hapiServer = {
   port: 8000,
   //Uncomment for https
   tls:{
-    key: fs.readFileSync('./config/certs/mariadb-backend-server-key.pem'),
-    cert: fs.readFileSync('./config/certs/mariadb-backend-server-cert.pem')
+    key: fs.readFileSync('/var/db/mysql/ssl/client-key.pem'),
+    cert: fs.readFileSync('/var/db/mysql/ssl/clienclient-cert.pem')
   },
   host: 'localhost',
 }
