@@ -42,11 +42,12 @@ function query(queryString,options, cb){
 
   // Executing the query and passing parameters
   mariaClient.query(preparedQuery(options), null, { useArray: true}, function(err, rows) {
-    // Error or no result
-    if (err || rows.info.numRows == 0) {
+    // Error or no resul
+    logger.debug(rows);
+    if (err || rows === undefined || rows.numRows == 0) {
       var reason = err;
       // no result
-      if (rows.info.numRows == 0){
+      if (rows === undefined || rows.numRows == 0){
         reason = 'not found';
       }
       logger.error(reason);
