@@ -11,8 +11,9 @@ const logger = require('../../modules/logger').logDb;
 
 // Asking MariaDB
 function query(queryString,options, cb){
-  //console.log(queryString );
+  logger.debug(queryString );
   // Prepare client connection
+  logger.debug(config.mariadb);
   var mariaClient = new client(config.mariadb);
 
   // Check if ready

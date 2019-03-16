@@ -22,9 +22,9 @@ var getHashByEmail = `SELECT hash FROM passwords WHERE email = :value;`
 var getUserGroup = `SELECT isGuest,isUser,isAdmin FROM groups WHERE email = :value;`
 
 // Create User
-var createUser = `INSERT INTO test.users (firstname, lastname, username, email) VALUE ( :firstname, :lastname, :username, :email);
-INSERT INTO test.passwords (hash, email) VALUE (:hash, :email);
-INSERT INTO test.groups (email, isGuest, isUser, isAdmin) VALUE (:email, :isGuest, :isUser, :isAdmin);`
+var createUser = `INSERT INTO users (firstname, lastname, username, email) VALUE ( :firstname, :lastname, :username, :email);
+INSERT INTO passwords (hash, email) VALUE (:hash, :email);
+INSERT INTO groups (email, isGuest, isUser, isAdmin) VALUE (:email, :isGuest, :isUser, :isAdmin);`
 
 module.exports = {
   databases,

@@ -38,6 +38,7 @@ function getHashByEmail(email, password) {
         logger.error('Error requesting hash: ' + err);
         reject(err)
       } else {
+	logger.debug('Received result: ' +  result);
         if(result[0][0]){
           logger.debug('Received hash: ' + result);
           resolve({
@@ -61,6 +62,7 @@ function checkPassword(data){
         logger.error('Error validating password: ' + err);
         reject(err)
       } else{
+        logger.debug(isValid);
         if(isValid){
           logger.debug('Paswword for User was valid: ' + isValid);
           resolve(data)

@@ -37,13 +37,14 @@ const get_databases = (request, reply) => {
 // localhost:8000/users
 const post_user = (request, reply) => {
   var data = request.payload;
-  console.log(data);
+  logger.debug('Create user with data: ' + JSON.stringify(data));
 
   // generate salt and hash
   auth.generateSalt(data.password)
     .then(auth.hashPassword)
     .then(function(result){
       data.hash = result.hash;
+      logger.debug('Created hash: ' + JSON.stringify(data));
       return mariadb.query(query.createUser,data, (err, result) => {
         replyToClient(err, reply, result);
       });
