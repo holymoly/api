@@ -7,19 +7,19 @@ var fs = require('fs');
 const hapiServer = {
   port: 8000,
   //Uncomment for https
-  tls:{
-    key: fs.readFileSync('/var/db/mysql/ssl/client-key.pem'),
-    cert: fs.readFileSync('/var/db/mysql/ssl/clienclient-cert.pem')
+  tls: {
+    key: fs.readFileSync('/etc/mysql/client-key.pem'),
+    cert: fs.readFileSync('/etc/mysql/client-cert.pem')
   },
-  host: 'localhost',
+  host: '192.168.123.38',
 }
 
 // DB configuration
 const mariadb = {
-  host: '127.0.0.1',
-  user: 'test',
-  password: 'test',
-  db: 'test',
+  host: 'localhost',
+  user: 'api',
+  password: 'testapi',
+  db: 'api',
   multiStatements: true,
   compress: true
 }

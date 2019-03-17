@@ -1,7 +1,7 @@
 'use strict';
 
 // Load logger
-const logger = require('../logger').logRoutes;
+const logger = require('../../logger/logger').logRoutes;
 
 // Load sql queries
 const handler = require('./config/handler');
@@ -17,7 +17,7 @@ module.exports = [
   // localhost:8000/
   {
     method: 'GET',
-    path:'/',
+    path: '/',
     config: {
       handler: handler.get_root,
       description: 'answer if root path was called',
@@ -27,9 +27,9 @@ module.exports = [
   }
 
   // localhost:8000/login
-  ,{
+  , {
     method: 'GET',
-    path:'/login',
+    path: '/login',
     config: {
       auth: auth.login,
       handler: handler.get_login,
@@ -38,14 +38,14 @@ module.exports = [
       cookie with the session information on success. Also returns a json with
       authenticate = true/false. Cookie must be used to authenticate against
       routes with Cookie Auth`,
-      tags: ['api','auth','scope'], // Tags for swagger
+      tags: ['api', 'auth', 'scope'], // Tags for swagger
     }
   },
 
   // localhost:8000/hello/{id}
   {
     method: 'GET',
-    path:'/hello/{id}',
+    path: '/hello/{id}',
     config: {
       handler: handler.get_hello_id,
       auth: auth.hello_id,
@@ -59,19 +59,19 @@ module.exports = [
   // localhost:8000/databases
   {
     method: 'GET',
-    path:'/databases',
+    path: '/databases',
     config: {
       handler: handler.get_databases,
       description: 'Get databases',
       notes: 'Returns all databases',
-      tags: ['api','database'], // Tags for swagger
+      tags: ['api', 'database'], // Tags for swagger
     }
   },
 
   // localhost:8000/users
   {
     method: 'POST',
-    path:'/users',
+    path: '/users',
     config: {
       handler: handler.post_user,
       description: 'Create a user',
@@ -84,7 +84,7 @@ module.exports = [
   // localhost:8000/users
   {
     method: 'GET',
-    path:'/users',
+    path: '/users',
     config: {
       handler: handler.get_users,
       description: 'Returns all users',
@@ -96,7 +96,7 @@ module.exports = [
   // localhost:8000/user
   {
     method: 'GET',
-    path:'/user/email',
+    path: '/user/email',
     config: {
       handler: handler.get_user_email,
       description: 'Returns a user filtered by email',
@@ -109,7 +109,7 @@ module.exports = [
   // localhost:8000/user
   {
     method: 'GET',
-    path:'/user/user_id',
+    path: '/user/user_id',
     config: {
       handler: handler.get_user_userId,
       description: 'Returns a user filtered by user_id',
@@ -122,7 +122,7 @@ module.exports = [
   // localhost:8000/user
   {
     method: 'DELETE',
-    path:'/user',
+    path: '/user',
     config: {
       handler: handler.del_user,
       description: 'Deletes a user by email',
@@ -130,6 +130,19 @@ module.exports = [
       tags: ['api', 'database', 'users'], // Tags for swagger
       validate: validate.del_user
     }
+  },
+
+  // localhost:8000/management
+  {
+    method: 'POST',
+    path: '/ipc/{rec_module}',
+    config: {
+      handler: handler.post_ipc,
+      auth: auth.ipc,
+      description: 'Post a message on the IPC bus',
+      notes: 'Post a message on the IPC bus',
+      tags: ['api', 'ipc', 'messag bus'], // Tags for swagger
+      validate: validate.post_ipc
+    }
   }
 ]
-

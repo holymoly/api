@@ -7,16 +7,16 @@ const hapi = require('hapi');
 var config = require('./config/config');
 
 // plugins
-var plugins = require('./plugins/plugins');
+var plugins = require('./modules/hapijs/plugins/plugins');
 
 // Load routes definition
-var routes = require('./modules/routes/routes');
+var routes = require('./modules/hapijs/routes/routes');
 
 // Load routes auth
-var auth = require('./modules/auth');
+var auth = require('./modules/hapijs/auth');
 
 // Load logger
-var logger = require('./modules/logger').logApp;
+var logger = require('./modules/logger/logger').logApp;
 
 // Create a server with a host and port
 const server = new hapi.Server();
@@ -36,7 +36,7 @@ server.register(plugins, (err) => {
   });
 
   // Activate session auth
-  server.auth.strategy('session', 'cookie',{
+  server.auth.strategy('session', 'cookie', {
     cookie: 'api-session',
     password: 'SuperMegaHyperAwesomeSecretPassword',
     isSecure: true
@@ -49,9 +49,9 @@ server.register(plugins, (err) => {
   start();
 });
 
-function start(){
+function start() {
   // Start server
-  server.start( (err) => {
+  server.start((err) => {
     if (err) {
       logger.error(err);
       throw err;
@@ -61,9 +61,9 @@ function start(){
   });
 }
 
-function stop(){
+function stop() {
   // Start server
-  server.stop( (err) => {
+  server.stop((err) => {
     if (err) {
       logger.error(err);
       throw err;
@@ -73,7 +73,5 @@ function stop(){
   });
 }
 
-
 module.exports.start = start;
 module.exports.stop = stop;
-

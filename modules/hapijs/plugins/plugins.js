@@ -3,7 +3,7 @@
 const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
-const Pack = require('../package');
+const Pack = require('../../../package');
 const Cookie = require('hapi-auth-cookie');
 
 // Basic Auth
@@ -32,9 +32,9 @@ const basicAuth = BasicAuth
 const cookie = Cookie
 
 module.exports = [
-	inert,
-	vision,
-	swagger,
-	basicAuth,
+  inert,
+  vision,
+  swagger,
+  basicAuth,
   cookie
 ];
