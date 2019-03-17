@@ -56,8 +56,10 @@ const del_user = {
 }
 
 const post_ipc = {
-  query: {
-    message: Joi.string().required(),
+  payload: {
+    // Validate the message
+    message: Joi.string().required()
+      .description(' ipc message')
   }
 }
 

@@ -86,7 +86,8 @@ const del_user = (request, reply) => {
 
 // localhost:8000/ipc/{rec_module}
 const post_ipc = (request, reply) => {
-  logger.debug("IPC message for module " + request.params.rec_module + ": " + request.query);
+  var data = request.payload;
+  logger.debug("IPC message for module " + request.params.rec_module + ": " + JSON.stringify(data))
   replyToClient(undefined, reply, "generic response");
 }
 
