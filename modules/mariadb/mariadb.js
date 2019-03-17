@@ -10,30 +10,30 @@ const config = require('../../config/config.js');
 const logger = require('../../modules/logger/logger').logDb;
 
 // Asking MariaDB
-function query(queryString,options, cb){
-  logger.debug(queryString );
+function query(queryString, options, cb) {
+  logger.debug(queryString);
   // Prepare client connection
   logger.debug(config.mariadb);
   var mariaClient = new client(config.mariadb);
 
   // Check if ready
-  mariaClient.on('ready', function(){
+  mariaClient.on('ready', function() {
     logger.debug('MariaDB Client ready');
   });
 
   // Check if error
-  mariaClient.on('error', function(err){
+  mariaClient.on('error', function(err) {
     logger.error('MariaDB Client Error: ' + err);
     mariaClient.end();
   });
 
   // Check if end
-  mariaClient.on('end', function(){
+  mariaClient.on('end', function() {
     logger.debug('MariaDB Client ended');
   });
 
   // Check if close
-  mariaClient.on('close', function(){
+  mariaClient.on('close', function() {
     logger.debug('MariaDB Client closed');
   });
 
@@ -42,13 +42,15 @@ function query(queryString,options, cb){
   logger.debug('Query: ' + preparedQuery(options));
 
   // Executing the query and passing parameters
-  mariaClient.query(preparedQuery(options), null, { useArray: true}, function(err, rows) {
+  mariaClient.query(preparedQuery(options), null, {
+    useArray: true
+  }, function(err, rows) {
     // Error or no resul
     logger.debug(rows);
     if (err || rows === undefined || rows.numRows == 0) {
       var reason = err;
       // no result
-      if (rows === undefined || rows.numRows == 0){
+      if (rows === undefined || rows.numRows == 0) {
         reason = 'not found';
       }
       logger.error(reason);

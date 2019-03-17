@@ -32,9 +32,9 @@ const basicAuth = BasicAuth
 const cookie = Cookie
 
 module.exports = [
-	inert,
-	vision,
-	swagger,
-	basicAuth,
+  inert,
+  vision,
+  swagger,
+  basicAuth,
   cookie
 ];

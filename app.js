@@ -36,7 +36,7 @@ server.register(plugins, (err) => {
   });
 
   // Activate session auth
-  server.auth.strategy('session', 'cookie',{
+  server.auth.strategy('session', 'cookie', {
     cookie: 'api-session',
     password: 'SuperMegaHyperAwesomeSecretPassword',
     isSecure: true
@@ -49,9 +49,9 @@ server.register(plugins, (err) => {
   start();
 });
 
-function start(){
+function start() {
   // Start server
-  server.start( (err) => {
+  server.start((err) => {
     if (err) {
       logger.error(err);
       throw err;
@@ -61,9 +61,9 @@ function start(){
   });
 }
 
-function stop(){
+function stop() {
   // Start server
-  server.stop( (err) => {
+  server.stop((err) => {
     if (err) {
       logger.error(err);
       throw err;
@@ -73,7 +73,5 @@ function stop(){
   });
 }
 
-
 module.exports.start = start;
 module.exports.stop = stop;
-

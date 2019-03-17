@@ -14,12 +14,14 @@ const auth = require('../../auth');
 
 // localhost:8000/
 const get_root = (request, reply) => {
-  replyToClient(undefined, reply,'welcome to the root');
+  replyToClient(undefined, reply, 'welcome to the root');
 }
 
 // localhost:8000/login
 const get_login = (request, reply) => {
-  replyToClient(undefined, reply,{authenticated: true});
+  replyToClient(undefined, reply, {
+    authenticated: true
+  });
 }
 
 // localhost:8000/hello/{id}
@@ -29,7 +31,7 @@ const get_hello_id = (request, reply) => {
 
 // localhost:8000/databases
 const get_databases = (request, reply) => {
-  mariadb.query(query.databases,'', (err, result) => {
+  mariadb.query(query.databases, '', (err, result) => {
     replyToClient(err, reply, result);
   });
 }
@@ -42,54 +44,60 @@ const post_user = (request, reply) => {
   // generate salt and hash
   auth.generateSalt(data.password)
     .then(auth.hashPassword)
-    .then(function(result){
+    .then(function(result) {
       data.hash = result.hash;
       logger.debug('Created hash: ' + JSON.stringify(data));
-      return mariadb.query(query.createUser,data, (err, result) => {
+      return mariadb.query(query.createUser, data, (err, result) => {
         replyToClient(err, reply, result);
       });
     })
-    .catch(function (err) {
+    .catch(function(err) {
       replyToClient(err, reply, 'cannot hash password');
     });
 }
 
 // localhost:8000/users
 const get_users = (request, reply) => {
-  mariadb.query(query.getUsers,request.payload, (err, result) => {
+  mariadb.query(query.getUsers, request.payload, (err, result) => {
     replyToClient(err, reply, result);
   });
 }
 
 // localhost:8000/user
 const get_user_email = (request, reply) => {
-  mariadb.query(query.getUserFilterEmail,request.query, (err, result) => {
+  mariadb.query(query.getUserFilterEmail, request.query, (err, result) => {
     replyToClient(err, reply, result);
   });
 }
 
 // localhost:8000/user
 const get_user_userId = (request, reply) => {
-  mariadb.query( query.getUserFilterUserId,request.query, (err, result) => {
+  mariadb.query(query.getUserFilterUserId, request.query, (err, result) => {
     replyToClient(err, reply, result);
   });
 }
 
 // localhost:8000/user
 const del_user = (request, reply) => {
-  mariadb.query( query.deleteUser,request.query, (err, result) => {
+  mariadb.query(query.deleteUser, request.query, (err, result) => {
     replyToClient(err, reply, result);
   });
 }
 
+// localhost:8000/ipc/{rec_module}
+const post_ipc = (request, reply) => {
+  logger.debug(request);
+  replyToClient(undefined, reply, "generic response");
+}
+
 // Helper function for reply
-function replyToClient(err, reply, data){
+function replyToClient(err, reply, data) {
   if (err) {
-    logger.error('Reply Error:'  + err);
-    return reply (err);
+    logger.error('Reply Error:' + err);
+    return reply(err);
   } else {
     logger.debug('Reply: ' + data);
-    return reply (data);
+    return reply(data);
   }
 };
 
@@ -102,5 +110,6 @@ module.exports = {
   get_users,
   get_user_email,
   get_user_userId,
-  del_user
+  del_user,
+  post_ipc
 };

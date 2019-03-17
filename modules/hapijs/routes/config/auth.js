@@ -3,7 +3,7 @@
 // localhost:8000/hello
 const login = {
   strategy: 'simple',
-  scope: ['admin','user'] // admin only
+  scope: ['admin', 'user'] // admin and user
 }
 
 // localhost:8000/hello

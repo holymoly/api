@@ -7,7 +7,7 @@ var fs = require('fs');
 const hapiServer = {
   port: 8000,
   //Uncomment for https
-  tls:{
+  tls: {
     key: fs.readFileSync('/etc/mysql/client-key.pem'),
     cert: fs.readFileSync('/etc/mysql/client-cert.pem')
   },
