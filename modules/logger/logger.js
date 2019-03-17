@@ -5,7 +5,7 @@
 const winston = require('winston');
 
 // Load Config
-var config = require('../config/config');
+var config = require('../../config/config');
 
 // transporter for console
 const con = new (winston.transports.Console)({

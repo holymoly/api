@@ -1,13 +1,13 @@
 'use strict';
 
 // mariaDb
-const mariadb = require('../../mariadb/mariadb');
+const mariadb = require('../../../mariadb/mariadb');
 
 // Load query
-const query = require('../../mariadb/query');
+const query = require('../../../mariadb/query');
 
 // Load logger
-const logger = require('../../logger').logRoutes;
+const logger = require('../../../logger/logger').logRoutes;
 
 //password handling
 const auth = require('../../auth');

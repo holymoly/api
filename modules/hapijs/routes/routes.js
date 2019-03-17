@@ -1,7 +1,7 @@
 'use strict';
 
 // Load logger
-const logger = require('../logger').logRoutes;
+const logger = require('../../logger/logger').logRoutes;
 
 // Load sql queries
 const handler = require('./config/handler');

@@ -10,13 +10,13 @@ var config = require('./config/config');
 var plugins = require('./plugins/plugins');
 
 // Load routes definition
-var routes = require('./modules/routes/routes');
+var routes = require('./modules/hapijs/routes/routes');
 
 // Load routes auth
-var auth = require('./modules/auth');
+var auth = require('./modules/hapijs/auth');
 
 // Load logger
-var logger = require('./modules/logger').logApp;
+var logger = require('./modules/logger/logger').logApp;
 
 // Create a server with a host and port
 const server = new hapi.Server();

@@ -4,16 +4,16 @@
 const Bcrypt = require('bcrypt');
 
 // Load logger
-var logger = require('../modules/logger').logAuth;
+var logger = require('../logger/logger').logAuth;
 
 // mariaDb
-const mariadb = require('./mariadb/mariadb');
+const mariadb = require('../mariadb/mariadb');
 
 // Load sql queries
-const queryHashByEmail = require('./mariadb/query').getHashByEmail;
+const queryHashByEmail = require('../mariadb/query').getHashByEmail;
 
 // Load sql queries
-const queryGetUserGroup = require('./mariadb/query').getUserGroup;
+const queryGetUserGroup = require('../mariadb/query').getUserGroup;
 
 // Validating function used for Basic Auth
 var validate = (request, email, password, callback) => {

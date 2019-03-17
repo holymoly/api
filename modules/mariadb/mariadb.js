@@ -7,7 +7,7 @@ const client = require('mariasql');
 const config = require('../../config/config.js');
 
 //Load logger
-const logger = require('../../modules/logger').logDb;
+const logger = require('../../modules/logger/logger').logDb;
 
 // Asking MariaDB
 function query(queryString,options, cb){
