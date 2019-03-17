@@ -7,7 +7,7 @@ const hapi = require('hapi');
 var config = require('./config/config');
 
 // plugins
-var plugins = require('./plugins/plugins');
+var plugins = require('./modules/hapijs/plugins/plugins');
 
 // Load routes definition
 var routes = require('./modules/hapijs/routes/routes');

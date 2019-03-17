@@ -3,7 +3,7 @@
 const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
-const Pack = require('../package');
+const Pack = require('../../../package');
 const Cookie = require('hapi-auth-cookie');
 
 // Basic Auth
