@@ -12,7 +12,14 @@ const hello_id = {
   scope: ['admin'] // admin only
 }
 
+// localhost:8000/hello
+const ipc = {
+  strategy: 'session',
+  scope: ['admin'] // admin only
+}
+
 module.exports = {
   login,
-  hello_id
+  hello_id,
+  ipc
 };

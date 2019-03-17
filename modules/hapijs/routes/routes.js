@@ -138,6 +138,7 @@ module.exports = [
     path: '/ipc/{rec_module}',
     config: {
       handler: handler.post_ipc,
+      auth: auth.ipc,
       description: 'Post a message on the IPC bus',
       notes: 'Post a message on the IPC bus',
       tags: ['api', 'ipc', 'messag bus'], // Tags for swagger
