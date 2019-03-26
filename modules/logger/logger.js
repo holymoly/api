@@ -42,7 +42,7 @@ const fileApp = new(require('winston-daily-rotate-file'))({
 })
 
 // logger for authentication stuff
-const logAuth = new(winston.Logger)({
+const logAuth = new(winston.createLogger)({
   level: config.logger.level.auth,
   filters: [
     (level, msg, meta) => {
@@ -53,7 +53,7 @@ const logAuth = new(winston.Logger)({
 });
 
 // logger for Database stuff
-const logDb = new(winston.Logger)({
+const logDb = new(winston.createLogger)({
   level: config.logger.level.db,
   filters: [
     (level, msg, meta) => {
@@ -64,7 +64,7 @@ const logDb = new(winston.Logger)({
 });
 
 // logger for route stuff
-const logRoutes = new(winston.Logger)({
+const logRoutes = new(winston.createLogger)({
   level: config.logger.level.routes,
   filters: [
     (level, msg, meta) => {
@@ -75,7 +75,7 @@ const logRoutes = new(winston.Logger)({
 });
 
 // logger on application stuff
-const logApp = new(winston.Logger)({
+const logApp = new(winston.createLogger)({
   level: config.logger.level.app,
   filters: [
     (level, msg, meta) => {

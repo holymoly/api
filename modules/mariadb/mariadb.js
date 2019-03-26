@@ -10,57 +10,60 @@ const config = require('../../config/config.js');
 const logger = require('../../modules/logger/logger').logDb;
 
 // Asking MariaDB
-function query(queryString, options, cb) {
-  logger.debug(queryString);
-  // Prepare client connection
-  logger.debug(config.mariadb);
-  var mariaClient = new client(config.mariadb);
+function query(queryString, options) {
+  return new Promise(function(fulfilled, rejected) {
+    logger.debug(queryString);
+    // Prepare client connection
+    logger.debug(config.mariadb);
+    var mariaClient = new client(config.mariadb);
 
-  // Check if ready
-  mariaClient.on('ready', function() {
-    logger.debug('MariaDB Client ready');
-  });
+    // Check if ready
+    mariaClient.on('ready', function() {
+      logger.debug('MariaDB Client ready');
+    });
 
-  // Check if error
-  mariaClient.on('error', function(err) {
-    logger.error('MariaDB Client Error: ' + err);
-    mariaClient.end();
-  });
+    // Check if error
+    mariaClient.on('error', function(err) {
+      logger.error('MariaDB Client Error: ' + err);
+      mariaClient.end();
+    });
 
-  // Check if end
-  mariaClient.on('end', function() {
-    logger.debug('MariaDB Client ended');
-  });
+    // Check if end
+    mariaClient.on('end', function() {
+      logger.debug('MariaDB Client ended');
+    });
 
-  // Check if close
-  mariaClient.on('close', function() {
-    logger.debug('MariaDB Client closed');
-  });
+    // Check if close
+    mariaClient.on('close', function() {
+      logger.debug('MariaDB Client closed');
+    });
 
-  // Preparing the query
-  var preparedQuery = mariaClient.prepare(queryString);
-  logger.debug('Query: ' + preparedQuery(options));
+    // Preparing the query
+    var preparedQuery = mariaClient.prepare(queryString);
+    logger.debug('Query: ' + preparedQuery(options));
 
-  // Executing the query and passing parameters
-  mariaClient.query(preparedQuery(options), null, {
-    useArray: true
-  }, function(err, rows) {
-    // Error or no resul
-    logger.debug(rows);
-    if (err || rows === undefined || rows.numRows == 0) {
-      var reason = err;
-      // no result
-      if (rows === undefined || rows.numRows == 0) {
-        reason = 'not found';
+
+    // Executing the query and passing parameters
+    mariaClient.query(preparedQuery(options), null, {
+      useArray: true
+    }, function(err, rows) {
+      // Error or no resul
+      logger.debug(rows);
+      if (err || rows === undefined || rows.numRows == 0) {
+        var reason = err;
+        // no result
+        if (rows === undefined || rows.numRows == 0) {
+          reason = 'not found';
+        }
+        logger.error(reason);
+        return rejected(reason);
+      } else {
+        logger.debug('Query Result: ' + rows);
+        fulfilled(rows);
       }
-      logger.error(reason);
-      cb(reason, undefined);
-    } else {
-      logger.debug('Query Result: ' + rows);
-      cb(err, rows);
-    }
-    mariaClient.end();
-  });
+      mariaClient.end();
+    });
+  })
 };
 
 module.exports.query = query;

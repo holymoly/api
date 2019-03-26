@@ -16,62 +16,40 @@ const queryHashByEmail = require('../mariadb/query').getHashByEmail;
 const queryGetUserGroup = require('../mariadb/query').getUserGroup;
 
 // Validating function used for Basic Auth
-var validate = (request, email, password, callback) => {
+const validate = async(request, email, password, h) => {
   logger.debug('Validation of User: ' + email);
-
-  getHashByEmail(email, password)
-    .then(checkPassword)
-    .then(getUserGroup)
-    .then(function(scope) {
-      request.cookieAuth.set({
-        scope: scope
-      });
-      callback(undefined, true, {
-        scope: scope
-      });
-    })
-    .catch(function(reason) {
-      callback({
-        authenticated: false,
-        reason: reason
-      }, false);
+  try{
+    const hash  = await getHashByEmail(email, password)
+    const isValid = await checkPassword(JSON.stringify(hash[0]), password);
+    const groups = await getUserGroup(isValid);
+ 
+    request.cookieAuth.set({
+      scope: groups
     });
+    return {isValid: isValid, credentials: {scope: groups}};
+  } catch(err) {
+    return {isValid: false, credentials: {reason: err}};
+  };
 };
 
 function getHashByEmail(email, password) {
-  return new Promise(function(resolve, reject) {
-    mariadb.query(queryHashByEmail, {
-      value: email
-    }, (err, result) => {
-      if (err) {
-        logger.error('Error requesting hash: ' + err);
-        reject(err)
-      } else {
-        logger.debug('Received result: ' + result);
-        if (result[0][0]) {
-          logger.debug('Received hash: ' + result);
-          resolve({
-            hash: result[0][0],
-            password: password,
-            email: email
-          })
-        } else {
-          logger.error('No Hash found');
-          reject(err)
-        }
-      }
-    });
-  });
+  logger.debug('Check hash');
+  try{
+    return  mariadb.query(queryHashByEmail, { value: email });
+  } catch(err) {
+    return (err);
+  }
 }
 
-function checkPassword(data) {
+function checkPassword(hash, password) {
+  logger.debug('Check passord: ' + password + ' ' + hash);
   return new Promise(function(resolve, reject) {
-    Bcrypt.compare(data.password, data.hash, (err, isValid) => {
+    Bcrypt.compare(password, hash, (err, isValid) => {
       if (err) {
         logger.error('Error validating password: ' + err);
-        reject(err)
+        return reject(err)
       } else {
-        logger.debug(isValid);
+        logger.debug('Password is valid: ' + isValid);
         if (isValid) {
           logger.debug('Paswword for User was valid: ' + isValid);
           resolve(data)

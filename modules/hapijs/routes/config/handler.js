@@ -13,31 +13,35 @@ const logger = require('../../../logger/logger').logRoutes;
 const auth = require('../../auth');
 
 // localhost:8000/
-const get_root = (request, reply) => {
-  replyToClient(undefined, reply, 'welcome to the root');
+const get_root = (request, h) => {
+  return replyToClient(undefined, 'welcome to the root');
 }
 
 // localhost:8000/login
-const get_login = (request, reply) => {
-  replyToClient(undefined, reply, {
+const get_login = (request, h) => {
+  return replyToClient(undefined, {
     authenticated: true
   });
 }
 
 // localhost:8000/hello/{id}
-const get_hello_id = (request, reply) => {
-  replyToClient(undefined, reply, 'hello id: ' + request.params.id);
+const get_hello_id = (request, h) => {
+  return replyToClient(undefined, 'hello id: ' + request.params.id);
 }
 
 // localhost:8000/databases
-const get_databases = (request, reply) => {
+const get_databases = (request, h) => {
+  var result = mariadb.query(query.databases,'');
+  return replyToClient(undefined,result);
+  /*
   mariadb.query(query.databases, '', (err, result) => {
-    replyToClient(err, reply, result);
+    return replyToClient(err, result);
   });
+  */
 }
 
 // localhost:8000/users
-const post_user = (request, reply) => {
+const post_user = (request, h) => {
   var data = request.payload;
   logger.debug('Create user with data: ' + JSON.stringify(data));
 
@@ -47,58 +51,78 @@ const post_user = (request, reply) => {
     .then(function(result) {
       data.hash = result.hash;
       logger.debug('Created hash: ' + JSON.stringify(data));
+      var result = mariadb.query(query.databases,'');
+      return replyToClient(undefined,result);
+      /*
       return mariadb.query(query.createUser, data, (err, result) => {
-        replyToClient(err, reply, result);
+         return replyToClient(err, result);
       });
+      */
     })
     .catch(function(err) {
-      replyToClient(err, reply, 'cannot hash password');
+      return replyToClient(err,'cannot hash password');
     });
 }
 
 // localhost:8000/users
-const get_users = (request, reply) => {
+const get_users = (request, h) => {
+  var result = mariadb.query(query.databases,'');
+  return replyToClient(undefined,result);
+  /*
   mariadb.query(query.getUsers, request.payload, (err, result) => {
-    replyToClient(err, reply, result);
+    return replyToClient(err, result);
   });
+  */
 }
 
 // localhost:8000/user
-const get_user_email = (request, reply) => {
+const get_user_email = (request, h) => {
+  var result = mariadb.query(query.databases,'');
+  return replyToClient(undefined,result);
+  /*
   mariadb.query(query.getUserFilterEmail, request.query, (err, result) => {
-    replyToClient(err, reply, result);
+    return replyToClient(err, result);
   });
+  */
 }
 
 // localhost:8000/user
-const get_user_userId = (request, reply) => {
+const get_user_userId = (request, h) => {
+  var result = mariadb.query(query.databases,'');
+  return replyToClient(undefined,result);
+  /*
   mariadb.query(query.getUserFilterUserId, request.query, (err, result) => {
-    replyToClient(err, reply, result);
+    return replyToClient(err, result);
   });
+  */
 }
 
 // localhost:8000/user
-const del_user = (request, reply) => {
+const del_user = (request, h) => {
+  var result = mariadb.query(query.databases,'');
+  return replyToClient(undefined,result);
+  /*
   mariadb.query(query.deleteUser, request.query, (err, result) => {
-    replyToClient(err, reply, result);
+    return replyToClient(err, result);
   });
+  */
 }
 
 // localhost:8000/ipc/{rec_module}
-const post_ipc = (request, reply) => {
+const post_ipc = (request, h) => {
   var data = request.payload;
   logger.debug("IPC message for module " + request.params.rec_module + ": " + JSON.stringify(data))
-  replyToClient(undefined, reply, "generic response");
+  return replyToClient(undefined, "generic response");
 }
 
 // Helper function for reply
-function replyToClient(err, reply, data) {
+function replyToClient(err, data) {
   if (err) {
     logger.error('Reply Error:' + err);
-    return reply(err);
+    return err;
   } else {
     logger.debug('Reply: ' + data);
-    return reply(data);
+    return data;
   }
 };
 

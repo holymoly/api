@@ -5,16 +5,16 @@
   "main": "app.js",
   "dependencies": {
     "bcrypt": "^3.0.1",
-    "hapi": "^16.1.0",
-    "hapi-auth-basic": "^4.2.0",
-    "hapi-auth-cookie": "^7.0.0",
-    "hapi-swagger": "^7.7.0",
-    "inert": "^4.1.0",
-    "joi": "^10.2.2",
+    "hapi": "^18.1.0",
+    "hapi-auth-basic": "^5.0.0",
+    "hapi-auth-cookie": "^10.0.0",
+    "hapi-swagger": "^9.4.1",
+    "inert": "^5.1.2",
+    "joi": "^14.3.1",
     "mariasql": "github:holymoly/node-mariasql",
-    "vision": "^4.1.1",
-    "winston": "^2.3.1",
-    "winston-daily-rotate-file": "^1.4.6"
+    "vision": "^5.4.4",
+    "winston": "^3.2.1",
+    "winston-daily-rotate-file": "^3.8.0"
   },
   "devDependencies": {
     "assert": "^1.4.1",

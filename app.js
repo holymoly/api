@@ -1,7 +1,15 @@
 'use strict';
+// Api Documentation /documentation
+const Inert = require('inert');
+const Vision = require('vision');
+const HapiSwagger = require('hapi-swagger');
+const Pack = require('./package');
+const Cookie = require('hapi-auth-cookie');
+// Basic Auth
+const BasicAuth = require('hapi-auth-basic');
 
 // Load hapi module
-const hapi = require('hapi');
+const Hapi = require('hapi');
 
 // Load Config
 var config = require('./config/config');
@@ -13,43 +21,59 @@ var plugins = require('./modules/hapijs/plugins/plugins');
 var routes = require('./modules/hapijs/routes/routes');
 
 // Load routes auth
-var auth = require('./modules/hapijs/auth');
+var validate = require('./modules/hapijs/auth').validate;
 
 // Load logger
 var logger = require('./modules/logger/logger').logApp;
 
-// Create a server with a host and port
-const server = new hapi.Server();
-server.connection(config.hapiServer);
 
-// register plugins
-server.register(plugins, (err) => {
+(async() => {
+  // Create a server with a host and port
+  const server = new Hapi.Server(
+    config.hapiServer
+  );
+
+  //server.connection(config.hapiServer);
+
+  const swaggerOptions = {
+        info: {
+                title: 'Test API Documentation',
+                version: Pack.version,
+         },
+  };
+
+  // register plugins
+  await server.register([
+        Inert,
+        Vision,
+        {
+            plugin: HapiSwagger,
+            options: swaggerOptions
+        },
+        Cookie,
+        BasicAuth
+  ]);
+
   logger.info('Hapi Server registered plugins');
-  if (err) {
-    logger.error(err);
-    throw err;
-  }
+
 
   // Activate simple auth
-  server.auth.strategy('simple', 'basic', {
-    validateFunc: auth.validate
-  });
+  server.auth.strategy('simple', 'basic',{ validate }); 
 
   // Activate session auth
   server.auth.strategy('session', 'cookie', {
-    cookie: 'api-session',
+    cookie: {
+    name    : 'api-session',
     password: 'SuperMegaHyperAwesomeSecretPassword',
-    isSecure: true
+    isSecure: true}
   })
 
   // Add all routes,
   server.route(routes);
 
   // Start Server
-  start();
-});
-
-function start() {
+  await start();
+  function start() {
   // Start server
   server.start((err) => {
     if (err) {
@@ -73,5 +97,5 @@ function stop() {
   });
 }
 
-module.exports.start = start;
-module.exports.stop = stop;
+})();
+
