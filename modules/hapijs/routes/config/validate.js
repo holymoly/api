@@ -51,7 +51,7 @@ const get_user_userId = {
 
 const del_user = {
   query: {
-    email: Joi.string().email().required(),
+    username: Joi.string().required(),
   }
 }
 

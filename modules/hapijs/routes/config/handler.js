@@ -13,98 +13,105 @@ const logger = require('../../../logger/logger').logRoutes;
 const auth = require('../../auth');
 
 // localhost:8000/
-const get_root = (request, reply) => {
-  replyToClient(undefined, reply, 'welcome to the root');
+const get_root = (request, h) => {
+  return replyToClient(undefined, 'welcome to the root');
 }
 
 // localhost:8000/login
-const get_login = (request, reply) => {
-  replyToClient(undefined, reply, {
+const get_login = (request, h) => {
+  return replyToClient(undefined, {
     authenticated: true
   });
 }
 
+// localhost:8000/login
+const get_logout = (request, h) => {
+  request.cookieAuth.clear();
+  return replyToClient(undefined, {
+    authenticated: false
+  });
+}
+
 // localhost:8000/hello/{id}
-const get_hello_id = (request, reply) => {
-  replyToClient(undefined, reply, 'hello id: ' + request.params.id);
+const get_hello_id = (request, h) => {
+  return replyToClient(undefined, 'hello id: ' + request.params.id);
 }
 
 // localhost:8000/databases
-const get_databases = (request, reply) => {
-  mariadb.query(query.databases, '', (err, result) => {
-    replyToClient(err, reply, result);
-  });
+const get_databases = async(request, h) => {
+  var result = await mariadb.query(query.databases, {}).catch(errorHandling);
+  return replyToClient(undefined, result);
 }
 
 // localhost:8000/users
-const post_user = (request, reply) => {
+const post_user = async(request, h) => {
   var data = request.payload;
   logger.debug('Create user with data: ' + JSON.stringify(data));
-
-  // generate salt and hash
-  auth.generateSalt(data.password)
-    .then(auth.hashPassword)
-    .then(function(result) {
-      data.hash = result.hash;
-      logger.debug('Created hash: ' + JSON.stringify(data));
-      return mariadb.query(query.createUser, data, (err, result) => {
-        replyToClient(err, reply, result);
-      });
-    })
-    .catch(function(err) {
-      replyToClient(err, reply, 'cannot hash password');
-    });
+  try {
+    // generate salt and hash
+    var salt = await auth.generateSalt().catch(errorHandling);
+    logger.debug('Created salt: ' + salt);
+    var hash = await auth.hashPassword(data.password, salt[1]).catch(errorHandling);
+    logger.debug('Created hash: ' + hash);
+    data.hash = hash[1];
+    var result = await mariadb.query(query.createUser, data).catch(errorHandling);
+    return replyToClient(undefined, result);
+  } catch (err) {
+    return replyToClient(err, 'cannot hash password');
+  }
 }
 
 // localhost:8000/users
-const get_users = (request, reply) => {
-  mariadb.query(query.getUsers, request.payload, (err, result) => {
-    replyToClient(err, reply, result);
-  });
+const get_users = async(request, h) => {
+  var result = await mariadb.query(query.getUsers, request.payload).catch(errorHandling);
+  return replyToClient(undefined, result);
 }
 
 // localhost:8000/user
-const get_user_email = (request, reply) => {
-  mariadb.query(query.getUserFilterEmail, request.query, (err, result) => {
-    replyToClient(err, reply, result);
-  });
+const get_user_email = async(request, h) => {
+  var result = await mariadb.query(query.getUserFilterEmail, request.query).catch(errorHandling);
+  return replyToClient(undefined, result);
 }
 
 // localhost:8000/user
-const get_user_userId = (request, reply) => {
-  mariadb.query(query.getUserFilterUserId, request.query, (err, result) => {
-    replyToClient(err, reply, result);
-  });
+const get_user_userId = async(request, h) => {
+  var result = await mariadb.query(query.getUserFilterUserId, request.query).catch(errorHandling);
+  return replyToClient(undefined, result);
 }
 
 // localhost:8000/user
-const del_user = (request, reply) => {
-  mariadb.query(query.deleteUser, request.query, (err, result) => {
-    replyToClient(err, reply, result);
-  });
+const del_user = async(request, h) => {
+  var result = await mariadb.query(query.deleteUser, request.query).catch(errorHandling);
+  return replyToClient(undefined, result);
 }
 
 // localhost:8000/ipc/{rec_module}
-const post_ipc = (request, reply) => {
+const post_ipc = (request, h) => {
   var data = request.payload;
   logger.debug("IPC message for module " + request.params.rec_module + ": " + JSON.stringify(data))
-  replyToClient(undefined, reply, "generic response");
+  return replyToClient(undefined, "generic response");
 }
 
 // Helper function for reply
-function replyToClient(err, reply, data) {
+function replyToClient(err, data) {
   if (err) {
     logger.error('Reply Error:' + err);
-    return reply(err);
+    return err;
   } else {
-    logger.debug('Reply: ' + data);
-    return reply(data);
+    logger.debug('Reply: ' + JSON.stringify(data));
+    return data;
   }
+};
+
+function errorHandling(reason) {
+  logger.error(reason);
+  replyToClient(reason, undefined);
 };
 
 module.exports = {
   get_root,
   get_login,
+  get_logout,
   get_hello_id,
   get_databases,
   post_user,

@@ -24,20 +24,32 @@ module.exports = [
       notes: 'Returns "welcome to the root"',
       tags: ['api'], // Tags for swagger
     }
-  }
+  },
 
   // localhost:8000/login
-  , {
+  {
     method: 'GET',
     path: '/login',
     config: {
       auth: auth.login,
       handler: handler.get_login,
       description: 'Used for initial authentification',
-      notes: `Use Basic Authentification with email and password. Returns a
+      notes: `Use Basic Authentification with username and password. Returns a
       cookie with the session information on success. Also returns a json with
       authenticate = true/false. Cookie must be used to authenticate against
       routes with Cookie Auth`,
+      tags: ['api', 'auth', 'scope'], // Tags for swagger
+    }
+  },
+
+  // localhost:8000/logout
+  {
+    method: 'GET',
+    path: '/logout',
+    config: {
+      handler: handler.get_logout,
+      description: 'Used for initial authentification',
+      notes: `Clears the cookie session`,
       tags: ['api', 'auth', 'scope'], // Tags for swagger
     }
   },

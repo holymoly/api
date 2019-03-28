@@ -3,19 +3,19 @@
 // localhost:8000/hello
 const login = {
   strategy: 'simple',
-  scope: ['admin', 'user'] // admin and user
+  scope: ['isAdmin', 'isUser'] // admin and user
 }
 
 // localhost:8000/hello
 const hello_id = {
   strategy: 'session',
-  scope: ['admin'] // admin only
+  scope: ['isAdmin'] // admin only
 }
 
 // localhost:8000/hello
 const ipc = {
   strategy: 'session',
-  scope: ['admin'] // admin only
+  scope: ['isAdmin'] // admin only
 }
 
 module.exports = {

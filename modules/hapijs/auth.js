@@ -10,71 +10,61 @@ var logger = require('../logger/logger').logAuth;
 const mariadb = require('../mariadb/mariadb');
 
 // Load sql queries
-const queryHashByEmail = require('../mariadb/query').getHashByEmail;
+const queryHashByUsername = require('../mariadb/query').getHashByUsername;
 
 // Load sql queries
 const queryGetUserGroup = require('../mariadb/query').getUserGroup;
 
 // Validating function used for Basic Auth
-var validate = (request, email, password, callback) => {
-  logger.debug('Validation of User: ' + email);
+const validate = async(request, username, password, h) => {
+  logger.debug('Validation of User: ' + username);
+  try {
+    const hash = await getHashByUsername(username, password);
+    const isValid = await checkPassword(hash, password);
+    const groups = await getUserGroup(username);
 
-  getHashByEmail(email, password)
-    .then(checkPassword)
-    .then(getUserGroup)
-    .then(function(scope) {
-      request.cookieAuth.set({
-        scope: scope
-      });
-      callback(undefined, true, {
-        scope: scope
-      });
-    })
-    .catch(function(reason) {
-      callback({
-        authenticated: false,
-        reason: reason
-      }, false);
+    request.cookieAuth.set({
+      scope: groups
     });
+    return {
+      isValid: isValid,
+      credentials: {
+        scope: groups
+      }
+    };
+  } catch (err) {
+    return {
+      isValid: false,
+      credentials: {
+        reason: err
+      }
+    };
+  };
 };
 
-function getHashByEmail(email, password) {
-  return new Promise(function(resolve, reject) {
-    mariadb.query(queryHashByEmail, {
-      value: email
-    }, (err, result) => {
-      if (err) {
-        logger.error('Error requesting hash: ' + err);
-        reject(err)
-      } else {
-        logger.debug('Received result: ' + result);
-        if (result[0][0]) {
-          logger.debug('Received hash: ' + result);
-          resolve({
-            hash: result[0][0],
-            password: password,
-            email: email
-          })
-        } else {
-          logger.error('No Hash found');
-          reject(err)
-        }
-      }
+async function getHashByUsername(username) {
+  logger.debug('Check hash for user:' + username);
+  try {
+    var result = await mariadb.query(queryHashByUsername, {
+      value: username
     });
-  });
+    return result[0]['hash'];
+  } catch (err) {
+    return (err);
+  }
 }
 
-function checkPassword(data) {
+function checkPassword(hash, password) {
   return new Promise(function(resolve, reject) {
-    Bcrypt.compare(data.password, data.hash, (err, isValid) => {
+    logger.debug('Password, hash: ' + password + ' : ' + hash);
+    Bcrypt.compare(password, hash, (err, isValid) => {
       if (err) {
         logger.error('Error validating password: ' + err);
-        reject(err)
+        return reject(err)
       } else {
-        logger.debug(isValid);
         if (isValid) {
           logger.debug('Paswword for User was valid: ' + isValid);
-          resolve(data)
+          resolve(isValid)
         } else {
           logger.error('Wrong password');
           reject('Wrong password')
@@ -84,68 +74,77 @@ function checkPassword(data) {
   });
 }
 
-function getUserGroup(data) {
-  return new Promise(function(resolve, reject) {
-    mariadb.query(queryGetUserGroup, {
-      value: data.email
-    }, (err, result) => {
-      if (err) {
-        logger.error('Error requesting groups: ' + err);
-        reject(err)
-      } else {
-        if (result[0][0]) {
-          var scope = [];
-          if (result[0][0] === 'true') {
-            scope.push('guest');
+async function getUserGroup(username) {
+  try {
+    var result = await mariadb.query(queryGetUserGroup, {
+      value: username
+    });
+    logger.debug(JSON.stringify(result));
+    return await checkScope(result);
+  } catch (err) {
+    logger.error(err);
+    return err;
+  }
+
+  async function checkScope(data) {
+    return new Promise(function(resolve, reject) {
+      var scope = [];
+      logger.debug(JSON.stringify(data[0]));
+
+      for (var key in data[0]) {
+        if (data[0].hasOwnProperty(key)) {
+          if (data[0][key] === "1") {
+            scope.push(key);
           }
-          if (result[0][1] === 'true') {
-            scope.push('user');
-          }
-          if (result[0][2] === 'true') {
-            scope.push('admin');
-          }
-          logger.debug('Received groups: ' + result);
-          resolve(scope)
-        } else {
-          logger.error('No Groups found');
-          reject(err)
         }
       }
+      resolve(scope);
     });
-  });
+  };
 }
 
-
-function generateSalt(password) {
+function generateSalt() {
   return new Promise(function(resolve, reject) {
     Bcrypt.genSalt(10, function(err, salt) {
       if (err) {
         logger.error('Error requesting hash: ' + err);
-        reject(err)
+        reject([
+          err,
+          undefined
+        ])
       } else {
-        resolve({
-          salt: salt,
-          password: password
-        })
+        resolve([
+          undefined,
+          salt
+        ])
       }
     });
   });
 }
 
-function hashPassword(data) {
+function hashPassword(password, salt) {
   return new Promise(function(resolve, reject) {
-    Bcrypt.hash(data.password, data.salt, function(err, hash) {
+    Bcrypt.hash(password, salt, function(err, hash) {
       if (err) {
         logger.error('Error requesting hash: ' + err);
-        reject(err)
+        reject([
+          err,
+          undefined
+        ])
       } else {
-        resolve({
-          hash: hash
-        })
+        resolve([
+          undefined,
+          hash
+        ])
       }
     });
   });
 }
+
+function errorHandling(reason) {
+  logger.error(reason);
+  replyToClient(reason, undefined);
+};
 
 module.exports = {
   validate,
