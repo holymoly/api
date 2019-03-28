@@ -12,7 +12,6 @@
     "inert": "^5.1.2",
     "joi": "^14.3.1",
     "mariadb": "^2.0.3",
-    "mariasql": "github:holymoly/node-mariasql",
     "vision": "^5.4.4",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^3.8.0"
