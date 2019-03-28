@@ -13,18 +13,18 @@ var getUserFilterEmail = `SELECT * FROM users WHERE email = :value;`
 var getUserFilterUserId = `SELECT * FROM users WHERE user_id = :value;`
 
 // Deletes a User by email
-var deleteUser = `DELETE FROM users WHERE email = :email;`
+var deleteUser = `DELETE FROM users WHERE username = :username;`
 
 // Returns a Hash filtered by email
-var getHashByEmail = `SELECT hash FROM passwords WHERE email = :value;`
+var getHashByUsername = `SELECT hash FROM passwords WHERE username = :value;`
 
 // Returns a Hash filtered by email
-var getUserGroup = `SELECT isGuest,isUser,isAdmin FROM groups WHERE email = :value;`
+var getUserGroup = `SELECT isGuest,isUser,isAdmin FROM groups WHERE username = :value;`
 
 // Create User
-var createUser = `INSERT INTO users (firstname, lastname, username, email) VALUE ( :firstname, :lastname, :username, :email);
-INSERT INTO passwords (hash, email) VALUE (:hash, :email);
-INSERT INTO groups (email, isGuest, isUser, isAdmin) VALUE (:email, :isGuest, :isUser, :isAdmin);`
+var createUser = `INSERT INTO api.users (firstname, lastname, username, email) VALUE ( :firstname, :lastname, :username, :email);
+INSERT INTO api.passwords (hash, username) VALUE (:hash, :username);
+INSERT INTO api.groups (username, isGuest, isUser, isAdmin) VALUE (:username, :isGuest, :isUser, :isAdmin);`
 
 module.exports = {
   databases,
@@ -33,6 +33,6 @@ module.exports = {
   getUserFilterEmail,
   getUserFilterUserId,
   deleteUser,
-  getHashByEmail,
+  getHashByUsername,
   getUserGroup
 };

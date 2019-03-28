@@ -13,6 +13,18 @@ const con = new(winston.transports.Console)({
   colorize: true
 })
 
+// custom format
+const custFormat = {
+  format: winston.format.combine(
+    winston.format.label({
+      label: 'test'
+    }),
+    winston.format.timestamp(),
+    winston.format.colorize(),
+    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+  ),
+}
+
 // Log rotation
 const fileAuth = new(require('winston-daily-rotate-file'))({
   filename: './logs/auth_',
@@ -42,46 +54,58 @@ const fileApp = new(require('winston-daily-rotate-file'))({
 })
 
 // logger for authentication stuff
-const logAuth = new(winston.createLogger)({
+const logAuth = winston.createLogger({
   level: config.logger.level.auth,
-  filters: [
-    (level, msg, meta) => {
-      return 'AUTH: ' + msg;
-    }
-  ],
+  format: winston.format.combine(
+    winston.format.label({
+      label: 'AUTH '
+    }),
+    winston.format.timestamp(),
+    winston.format.colorize(),
+    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+  ),
   transports: [con, fileAuth]
 });
 
 // logger for Database stuff
 const logDb = new(winston.createLogger)({
   level: config.logger.level.db,
-  filters: [
-    (level, msg, meta) => {
-      return 'DB: ' + msg;
-    }
-  ],
+  format: winston.format.combine(
+    winston.format.label({
+      label: 'DB   '
+    }),
+    winston.format.timestamp(),
+    winston.format.colorize(),
+    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+  ),
   transports: [con, fileDb]
 });
 
 // logger for route stuff
 const logRoutes = new(winston.createLogger)({
   level: config.logger.level.routes,
-  filters: [
-    (level, msg, meta) => {
-      return 'ROUTES: ' + msg;
-    }
-  ],
+  format: winston.format.combine(
+    winston.format.label({
+      label: 'ROUTE'
+    }),
+    winston.format.timestamp(),
+    winston.format.colorize(),
+    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+  ),
   transports: [con, fileRoutes]
 });
 
 // logger on application stuff
 const logApp = new(winston.createLogger)({
   level: config.logger.level.app,
-  filters: [
-    (level, msg, meta) => {
-      return 'APP: ' + msg;
-    }
-  ],
+  format: winston.format.combine(
+    winston.format.label({
+      label: 'APP  '
+    }),
+    winston.format.timestamp(),
+    winston.format.colorize(),
+    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+  ),
   transports: [con, fileApp]
 });
 

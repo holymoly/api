@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `api`.`users` (
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC))
 ENGINE = InnoDB
-AUTO_INCREMENT = 18
+AUTO_INCREMENT = 0
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -49,20 +49,20 @@ DROP TABLE IF EXISTS `api`.`groups` ;
 
 CREATE TABLE IF NOT EXISTS `api`.`groups` (
   `group_id` INT(10) NOT NULL AUTO_INCREMENT,
-  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `username` VARCHAR(45) NULL DEFAULT NULL,
   `isGuest` VARCHAR(4) NOT NULL DEFAULT '0',
   `isUser` VARCHAR(4) NOT NULL DEFAULT '0',
   `isAdmin` VARCHAR(4) NOT NULL DEFAULT '0',
   `created` TIMESTAMP(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`group_id`),
-  INDEX `fk_email_idx` (`email` ASC),
-  CONSTRAINT `fk_email`
-    FOREIGN KEY (`email`)
-    REFERENCES `api`.`users` (`email`)
+  INDEX `fk_username_idx` (`username` ASC),
+  CONSTRAINT `fk_username`
+    FOREIGN KEY (`username`)
+    REFERENCES `api`.`users` (`username`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 16
+AUTO_INCREMENT = 0
 DEFAULT CHARACTER SET = utf8;
 
 
@@ -73,22 +73,21 @@ DROP TABLE IF EXISTS `api`.`passwords` ;
 
 CREATE TABLE IF NOT EXISTS `api`.`passwords` (
   `password_id` INT(11) NOT NULL AUTO_INCREMENT,
-  `hash` BINARY(60) NOT NULL,
-  `email` VARCHAR(45) NULL DEFAULT NULL,
+  `hash` VARCHAR(60) NOT NULL,
+  `username` VARCHAR(45) NULL DEFAULT NULL,
   `created` TIMESTAMP(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
   PRIMARY KEY (`password_id`),
-  UNIQUE INDEX `email_UNIQUE` (`email` ASC),
-  CONSTRAINT `email`
-    FOREIGN KEY (`email`)
-    REFERENCES `api`.`users` (`email`)
+  UNIQUE INDEX `username_UNIQUE` (`username` ASC),
+  CONSTRAINT `username`
+    FOREIGN KEY (`username`)
+    REFERENCES `api`.`users` (`username`)
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 7
+AUTO_INCREMENT = 0
 DEFAULT CHARACTER SET = utf8;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
-
