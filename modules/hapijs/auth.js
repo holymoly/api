@@ -6,14 +6,14 @@ const Bcrypt = require('bcrypt');
 // Load logger
 var logger = require('../logger/logger').logAuth;
 
-// mariaDb
-const mariadb = require('../mariadb/mariadb');
+// pgdb
+const pgdb = require('../pgdb/pgdb');
 
 // Load sql queries
-const queryHashByUsername = require('../mariadb/query').getHashByUsername;
+const queryHashByUsername = require('../pgdb/query').getHashByUsername;
 
 // Load sql queries
-const queryGetUserGroup = require('../mariadb/query').getUserGroup;
+const queryGetUserGroup = require('../pgdb/query').getUserGroup;
 
 // Validating function used for Basic Auth
 const validate = async(request, username, password, h) => {
@@ -26,6 +26,9 @@ const validate = async(request, username, password, h) => {
     request.cookieAuth.set({
       scope: groups
     });
+
+    logger.debug('Scope: ' + JSON.stringify(groups));
+
     return {
       isValid: isValid,
       credentials: {
@@ -45,10 +48,10 @@ const validate = async(request, username, password, h) => {
 async function getHashByUsername(username) {
   logger.debug('Check hash for user:' + username);
   try {
-    var result = await mariadb.query(queryHashByUsername, {
-      value: username
-    });
-    return result[0]['hash'];
+    queryHashByUsername.parameters = [username];
+    var result = await pgdb.query(queryHashByUsername);
+    logger.debug('hash: ' + result.rows[0].hash);
+    return result.rows[0].hash;
   } catch (err) {
     return (err);
   }
@@ -76,11 +79,10 @@ function checkPassword(hash, password) {
 
 async function getUserGroup(username) {
   try {
-    var result = await mariadb.query(queryGetUserGroup, {
-      value: username
-    });
-    logger.debug(JSON.stringify(result));
-    return await checkScope(result);
+    queryGetUserGroup.parameters = [username];
+    var result = await pgdb.query(queryGetUserGroup);
+    logger.debug('group: ' + JSON.stringify(result.rows));
+    return await checkScope(result.rows);
   } catch (err) {
     logger.error(err);
     return err;
@@ -93,11 +95,12 @@ async function getUserGroup(username) {
 
       for (var key in data[0]) {
         if (data[0].hasOwnProperty(key)) {
-          if (data[0][key] === "1") {
+          if (data[0][key] === "true") {
             scope.push(key);
           }
         }
       }
+      logger.debug('Scope: ' + scope);
       resolve(scope);
     });
   };

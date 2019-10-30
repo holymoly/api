@@ -1,4 +1,5 @@
 'use strict';
+
 // Api Documentation /documentation
 const Inert = require('inert');
 const Vision = require('vision');
