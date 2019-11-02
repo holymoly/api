@@ -3,7 +3,7 @@ Self teaching hapi
 
 ## What it does
 
-  + query mariadb for existing databases `http://localhost:8000/databases`
+  + query postgres for existing databases `http://localhost:8000/databases`
   + uses winston for logging
   + log output seperated by module (auth, routes, db, logger)
   + basic authentication on `http://localhost:8000/login` to receive a cookie
@@ -14,6 +14,7 @@ Self teaching hapi
   + seperates routes in a file `/modules/routes.js`
   + seperates plugin in a file `/pugins/plugins.js`
   + swagger documentation grouped by tag
+  + user enviroment variables for configuration (see set_env.sh)
 
 ## What is missing (ToDo)
 
@@ -24,8 +25,9 @@ Self teaching hapi
   + ~~using https~~ (because its 2017!)
   + ~~database example~~
   + automated testing
-  + nginx as loadbalancer
-  + example for multiple instances
+  + ---nginx as loadbalancer--- not part of the app
+  + --example for multiple instances--- can be handled elswhere (nginx, kubernetes)
+  + jwt integration
 
 ## Installing
 

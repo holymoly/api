@@ -1,21 +1,21 @@
 'use strict';
 
-// localhost:8000/hello
+// localhost:8000/login
 const login = {
   strategy: 'simple',
-  scope: ['isAdmin', 'isUser'] // admin and user
+  scope: ['isadmin', 'isuser'] // admin and user
 }
 
 // localhost:8000/hello
 const hello_id = {
   strategy: 'session',
-  scope: ['isAdmin'] // admin only
+  scope: ['isadmin'] // admin only
 }
 
-// localhost:8000/hello
+// localhost:8000/ipc
 const ipc = {
   strategy: 'session',
-  scope: ['isAdmin'] // admin only
+  scope: ['isadmin'] // admin only
 }
 
 module.exports = {

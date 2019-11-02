@@ -1,10 +1,10 @@
 'use strict';
 
-// mariaDb
-const mariadb = require('../../../mariadb/mariadb');
+// pgdb
+const pgdb = require('../../../pgdb/pgdb');
 
 // Load query
-const query = require('../../../mariadb/query');
+const query = require('../../../pgdb/query');
 
 // Load logger
 const logger = require('../../../logger/logger').logRoutes;
@@ -39,7 +39,7 @@ const get_hello_id = (request, h) => {
 
 // localhost:8000/databases
 const get_databases = async(request, h) => {
-  var result = await mariadb.query(query.databases, {}).catch(errorHandling);
+  var result = await pgdb.query(query.databases).catch(errorHandling);
   return replyToClient(undefined, result);
 }
 
@@ -54,7 +54,13 @@ const post_user = async(request, h) => {
     var hash = await auth.hashPassword(data.password, salt[1]).catch(errorHandling);
     logger.debug('Created hash: ' + hash);
     data.hash = hash[1];
-    var result = await mariadb.query(query.createUser, data).catch(errorHandling);
+    var preparedQuer = []
+      //setup query parameters
+    query.createUser.queries[0].parameters = [data.firstname, data.lastname, data.username, data.email];
+    query.createUser.queries[1].parameters = [data.hash, data.username];
+    query.createUser.queries[2].parameters = [data.username, data.isGuest, data.isUser, data.isAdmin];
+
+    var result = await pgdb.queryTransactionSave(query.createUser).catch(errorHandling);
     return replyToClient(undefined, result);
   } catch (err) {
     return replyToClient(err, 'cannot hash password');
@@ -63,25 +69,28 @@ const post_user = async(request, h) => {
 
 // localhost:8000/users
 const get_users = async(request, h) => {
-  var result = await mariadb.query(query.getUsers, request.payload).catch(errorHandling);
+  var result = await pgdb.query(query.getUsers).catch(errorHandling);
   return replyToClient(undefined, result);
 }
 
 // localhost:8000/user
 const get_user_email = async(request, h) => {
-  var result = await mariadb.query(query.getUserFilterEmail, request.query).catch(errorHandling);
+  query.getUserFilterEmail.parameters = [request.query.value];
+  var result = await pgdb.query(query.getUserFilterEmail).catch(errorHandling);
   return replyToClient(undefined, result);
 }
 
 // localhost:8000/user
 const get_user_userId = async(request, h) => {
-  var result = await mariadb.query(query.getUserFilterUserId, request.query).catch(errorHandling);
+  query.getUserFilterUserId.parameters = [request.query.value];
+  var result = await pgdb.query(query.getUserFilterUserId).catch(errorHandling);
   return replyToClient(undefined, result);
 }
 
 // localhost:8000/user
 const del_user = async(request, h) => {
-  var result = await mariadb.query(query.deleteUser, request.query).catch(errorHandling);
+  query.deleteUser.parameters[0] = request.query.username;
+  var result = await pgdb.query(query.deleteUser).catch(errorHandling);
   return replyToClient(undefined, result);
 }
 

@@ -9,47 +9,43 @@ var config = require('../../config/config');
 
 // transporter for console
 const con = new(winston.transports.Console)({
-  timestamp: true,
-  colorize: true
-})
-
-// custom format
-const custFormat = {
   format: winston.format.combine(
-    winston.format.label({
-      label: 'test'
-    }),
-    winston.format.timestamp(),
-    winston.format.colorize(),
-    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
-  ),
-}
+    winston.format.colorize()
+  )
+})
 
 // Log rotation
 const fileAuth = new(require('winston-daily-rotate-file'))({
   filename: './logs/auth_',
-  datePattern: 'yyyy-MM-dd',
+  datePattern: 'YYYY-MM-DD',
   prepend: false
 })
 
 // Log rotation
 const fileDb = new(require('winston-daily-rotate-file'))({
   filename: './logs/auth_',
-  datePattern: 'yyyy-MM-dd',
+  datePattern: 'YYYY-MM-DD',
   prepend: false
 })
 
 // Log rotation
 const fileRoutes = new(require('winston-daily-rotate-file'))({
   filename: './logs/routes_',
-  datePattern: 'yyyy-MM-dd',
+  datePattern: 'YYYY-MM-DD',
   prepend: false
 })
 
 // Log rotation
 const fileApp = new(require('winston-daily-rotate-file'))({
   filename: './logs/app_',
-  datePattern: 'yyyy-MM-dd',
+  datePattern: 'YYYY-MM-DD',
+  prepend: false
+})
+
+// Databus
+const fileDatabus = new(require('winston-daily-rotate-file'))({
+  filename: './logs/app_',
+  datePattern: 'YYYY-MM-DD',
   prepend: false
 })
 
@@ -109,9 +105,24 @@ const logApp = new(winston.createLogger)({
   transports: [con, fileApp]
 });
 
+// logger on application stuff
+const logDatabus = new(winston.createLogger)({
+  level: config.logger.level.databus,
+  format: winston.format.combine(
+    winston.format.label({
+      label: 'Databus  '
+    }),
+    winston.format.timestamp(),
+    winston.format.colorize(),
+    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+  ),
+  transports: [con, fileDatabus]
+});
+
 module.exports = {
   logAuth,
   logDb,
   logRoutes,
-  logApp
+  logApp,
+  logDatabus
 };

@@ -5,44 +5,52 @@ var fs = require('fs');
 
 // Server Configuration
 const hapiServer = {
-  port: 8000,
+  port: process.env.HAPIPORT || 8000,
+  address: process.env.HAPIHOST || '127.0.0.1',
   //Uncomment for https
-  tls: {
-    key: fs.readFileSync('./config/certs/server-key.pem'),
-    cert: fs.readFileSync('./config/certs/server-cert.pem')
-  },
-  host: '127.0.0.1',
+  //tls: {
+  //  key: process.env.HAPIKEY || fs.readFileSync('./config/certs/server-key.pem'),
+  //  cert: process.env.HAPICERT || fs.readFileSync('./config/certs/server-cert.pem')
+  //}
 }
 
-// DB configuration
-const mariadb = {
-  host: 'localhost',
-  user: 'root',
-  password: 'test',
-  database: 'api',
-  multipleStatements: true,
-  compress: true,
-  port: 3307,
-  ssl: {
-    rejectUnauthorized: false,
-    ca: fs.readFileSync('./config/certs/ca-cert.pem'),
-    cert: fs.readFileSync('./config/certs/client-cert.pem'),
-    key: fs.readFileSync('./config/certs/client-key.pem')
-  }
+// postgres configuration
+const postgres = {
+  host: process.env.PGHOST || 'localhost',
+  port: process.env.PGPORT || '5432',
+  user: process.env.PGUSER || 'root',
+  password: process.env.PGPASSWORD || 'test',
+  database: process.env.PGDATABASE || 'api',
+}
+
+// rabbitmq databus
+const databus = {
+  host: process.env.DATABUSHOST || '127.0.0.1',
+  port: process.env.DATABUSPORT || 8883,
+  username: process.env.DATABUSUSER || 'holymoly',
+  password: process.env.DATABUSPASSWORD || 'test',
+  //key: process.env.DATABUSSSLKEY || fs.readFileSync('./config/certs/client-key.pem'),
+  //cert: process.env.DATABUSSSLCERT || fs.readFileSync('./config/certs/client-cert.pem'),
+  //rejectUnauthorized: process.env.DATABUSSSLREJECTUNAUTHORIZED || false,
+  //##### The CA list will be used to determine if server is authorized
+  //ca: process.env.DATABUSSSLCA || fs.readFileSync('./config/certs/ca-cert.pem'),
+  protocol: process.env.DATABUSPROTOCOL || 'mqtts'
 }
 
 // Logging configuration
 const logger = {
   level: {
-    auth: 'debug',
-    db: 'debug',
-    routes: 'debug',
-    app: 'debug'
+    auth: process.env.LGAUTHLEVEL || 'debug',
+    db: process.env.LGDBLEVEL || 'debug',
+    routes: process.env.LGROUTESLEVEL || 'debug',
+    app: process.env.LGAPPLEVEL || 'debug',
+    databus: process.env.LGDATABUSLEVEL || 'debug'
   },
 }
 
 module.exports = {
   hapiServer,
-  mariadb,
-  logger
+  postgres,
+  logger,
+  databus
 };

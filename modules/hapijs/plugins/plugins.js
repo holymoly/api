@@ -1,13 +1,14 @@
 'use strict';
+
 // Api Documentation /documentation
-const Inert = require('inert');
-const Vision = require('vision');
+const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
 const HapiSwagger = require('hapi-swagger');
 const Pack = require('../../../package');
-const Cookie = require('hapi-auth-cookie');
+const Cookie = require('@hapi/cookie');
 
 // Basic Auth
-const BasicAuth = require('hapi-auth-basic');
+const BasicAuth = require('@hapi/basic');
 
 // Shown in Documentation
 const options = {

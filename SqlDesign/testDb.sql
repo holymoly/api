@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS `api`.`users` (
   `lastname` VARCHAR(45) NOT NULL,
   `username` VARCHAR(45) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
-  `created` TIMESTAMP(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `created` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`email`),
   UNIQUE INDEX `user_id_UNIQUE` (`user_id` ASC),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `api`.`groups` (
   `isGuest` VARCHAR(4) NOT NULL DEFAULT '0',
   `isUser` VARCHAR(4) NOT NULL DEFAULT '0',
   `isAdmin` VARCHAR(4) NOT NULL DEFAULT '0',
-  `created` TIMESTAMP(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `created` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`group_id`),
   INDEX `fk_username_idx` (`username` ASC),
   CONSTRAINT `fk_username`
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `api`.`passwords` (
   `password_id` INT(11) NOT NULL AUTO_INCREMENT,
   `hash` VARCHAR(60) NOT NULL,
   `username` VARCHAR(45) NULL DEFAULT NULL,
-  `created` TIMESTAMP(6) NULL DEFAULT CURRENT_TIMESTAMP(6),
+  `created` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`password_id`),
   UNIQUE INDEX `username_UNIQUE` (`username` ASC),
   CONSTRAINT `username`
