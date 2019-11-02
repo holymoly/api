@@ -4,13 +4,13 @@ const Inert = require('inert');
 const Vision = require('vision');
 const HapiSwagger = require('hapi-swagger');
 const Pack = require('./package');
-const Cookie = require('hapi-auth-cookie');
+const Cookie = require('@hapi/cookie');
 
 // Basic Auth
-const BasicAuth = require('hapi-auth-basic');
+const BasicAuth = require('@hapi/basic');
 
 // Load hapi module
-const Hapi = require('hapi');
+const Hapi = require('@hapi/hapi');
 
 // Load Config
 var config = require('./config/config');
