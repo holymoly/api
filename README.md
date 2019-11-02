@@ -25,8 +25,8 @@ Self teaching hapi
   + ~~using https~~ (because its 2017!)
   + ~~database example~~
   + automated testing
-  + ---nginx as loadbalancer--- not part of the app
-  + --example for multiple instances--- can be handled elswhere (nginx, kubernetes)
+  + ~~nginx as loadbalancer~~ not part of the app
+  + ~~example for multiple instances~~ can be handled elswhere (nginx, kubernetes)
   + jwt integration
 
 ## Installing
