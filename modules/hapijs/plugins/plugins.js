@@ -11,10 +11,9 @@ const Cookie = require('@hapi/cookie');
 // Shown in Documentation
 const options = {
   info: {
-    'title': 'Test API Documentation',
+    'title': 'Items API Documentation',
     'version': Pack.version,
-  },
-  grouping: 'path'
+  }
 };
 
 const inert = Inert

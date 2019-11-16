@@ -18,8 +18,8 @@ module.exports = [
   {
     method: 'GET',
     path: '/',
-    config: {
-      handler: handler.get_root,
+    handler: handler.get_root,
+    options: {
       description: 'answer if root path was called',
       notes: 'Returns "welcome to the root"',
       tags: ['api'], // Tags for swagger
@@ -30,8 +30,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/logout',
-    config: {
-      handler: handler.get_logout,
+    handler: handler.get_logout,
+    options: {
+
       description: 'Used for initial authentification',
       notes: `Clears the cookie session`,
       tags: ['api', 'auth', 'scope'], // Tags for swagger
@@ -42,8 +43,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/hello/{id}',
-    config: {
-      handler: handler.get_hello_id,
+    handler: handler.get_hello_id,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get back id',
       notes: 'Returns the passed {id}',
@@ -57,9 +59,10 @@ module.exports = [
   {
     method: 'GET',
     path: '/itemClasses',
-    config: {
-      handler: handler.get_itemClass,
-      //auth: auth.item_guest,
+    handler: handler.get_itemClass,
+    options: {
+
+      auth: auth.item_guest,
       description: 'Get all item classes',
       notes: 'Returns all item classes',
       tags: ['api', 'items', 'database', 'class'], // Tags for swagger
@@ -70,8 +73,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/itemClass/{id}',
-    config: {
-      handler: handler.get_itemsFilterClassId,
+    handler: handler.get_itemsFilterClassId,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get item class by id',
       notes: 'Returns item class filtered by id',
@@ -83,9 +87,9 @@ module.exports = [
   {
     method: 'POST',
     path: '/itemClass',
-    config: {
-      handler: handler.post_itemClass,
-      auth: auth.item_admin,
+    handler: handler.post_itemClass,
+    options: {
+      auth: auth.item_guest,
       description: 'Create a item class',
       notes: 'Creates item class ',
       tags: ['api', 'item', 'database', 'class'], // Tags for swagger
@@ -97,8 +101,9 @@ module.exports = [
   {
     method: 'DELETE',
     path: '/itemClass',
-    config: {
-      handler: handler.del_itemClass,
+    handler: handler.del_itemClass,
+    options: {
+
       auth: auth.item_admin,
       description: 'Deletes a item class by id',
       notes: 'Deletes a item class by id',
@@ -112,8 +117,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/itemClass/{classid}/properties',
-    config: {
-      handler: handler.get_itemsClassProperties,
+    handler: handler.get_itemsClassProperties,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get all properties for item class',
       notes: 'Returns all item classes properties for class defined by {classid}',
@@ -125,8 +131,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/itemClass/{classid}/property/{propertyid}',
-    config: {
-      handler: handler.get_itemClassPropertyFilterPropertyID,
+    handler: handler.get_itemClassPropertyFilterPropertyID,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get item class property by id',
       notes: 'Returns item class filtered by propertyid and classid',
@@ -138,8 +145,9 @@ module.exports = [
   {
     method: 'POST',
     path: '/itemClass/{classid}/property/',
-    config: {
-      handler: handler.post_itemClassProperty,
+    handler: handler.post_itemClassProperty,
+    options: {
+
       auth: auth.item_admin,
       description: 'Create a property for a specific class',
       notes: 'Create a property for a specific class',
@@ -152,8 +160,9 @@ module.exports = [
   {
     method: 'DELETE',
     path: '/itemClass/{classid}/property/',
-    config: {
-      handler: handler.del_itemClassProperty,
+    handler: handler.del_itemClassProperty,
+    options: {
+
       auth: auth.item_admin,
       description: 'Deletes a property for a specific class',
       notes: 'Deletes a property for a specific class',
@@ -167,8 +176,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/itemClass/{classid}/statemodels',
-    config: {
-      handler: handler.get_itemsClassStateModels,
+    handler: handler.get_itemsClassStateModels,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get all state models for item class',
       notes: 'Returns all state models for class defined by {classid}',
@@ -180,8 +190,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/itemClass/{classid}/statemodel/{statemodelid}',
-    config: {
-      handler: handler.get_itemsClassStateModelFilterStateModelId,
+    handler: handler.get_itemsClassStateModelFilterStateModelId,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get state model for item class filetered by {statemodelid}',
       notes: 'Returns state model for item class filetered by {statemodelid}',
@@ -193,8 +204,9 @@ module.exports = [
   {
     method: 'POST',
     path: '/itemClass/{classid}/statemodel',
-    config: {
-      handler: handler.post_itemClassStateModel,
+    handler: handler.post_itemClassStateModel,
+    options: {
+
       auth: auth.item_admin,
       description: 'Create a StateModel for a specific class',
       notes: 'Create a StateModel for a specific class',
@@ -207,8 +219,9 @@ module.exports = [
   {
     method: 'DELETE',
     path: '/itemClass/{classid}/statemodel/',
-    config: {
-      handler: handler.del_itemClassStateModel,
+    handler: handler.del_itemClassStateModel,
+    options: {
+
       auth: auth.item_admin,
       description: 'Deletes a StateModel for a specific class',
       notes: 'Deletes a StateModel for a specific class',
@@ -222,8 +235,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/items',
-    config: {
-      handler: handler.get_items,
+    handler: handler.get_items,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get all items',
       notes: 'Returns all items',
@@ -235,8 +249,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/item/{id}',
-    config: {
-      handler: handler.get_itemsFilterItemID,
+    handler: handler.get_itemsFilterItemID,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get item by id',
       notes: 'Returns item filtered by id',
@@ -248,13 +263,14 @@ module.exports = [
   {
     method: 'POST',
     path: '/item',
-    config: {
-      handler: handler.post_item,
+    handler: handler.post_item,
+    options: {
+
       auth: auth.item_admin,
       description: 'Create a item',
       notes: 'Creates item based on item class',
       tags: ['api', 'item', 'database', 'instance'], // Tags for swagger
-      validate: validate.post_user
+      validate: validate.post_item
     }
   },
 
@@ -262,8 +278,9 @@ module.exports = [
   {
     method: 'DELETE',
     path: '/item',
-    config: {
-      handler: handler.del_item,
+    handler: handler.del_item,
+    options: {
+
       auth: auth.item_admin,
       description: 'Deletes a item by id',
       notes: 'Deletes a item by id',
@@ -277,8 +294,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/item/{itemid}/properties',
-    config: {
-      handler: handler.get_itemProperties,
+    handler: handler.get_itemProperties,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get all properties for a items',
       notes: 'Returns all properties for a items',
@@ -290,8 +308,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/item/{itemid}/property/{propertyid}',
-    config: {
-      handler: handler.get_itemPropertyFilterPropertyId,
+    handler: handler.get_itemPropertyFilterPropertyId,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get a specific property for a item',
       notes: 'Returns a specific property for a item',
@@ -303,8 +322,9 @@ module.exports = [
   {
     method: 'PUT',
     path: '/item/{itemid}/property',
-    config: {
-      handler: handler.put_itemProperty,
+    handler: handler.put_itemProperty,
+    options: {
+
       auth: auth.item_admin,
       description: 'Update a property for a specific item',
       notes: 'Update item based on item class',
@@ -318,8 +338,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/item/{itemid}/statemodel',
-    config: {
-      handler: handler.get_itemStateModel,
+    handler: handler.get_itemStateModel,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get all statemodel for a items',
       notes: 'Returns all statemodel for a items',
@@ -331,8 +352,9 @@ module.exports = [
   {
     method: 'GET',
     path: '/item/{itemid}/statemodel/{statemodelid}',
-    config: {
-      handler: handler.get_itemStateModelFilterStateModelId,
+    handler: handler.get_itemStateModelFilterStateModelId,
+    options: {
+
       auth: auth.item_guest,
       description: 'Get a specific statemodelid for a item',
       notes: 'Returns a specific statemodelid for a item',
@@ -344,13 +366,14 @@ module.exports = [
   {
     method: 'PUT',
     path: '/item/{itemid}/statemodel',
-    config: {
-      handler: handler.post_itemStateModel,
+    handler: handler.post_itemStateModel,
+    options: {
+
       auth: auth.item_admin,
       description: 'Update a statemodel for a specific item',
       notes: 'Update statemodel based on item class',
       tags: ['api', 'item', 'database', 'instance', 'state'], // Tags for swagger
-      validate: validate.post_itemStateModel
+      validate: validate.put_itemStateModel
     }
   },
 ]
