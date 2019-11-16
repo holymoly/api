@@ -80,7 +80,7 @@ const post_itemClassProperty = async(request, h) => {
   var data = request.payload;
   logger.debug('Create itemClass with data: ' + JSON.stringify(data));
   try {
-    var result = await pgdb.query(query.databases).catch(errorHandling);
+    var result = await pgdb.query(query.createItemClass).catch(errorHandling);
     return replyToClient(undefined, result);
   } catch (err) {
     return replyToClient(err, 'cannot create itemClass');
