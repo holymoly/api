@@ -1,16 +1,15 @@
 'use strict';
 
-// localhost:8000/login
-const login = {
-  strategy: 'simple',
-  scope: ['isadmin', 'isuser'] // admin and user
-}
-
-// localhost:8000/hello
-const hello_id = {
+const item_admin = {
   strategy: 'session',
   scope: ['isadmin'] // admin only
 }
+
+const item_guest = {
+  strategy: 'session',
+  scope: ['isguest', 'isadmin'] // admin only
+}
+
 
 // localhost:8000/ipc
 const ipc = {
@@ -19,7 +18,7 @@ const ipc = {
 }
 
 module.exports = {
-  login,
-  hello_id,
+  item_admin,
+  item_guest,
   ipc
 };

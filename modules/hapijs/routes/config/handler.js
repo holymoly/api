@@ -17,14 +17,7 @@ const get_root = (request, h) => {
   return replyToClient(undefined, 'welcome to the root');
 }
 
-// localhost:8000/login
-const get_login = (request, h) => {
-  return replyToClient(undefined, {
-    authenticated: true
-  });
-}
-
-// localhost:8000/login
+// localhost:8000/logout
 const get_logout = (request, h) => {
   request.cookieAuth.clear();
   return replyToClient(undefined, {
@@ -37,68 +30,182 @@ const get_hello_id = (request, h) => {
   return replyToClient(undefined, 'hello id: ' + request.params.id);
 }
 
-// localhost:8000/databases
-const get_databases = async(request, h) => {
+//########## Item Class #############
+// localhost:8000/itemClasses
+const get_itemClass = async(request, h) => {
+  var result = await pgdb.query(query.getItemClasses).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/itemClasses/{id}
+const get_itemsFilterClassId = async(request, h) => {
   var result = await pgdb.query(query.databases).catch(errorHandling);
   return replyToClient(undefined, result);
 }
 
-// localhost:8000/users
-const post_user = async(request, h) => {
+// localhost:8000/itemClass
+const post_itemClass = async(request, h) => {
   var data = request.payload;
-  logger.debug('Create user with data: ' + JSON.stringify(data));
+  logger.debug('Create itemClass with data: ' + JSON.stringify(data));
   try {
-    // generate salt and hash
-    var salt = await auth.generateSalt().catch(errorHandling);
-    logger.debug('Created salt: ' + salt);
-    var hash = await auth.hashPassword(data.password, salt[1]).catch(errorHandling);
-    logger.debug('Created hash: ' + hash);
-    data.hash = hash[1];
-    var preparedQuer = []
-      //setup query parameters
-    query.createUser.queries[0].parameters = [data.firstname, data.lastname, data.username, data.email];
-    query.createUser.queries[1].parameters = [data.hash, data.username];
-    query.createUser.queries[2].parameters = [data.username, data.isGuest, data.isUser, data.isAdmin];
-
-    var result = await pgdb.queryTransactionSave(query.createUser).catch(errorHandling);
+    var result = await pgdb.query(query.databases).catch(errorHandling);
     return replyToClient(undefined, result);
   } catch (err) {
-    return replyToClient(err, 'cannot hash password');
+    return replyToClient(err, 'cannot create itemClass');
   }
 }
 
-// localhost:8000/users
-const get_users = async(request, h) => {
-  var result = await pgdb.query(query.getUsers).catch(errorHandling);
-  return replyToClient(undefined, result);
-}
-
-// localhost:8000/user
-const get_user_email = async(request, h) => {
-  query.getUserFilterEmail.parameters = [request.query.value];
-  var result = await pgdb.query(query.getUserFilterEmail).catch(errorHandling);
-  return replyToClient(undefined, result);
-}
-
-// localhost:8000/user
-const get_user_userId = async(request, h) => {
-  query.getUserFilterUserId.parameters = [request.query.value];
-  var result = await pgdb.query(query.getUserFilterUserId).catch(errorHandling);
-  return replyToClient(undefined, result);
-}
-
-// localhost:8000/user
-const del_user = async(request, h) => {
+// localhost:8000/itemClass
+const del_itemClass = async(request, h) => {
   query.deleteUser.parameters[0] = request.query.username;
   var result = await pgdb.query(query.deleteUser).catch(errorHandling);
   return replyToClient(undefined, result);
 }
 
-// localhost:8000/ipc/{rec_module}
-const post_ipc = (request, h) => {
+//########## Item Class Properties #############
+// localhost:8000/itemClasses
+const get_itemsClassProperties = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/itemClasses/{id}
+const get_itemClassPropertyFilterPropertyID = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/itemClass
+const post_itemClassProperty = async(request, h) => {
   var data = request.payload;
-  logger.debug("IPC message for module " + request.params.rec_module + ": " + JSON.stringify(data))
-  return replyToClient(undefined, "generic response");
+  logger.debug('Create itemClass with data: ' + JSON.stringify(data));
+  try {
+    var result = await pgdb.query(query.databases).catch(errorHandling);
+    return replyToClient(undefined, result);
+  } catch (err) {
+    return replyToClient(err, 'cannot create itemClass');
+  }
+}
+
+// localhost:8000/itemClass
+const del_itemClassProperty = async(request, h) => {
+  query.deleteUser.parameters[0] = request.query.username;
+  var result = await pgdb.query(query.deleteUser).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+//########## Item Class State Modeö #############
+// localhost:8000/itemClass/{classid}/statemodel
+const get_itemsClassStateModels = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/itemClass/{classid}/statemodel/{statemodelid}
+const get_itemsClassStateModelFilterStateModelId = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/itemClass/{classid}/properties/
+const post_itemClassStateModel = async(request, h) => {
+  var data = request.payload;
+  logger.debug('Create itemClass with data: ' + JSON.stringify(data));
+  try {
+    var result = await pgdb.query(query.databases).catch(errorHandling);
+    return replyToClient(undefined, result);
+  } catch (err) {
+    return replyToClient(err, 'cannot create itemClass');
+  }
+}
+
+// localhost:8000/itemClass/{classid}/statemodel/
+const del_itemClassStateModel = async(request, h) => {
+  query.deleteUser.parameters[0] = request.query.username;
+  var result = await pgdb.query(query.deleteUser).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+//########## Item Instances #############
+// localhost:8000/items
+const get_items = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/item/{id}
+const get_itemsFilterItemID = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/item
+const post_item = async(request, h) => {
+  var data = request.payload;
+  logger.debug('Create itemClass with data: ' + JSON.stringify(data));
+  try {
+    var result = await pgdb.query(query.databases).catch(errorHandling);
+    return replyToClient(undefined, result);
+  } catch (err) {
+    return replyToClient(err, 'cannot create itemClass');
+  }
+}
+
+// localhost:8000/item
+const del_item = async(request, h) => {
+  query.deleteUser.parameters[0] = request.query.username;
+  var result = await pgdb.query(query.deleteUser).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+//########## Item Instance Properties #############
+// localhost:8000/item/{itemid}/properties
+const get_itemProperties = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/item/{itemid}/property/{propertyid}
+const get_itemPropertyFilterPropertyId = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/item/{itemid}/property
+const put_itemProperty = async(request, h) => {
+  var data = request.payload;
+  logger.debug('Create itemClass with data: ' + JSON.stringify(data));
+  try {
+    var result = await pgdb.query(query.databases).catch(errorHandling);
+    return replyToClient(undefined, result);
+  } catch (err) {
+    return replyToClient(err, 'cannot create itemClass');
+  }
+}
+
+//########## Item Instance StateModel #############
+// localhost:8000/item/{itemid}/statemodel
+const get_itemStateModel = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/item/{itemid}/statemodel/{statemodelid}
+const get_itemStateModelFilterStateModelId = async(request, h) => {
+  var result = await pgdb.query(query.databases).catch(errorHandling);
+  return replyToClient(undefined, result);
+}
+
+// localhost:8000/item/{itemid}/statemodel
+const post_itemStateModel = async(request, h) => {
+  var data = request.payload;
+  logger.debug('Create itemClass with data: ' + JSON.stringify(data));
+  try {
+    var result = await pgdb.query(query.databases).catch(errorHandling);
+    return replyToClient(undefined, result);
+  } catch (err) {
+    return replyToClient(err, 'cannot create itemClass');
+  }
 }
 
 // Helper function for reply
@@ -119,14 +226,28 @@ function errorHandling(reason) {
 
 module.exports = {
   get_root,
-  get_login,
   get_logout,
   get_hello_id,
-  get_databases,
-  post_user,
-  get_users,
-  get_user_email,
-  get_user_userId,
-  del_user,
-  post_ipc
+  get_itemClass,
+  get_itemsFilterClassId,
+  post_itemClass,
+  del_itemClass,
+  get_itemsClassProperties,
+  get_itemClassPropertyFilterPropertyID,
+  post_itemClassProperty,
+  del_itemClassProperty,
+  get_itemsClassStateModels,
+  get_itemsClassStateModelFilterStateModelId,
+  post_itemClassStateModel,
+  del_itemClassStateModel,
+  get_items,
+  get_itemsFilterItemID,
+  post_item,
+  del_item,
+  get_itemProperties,
+  get_itemPropertyFilterPropertyId,
+  put_itemProperty,
+  get_itemStateModel,
+  get_itemStateModelFilterStateModelId,
+  post_itemStateModel
 };

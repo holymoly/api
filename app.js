@@ -61,16 +61,10 @@ databusClient._eventEmitter.on('databus', recDatabus);
       plugin: HapiSwagger,
       options: swaggerOptions
     },
-    Cookie,
-    BasicAuth
+    Cookie
   ]);
 
   logger.info('Hapi Server registered plugins');
-
-  // Activate simple auth
-  server.auth.strategy('simple', 'basic', {
-    validate
-  });
 
   // Activate session auth
   server.auth.strategy('session', 'cookie', {

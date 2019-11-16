@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+         Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="0.9.2-beta1" last-position="34,0" last-zoom="1" max-obj-count="13"
+	 default-schema="public" default-owner="postgres">
+<role name="pguser"
+      encrypted="true"
+      password="pgpass"
+      sql-disabled="true">
+</role>
+
+<database name="items" encoding="UTF8" is-template="false" allow-conns="true" sql-disabled="true">
+</database>
+
+<schema name="public" layer="0" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="itemClass" layer="0" rect-visible="true" fill-color="#1e0ddf">
+	<role name="pguser"/>
+	<comment><![CDATA[Item schema]]></comment>
+</schema>
+
+<schema name="items" layer="0" rect-visible="true" fill-color="#e1e1e1">
+	<role name="postgres"/>
+	<comment><![CDATA[Instance specific Data]]></comment>
+</schema>
+
+<table name="ItemClass" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="&quot;itemClass&quot;"/>
+	<role name="pguser"/>
+	<comment><![CDATA[Item Class Master]]></comment>
+	<position x="20" y="60"/>
+	<column name="ItemClassID" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="Name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="Description">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="Type">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Describes the type of Item i.e. Equipment, Material, Serialization Data... used for Grouping filtering]]></comment>
+	</column>
+	<constraint name="ItemClass_pk" type="pk-constr" table="&quot;itemClass&quot;.&quot;ItemClass&quot;">
+		<columns names="ItemClassID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Properties" layer="0" collapse-mode="2" max-obj-count="7">
+	<schema name="&quot;itemClass&quot;"/>
+	<role name="pguser"/>
+	<position x="380" y="40"/>
+	<column name="PropertyID" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="Name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="Description">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="Type" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="ItemClassID" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="UoM">
+		<type name="varchar" length="0"/>
+	</column>
+	<constraint name="Properties_pk" type="pk-constr" table="&quot;itemClass&quot;.&quot;Properties&quot;">
+		<columns names="PropertyID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="StateModel" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="&quot;itemClass&quot;"/>
+	<role name="pguser"/>
+	<comment><![CDATA[State Model Master]]></comment>
+	<position x="500" y="260"/>
+	<column name="StateModelID" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="Name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="Description">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="ItemClassID" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="StateModel_pk" type="pk-constr" table="&quot;itemClass&quot;.&quot;StateModel&quot;">
+		<columns names="StateModelID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="State" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="&quot;itemClass&quot;"/>
+	<role name="pguser"/>
+	<comment><![CDATA[State definition]]></comment>
+	<position x="760" y="260"/>
+	<column name="StateID" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="Name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="Description">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="StateModelID" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="State_pk" type="pk-constr" table="&quot;itemClass&quot;.&quot;State&quot;">
+		<columns names="StateID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="StateTransitions" layer="0" collapse-mode="2" max-obj-count="6">
+	<schema name="&quot;itemClass&quot;"/>
+	<role name="pguser"/>
+	<position x="760" y="40"/>
+	<column name="StateTransitionID" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="Name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="Description">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="FromState" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="ToState" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="StateTransitions_pk" type="pk-constr" table="&quot;itemClass&quot;.&quot;StateTransitions&quot;">
+		<columns names="StateTransitionID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Items" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="items"/>
+	<role name="pguser"/>
+	<comment><![CDATA[Item Master]]></comment>
+	<position x="80" y="480"/>
+	<column name="ItemID" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="Name" not-null="true">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="Description">
+		<type name="varchar" length="0"/>
+	</column>
+	<column name="ItemClassID" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="Items_pk" type="pk-constr" table="items.&quot;Items&quot;">
+		<columns names="ItemID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="Properties" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="items"/>
+	<role name="postgres"/>
+	<position x="340" y="480"/>
+	<column name="PropertyID" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="ItemID" not-null="true">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Item Instance]]></comment>
+	</column>
+	<column name="Value">
+		<type name="varchar" length="0"/>
+		<comment><![CDATA[Instance specific value]]></comment>
+	</column>
+	<column name="ItemClassPropertyID" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<constraint name="properties_pk" type="pk-constr" table="items.&quot;Properties&quot;">
+		<columns names="PropertyID" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<table name="StateModel" layer="0" collapse-mode="2" max-obj-count="4">
+	<schema name="items"/>
+	<role name="postgres"/>
+	<position x="640" y="640"/>
+	<column name="StateModelID" not-null="true">
+		<type name="serial" length="0"/>
+	</column>
+	<column name="ItemClassStateModel" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+	<column name="State">
+		<type name="integer" length="0"/>
+		<comment><![CDATA[Actual State]]></comment>
+	</column>
+	<column name="ItemID" not-null="true">
+		<type name="integer" length="0"/>
+	</column>
+</table>
+
+<constraint name="ItemClass_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;ItemClass&quot;" table="items.&quot;Items&quot;">
+	<columns names="ItemClassID" ref-type="src-columns"/>
+	<columns names="ItemClassID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ItemClass_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;ItemClass&quot;" table="&quot;itemClass&quot;.&quot;Properties&quot;">
+	<columns names="ItemClassID" ref-type="src-columns"/>
+	<columns names="ItemClassID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ItemClass_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;ItemClass&quot;" table="&quot;itemClass&quot;.&quot;StateModel&quot;">
+	<columns names="ItemClassID" ref-type="src-columns"/>
+	<columns names="ItemClassID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="StateModel_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="&quot;itemClass&quot;.&quot;StateModel&quot;" table="&quot;itemClass&quot;.&quot;State&quot;">
+	<columns names="StateModelID" ref-type="src-columns"/>
+	<columns names="StateModelID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="FromStateID_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;State&quot;" table="&quot;itemClass&quot;.&quot;StateTransitions&quot;">
+	<columns names="FromState" ref-type="src-columns"/>
+	<columns names="StateID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ToStateID" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="&quot;itemClass&quot;.&quot;State&quot;" table="&quot;itemClass&quot;.&quot;StateTransitions&quot;">
+	<columns names="ToState" ref-type="src-columns"/>
+	<columns names="StateID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="Item_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="items.&quot;Items&quot;" table="items.&quot;Properties&quot;">
+	<columns names="ItemID" ref-type="src-columns"/>
+	<columns names="ItemID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ItemClassProperty_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="&quot;itemClass&quot;.&quot;Properties&quot;" table="items.&quot;Properties&quot;">
+	<columns names="ItemClassPropertyID" ref-type="src-columns"/>
+	<columns names="PropertyID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ItemID_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="items.&quot;Items&quot;" table="items.&quot;StateModel&quot;">
+	<columns names="ItemID" ref-type="src-columns"/>
+	<columns names="ItemID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ItemClassStateModel_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;StateModel&quot;" table="items.&quot;StateModel&quot;">
+	<columns names="ItemClassStateModel" ref-type="src-columns"/>
+	<columns names="StateModelID" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="ItemClassState_fk" type="fk-constr" comparison-type="MATCH FULL"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;State&quot;" table="items.&quot;StateModel&quot;">
+	<columns names="State" ref-type="src-columns"/>
+	<columns names="StateID" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="&quot;rel_Items_ItemClass&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;Items&quot;"
+	 dst-table="&quot;itemClass&quot;.&quot;ItemClass&quot;" reference-fk="ItemClass_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_Properties_ItemClass" type="relfk" layer="0"
+	 src-table="&quot;itemClass&quot;.&quot;Properties&quot;"
+	 dst-table="&quot;itemClass&quot;.&quot;ItemClass&quot;" reference-fk="ItemClass_fk"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="29.9891" y="6.17368"/>
+	</label>
+</relationship>
+
+<relationship name="rel_StateModel_ItemClass" type="relfk" layer="0"
+	 src-table="&quot;itemClass&quot;.&quot;StateModel&quot;"
+	 dst-table="&quot;itemClass&quot;.&quot;ItemClass&quot;" reference-fk="ItemClass_fk"
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="27.4891" y="52.7777"/>
+	</label>
+</relationship>
+
+<relationship name="&quot;rel_State_StateModel&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;State&quot;"
+	 dst-table="items.&quot;StateModel&quot;" reference-fk="StateModel_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_StateTransitions_State&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;StateTransitions&quot;"
+	 dst-table="items.&quot;State&quot;" reference-fk="FromStateID_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_StateTransitions_State1&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;StateTransitions&quot;"
+	 dst-table="items.&quot;State&quot;" reference-fk="ToStateID"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_properties_Items&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;Properties&quot;"
+	 dst-table="items.&quot;Items&quot;" reference-fk="Item_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_properties_Properties&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;Properties&quot;"
+	 dst-table="&quot;itemClass&quot;.&quot;Properties&quot;" reference-fk="ItemClassProperty_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_StateModel_Items&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;StateModel&quot;"
+	 dst-table="items.&quot;Items&quot;" reference-fk="ItemID_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_StateModel_StateModel&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;StateModel&quot;"
+	 dst-table="&quot;itemClass&quot;.&quot;StateModel&quot;" reference-fk="ItemClassStateModel_fk"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="&quot;rel_StateModel_State&quot;" type="relfk" layer="0"
+	 src-table="items.&quot;StateModel&quot;"
+	 dst-table="&quot;itemClass&quot;.&quot;State&quot;" reference-fk="ItemClassState_fk"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>

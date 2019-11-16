@@ -7,8 +7,6 @@ const HapiSwagger = require('hapi-swagger');
 const Pack = require('../../../package');
 const Cookie = require('@hapi/cookie');
 
-// Basic Auth
-const BasicAuth = require('@hapi/basic');
 
 // Shown in Documentation
 const options = {
@@ -16,7 +14,7 @@ const options = {
     'title': 'Test API Documentation',
     'version': Pack.version,
   },
-  grouping: 'tags'
+  grouping: 'path'
 };
 
 const inert = Inert
@@ -28,14 +26,11 @@ const swagger = {
   'options': options
 }
 
-const basicAuth = BasicAuth
-
 const cookie = Cookie
 
 module.exports = [
   inert,
   vision,
   swagger,
-  basicAuth,
   cookie
 ];
