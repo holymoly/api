@@ -4,7 +4,7 @@
 
 // Returns all Classesin ItemClass Table
 const getItemClasses = {
-  query: 'SELECT * FROM ItemClass;',
+  query: 'SELECT * FROM itemClass.ItemClass;',
   parameters: []
 }
 
