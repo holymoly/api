@@ -59,7 +59,7 @@ module.exports = [
     path: '/itemClasses',
     config: {
       handler: handler.get_itemClass,
-      auth: auth.item_guest,
+      //auth: auth.item_guest,
       description: 'Get all item classes',
       notes: 'Returns all item classes',
       tags: ['api', 'items', 'database', 'class'], // Tags for swagger

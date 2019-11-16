@@ -8,6 +8,7 @@ const config = require('../../config/config.js');
 //Load logger
 const logger = require('../../modules/logger/logger').logDb;
 
+// gets config from env variable
 const pool = new Pool();
 
 //queriesdata is a json that holds the query and the parameter
