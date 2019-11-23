@@ -2,7 +2,10 @@
 // Api Documentation /documentation
 const Inert = require('inert');
 const Vision = require('vision');
+const Blipp = require('blipp');
+
 const HapiSwagger = require('hapi-swagger');
+
 const Pack = require('./package');
 const Cookie = require('@hapi/cookie');
 
@@ -14,9 +17,6 @@ const Hapi = require('@hapi/hapi');
 
 // Load Config
 var config = require('./config/config');
-
-// plugins
-var plugins = require('./modules/hapijs/plugins/plugins');
 
 // Load routes definition
 var routes = require('./modules/hapijs/routes/routes');
@@ -52,12 +52,15 @@ databusClient._eventEmitter.on('databus', recDatabus);
       title: 'Test API Documentation',
       version: Pack.version,
     },
+    grouping: 'tags',
+    sortEndpoints: 'ordered'
   };
 
   // register plugins
   await server.register([
     Inert,
-    Vision, {
+    Vision,
+    Blipp, {
       plugin: HapiSwagger,
       options: swaggerOptions
     },

@@ -20,9 +20,9 @@ module.exports = [
     path: '/',
     handler: handler.get_root,
     options: {
+      tags: ['api', 'alive'], // Tags for swagger
       description: 'answer if root path was called',
       notes: 'Returns "welcome to the root"',
-      tags: ['api'], // Tags for swagger
     }
   },
 
@@ -32,10 +32,9 @@ module.exports = [
     path: '/logout',
     handler: handler.get_logout,
     options: {
-
+      tags: ['api', 'auth'], // Tags for swagger
       description: 'Used for initial authentification',
       notes: `Clears the cookie session`,
-      tags: ['api', 'auth', 'scope'], // Tags for swagger
     }
   },
 
@@ -45,11 +44,10 @@ module.exports = [
     path: '/hello/{id}',
     handler: handler.get_hello_id,
     options: {
-
+      tags: ['api'], // Tags for swagger
       auth: auth.item_guest,
       description: 'Get back id',
       notes: 'Returns the passed {id}',
-      tags: ['api'], // Tags for swagger
       validate: validate.get_hello_id
     }
   },
@@ -61,25 +59,24 @@ module.exports = [
     path: '/itemClasses',
     handler: handler.get_itemClass,
     options: {
-
+      tags: ['api', 'ItemClass'], // Tags for swagger
       auth: auth.item_guest,
       description: 'Get all item classes',
       notes: 'Returns all item classes',
-      tags: ['api', 'items', 'database', 'class'], // Tags for swagger
     }
   },
 
   // localhost:8000/itemClass/{id}
   {
     method: 'GET',
-    path: '/itemClass/{id}',
-    handler: handler.get_itemsFilterClassId,
+    path: '/itemClass/{classid}',
+    handler: handler.get_itemsFilterClassID,
     options: {
-
+      tags: ['api', 'ItemClass'], // Tags for swagger
       auth: auth.item_guest,
       description: 'Get item class by id',
       notes: 'Returns item class filtered by id',
-      tags: ['api', 'items', 'database', 'class'], // Tags for swagger
+      validate: validate.get_itemClass
     }
   },
 
@@ -89,10 +86,10 @@ module.exports = [
     path: '/itemClass',
     handler: handler.post_itemClass,
     options: {
-      auth: auth.item_guest,
+      tags: ['api', 'ItemClass'], // Tags for swagger
+      //auth: auth.item_guest,
       description: 'Create a item class',
       notes: 'Creates item class ',
-      tags: ['api', 'item', 'database', 'class'], // Tags for swagger
       validate: validate.post_itemClass
     }
   },
@@ -100,14 +97,13 @@ module.exports = [
   // localhost:8000/itemClass
   {
     method: 'DELETE',
-    path: '/itemClass',
+    path: '/itemClass/{classid}',
     handler: handler.del_itemClass,
     options: {
-
+      tags: ['api', 'ItemClass'], // Tags for swagger
       auth: auth.item_admin,
       description: 'Deletes a item class by id',
       notes: 'Deletes a item class by id',
-      tags: ['api', 'item', 'database', 'class'], // Tags for swagger
       validate: validate.del_itemClass
     }
   },
@@ -119,11 +115,11 @@ module.exports = [
     path: '/itemClass/{classid}/properties',
     handler: handler.get_itemsClassProperties,
     options: {
-
+      tags: ['api', 'ItemClassProperties'], // Tags for swagger
       auth: auth.item_guest,
       description: 'Get all properties for item class',
-      notes: 'Returns all item classes properties for class defined by {classid}',
-      tags: ['api', 'items', 'database', 'class', 'properties'], // Tags for swagger
+      notes: 'Returns all properties for class defined by {classid}',
+      validate: validate.get_itemClassProperties
     }
   },
 
@@ -133,11 +129,11 @@ module.exports = [
     path: '/itemClass/{classid}/property/{propertyid}',
     handler: handler.get_itemClassPropertyFilterPropertyID,
     options: {
-
+      tags: ['api', 'ItemClassProperties'], // Tags for swagger
       auth: auth.item_guest,
       description: 'Get item class property by id',
       notes: 'Returns item class filtered by propertyid and classid',
-      tags: ['api', 'items', 'database', 'class', 'properties'], // Tags for swagger
+      validate: validate.get_itemClassProperty
     }
   },
 
@@ -147,11 +143,10 @@ module.exports = [
     path: '/itemClass/{classid}/property/',
     handler: handler.post_itemClassProperty,
     options: {
-
-      auth: auth.item_admin,
+      tags: ['api', 'ItemClassProperties'], // Tags for swagger
+      //auth: auth.item_guest,
       description: 'Create a property for a specific class',
       notes: 'Create a property for a specific class',
-      tags: ['api', 'item', 'database', 'instance', 'properties'], // Tags for swagger
       validate: validate.post_itemClassProperty
     }
   },
@@ -159,30 +154,29 @@ module.exports = [
   // localhost:8000/itemClass/{classid}/property/
   {
     method: 'DELETE',
-    path: '/itemClass/{classid}/property/',
+    path: '/itemClass/{classid}/property/{propertyid}',
     handler: handler.del_itemClassProperty,
     options: {
-
-      auth: auth.item_admin,
+      tags: ['api', 'ItemClassProperties'], // Tags for swagger
+      //auth: auth.item_admin,
       description: 'Deletes a property for a specific class',
       notes: 'Deletes a property for a specific class',
-      tags: ['api', 'item', 'database', 'instance', 'properties'], // Tags for swagger
       validate: validate.del_itemClassProperty
     }
   },
 
-  //########## Item Class State Model #############
+  //########## ItemClass StateModel #############
   // localhost:8000/itemClass/{classid}/statemodel
   {
     method: 'GET',
     path: '/itemClass/{classid}/statemodels',
     handler: handler.get_itemsClassStateModels,
     options: {
-
-      auth: auth.item_guest,
+      tags: ['api', 'ItemClassStateModel'], // Tags for swagger
+      //auth: auth.item_guest,
       description: 'Get all state models for item class',
       notes: 'Returns all state models for class defined by {classid}',
-      tags: ['api', 'items', 'database', 'class', 'state'], // Tags for swagger
+      validate: validate.get_itemClassStateModels
     }
   },
 
@@ -190,13 +184,13 @@ module.exports = [
   {
     method: 'GET',
     path: '/itemClass/{classid}/statemodel/{statemodelid}',
-    handler: handler.get_itemsClassStateModelFilterStateModelId,
+    handler: handler.get_itemsClassStateModelFilterStateModelID,
     options: {
-
-      auth: auth.item_guest,
+      tags: ['api', 'ItemClassStateModel'],
+      //auth: auth.item_guest,
       description: 'Get state model for item class filetered by {statemodelid}',
       notes: 'Returns state model for item class filetered by {statemodelid}',
-      tags: ['api', 'items', 'database', 'class', 'state'], // Tags for swagger
+      validate: validate.get_itemClassStateModel
     }
   },
 
@@ -206,11 +200,10 @@ module.exports = [
     path: '/itemClass/{classid}/statemodel',
     handler: handler.post_itemClassStateModel,
     options: {
-
-      auth: auth.item_admin,
+      tags: ['api', 'ItemClassStateModel'],
+      //auth: auth.item_guest,
       description: 'Create a StateModel for a specific class',
-      notes: 'Create a StateModel for a specific class',
-      tags: ['api', 'item', 'database', 'instance', 'state'], // Tags for swagger
+      notes: 'Create a StateModel for a specific class', // Tags for swagger
       validate: validate.post_itemClassStateModel
     }
   },
@@ -218,15 +211,129 @@ module.exports = [
   // localhost:8000/itemClass/{classid}/statemodel/
   {
     method: 'DELETE',
-    path: '/itemClass/{classid}/statemodel/',
+    path: '/itemClass/{classid}/statemodel/{statemodelid}',
     handler: handler.del_itemClassStateModel,
     options: {
-
-      auth: auth.item_admin,
+      tags: ['api', 'ItemClassStateModel'],
+      //auth: auth.item_guest,
       description: 'Deletes a StateModel for a specific class',
       notes: 'Deletes a StateModel for a specific class',
-      tags: ['api', 'item', 'database', 'instance', 'state'], // Tags for swagger
       validate: validate.del_itemClassStateModel
+    }
+  },
+
+  //##########  StateModel State #############
+  // localhost:8000/itemClass/{classid}/statemodel
+  {
+    method: 'GET',
+    path: '/statemodels/{statemodelid}/states',
+    handler: handler.get_stateModelStates,
+    options: {
+      tags: ['api', 'ItemClassState'],
+      //auth: auth.item_guest,
+      description: 'Get all state for State Model',
+      notes: 'Returns all state for state model by {statemodelid}',
+      validate: validate.get_stateModelStates
+    }
+  },
+
+  // localhost:8000/statemodels/{statemodelid}/state/{stateid}
+  {
+    method: 'GET',
+    path: '/statemodels/{statemodelid}/state/{stateid}',
+    handler: handler.get_stateModelStateFilterStateID,
+    options: {
+      tags: ['api', 'ItemClassState'],
+      //auth: auth.item_guest,
+      description: 'Get state for State Model filetered by {stateid}',
+      notes: 'Returns state for state model filetered by {stateid}',
+      validate: validate.get_stateModelState
+    }
+  },
+
+  // localhost:8000/itemClass/{classid}/properties/
+  {
+    method: 'POST',
+    path: '/statemodels/{statemodelid}/state',
+    handler: handler.post_stateModelState,
+    options: {
+      tags: ['api', 'ItemClassState'],
+      //auth: auth.item_guest,
+      description: 'Create a Statel for a specific State Model',
+      notes: 'Create a State for a specific State Models',
+      validate: validate.post_stateModelState
+    }
+  },
+
+  // localhost:8000/itemClass/{classid}/statemodel/
+  {
+    method: 'DELETE',
+    path: '/statemodels/{statemodelid}/state/{stateid}',
+    handler: handler.del_stateModelState,
+    options: {
+      tags: ['api', 'ItemClassState'],
+      //auth: auth.item_guest,
+      description: 'Deletes a State for a specific State Model',
+      notes: 'Deletes a State for a specific State Model',
+      validate: validate.del_stateModelState
+    }
+  },
+
+
+  //##########  StateModel StateTransistions #############
+  // localhost:8000/itemClass/{classid}/statemodel
+  {
+    method: 'GET',
+    path: '/statemodels/{statemodelid}/statetransitions',
+    handler: handler.get_stateModelStateTransitions,
+    options: {
+      tags: ['api', 'ItemClassStateTransition'],
+      //auth: auth.item_guest,
+      description: 'Get all StateTransitions for State Model',
+      notes: 'Returns all StateTransitions for state model by {statemodelid}',
+      validate: validate.get_stateModelStateTransitions
+    }
+  },
+
+  // localhost:8000/statemodels/{statemodelid}/state/{stateid}
+  {
+    method: 'GET',
+    path: '/statemodels/{statemodelid}/statetransition/{statetransitionid}',
+    handler: handler.get_stateModelStateTransitionFilterStateTransitionID,
+    options: {
+      tags: ['api', 'ItemClassStateTransition'],
+      //auth: auth.item_guest,
+      description: 'Get state transition for State Model filetered by {statetransitionid}',
+      notes: 'Returns state transition for state model filetered by {statetransitionid}',
+      validate: validate.get_stateModelStateTransitionFilterStateTransitionID
+    }
+  },
+
+  // localhost:8000/itemClass/{classid}/properties/
+  {
+    method: 'POST',
+    path: '/statemodels/{statemodelid}/statetransition',
+    handler: handler.post_stateModelStateTransition,
+    options: {
+      tags: ['api', 'ItemClassStateTransition'],
+      //auth: auth.item_guest,
+      description: 'Create a State Transition for a specific State Model',
+      notes: 'Create a State Transition for a specific State Models',
+      validate: validate.post_stateModelStateTransition
+    }
+  },
+
+  // localhost:8000/itemClass/{classid}/statemodel/
+  {
+    method: 'DELETE',
+    path: '/statemodels/{statemodelid}/statetransition/{statetransitionid}',
+    handler: handler.del_stateModelStateTransition,
+    options: {
+      tags: ['api', 'ItemClassStateTransition'],
+      //auth: auth.item_guest,
+      description: 'Deletes a State Transition for a specific State Model',
+      notes: 'Deletes a State Transition for a specific State Model',
+      validate: validate.del_stateModelStateTransition
     }
   },
 
@@ -237,25 +344,24 @@ module.exports = [
     path: '/items',
     handler: handler.get_items,
     options: {
-
-      auth: auth.item_guest,
+      //auth: auth.item_guest,
       description: 'Get all items',
       notes: 'Returns all items',
-      tags: ['api', 'items', 'database', 'instance'], // Tags for swagger
+      tags: ['api', 'items', ], // Tags for swagger
     }
   },
 
   // localhost:8000/item/{id}
   {
     method: 'GET',
-    path: '/item/{id}',
+    path: '/item/{itemid}',
     handler: handler.get_itemsFilterItemID,
     options: {
-
-      auth: auth.item_guest,
+      //auth: auth.item_guest,
       description: 'Get item by id',
       notes: 'Returns item filtered by id',
-      tags: ['api', 'items', 'database', 'instance'], // Tags for swagger
+      tags: ['api', 'items', ], // Tags for swagger
+      validate: validate.get_item
     }
   },
 
@@ -265,11 +371,10 @@ module.exports = [
     path: '/item',
     handler: handler.post_item,
     options: {
-
-      auth: auth.item_admin,
+      //auth: auth.item_admin,
       description: 'Create a item',
       notes: 'Creates item based on item class',
-      tags: ['api', 'item', 'database', 'instance'], // Tags for swagger
+      tags: ['api', 'items', ], // Tags for swagger
       validate: validate.post_item
     }
   },
@@ -277,14 +382,13 @@ module.exports = [
   // localhost:8000/item
   {
     method: 'DELETE',
-    path: '/item',
+    path: '/item/{itemid}',
     handler: handler.del_item,
     options: {
-
-      auth: auth.item_admin,
+      //auth: auth.item_admin,
       description: 'Deletes a item by id',
       notes: 'Deletes a item by id',
-      tags: ['api', 'item', 'database', 'instance'], // Tags for swagger
+      tags: ['api', 'items', ], // Tags for swagger
       validate: validate.del_item
     }
   },
@@ -296,11 +400,11 @@ module.exports = [
     path: '/item/{itemid}/properties',
     handler: handler.get_itemProperties,
     options: {
-
-      auth: auth.item_guest,
+      //auth: auth.item_guest,
       description: 'Get all properties for a items',
       notes: 'Returns all properties for a items',
-      tags: ['api', 'items', 'database', 'instance', 'property'], // Tags for swagger
+      tags: ['api', 'itemProperties', ], // Tags for swagger
+      validate: validate.get_itemProperties
     }
   },
 
@@ -308,13 +412,27 @@ module.exports = [
   {
     method: 'GET',
     path: '/item/{itemid}/property/{propertyid}',
-    handler: handler.get_itemPropertyFilterPropertyId,
+    handler: handler.get_itemPropertyFilterPropertyID,
     options: {
-
-      auth: auth.item_guest,
+      //auth: auth.item_guest,
       description: 'Get a specific property for a item',
       notes: 'Returns a specific property for a item',
-      tags: ['api', 'items', 'database', 'instance', 'property'], // Tags for swagger
+      tags: ['api', 'itemProperties', ], // Tags for swagger
+      validate: validate.get_itemPropertyFilterPropertyID
+    }
+  },
+
+  // localhost:8000/item/{itemid}/property
+  {
+    method: 'POST',
+    path: '/item/{itemid}/property',
+    handler: handler.post_itemProperty,
+    options: {
+      //auth: auth.item_admin,
+      description: 'Update a property for a specific item',
+      notes: 'Update item based on item class',
+      tags: ['api', 'itemProperties', ], // Tags for swagger
+      validate: validate.post_itemProperty
     }
   },
 
@@ -324,11 +442,10 @@ module.exports = [
     path: '/item/{itemid}/property',
     handler: handler.put_itemProperty,
     options: {
-
-      auth: auth.item_admin,
+      //auth: auth.item_admin,
       description: 'Update a property for a specific item',
       notes: 'Update item based on item class',
-      tags: ['api', 'item', 'database', 'instance', 'property'], // Tags for swagger
+      tags: ['api', 'itemProperties', ], // Tags for swagger
       validate: validate.put_itemProperty
     }
   },
@@ -337,14 +454,14 @@ module.exports = [
   // localhost:8000/item/{itemid}/statemodel
   {
     method: 'GET',
-    path: '/item/{itemid}/statemodel',
+    path: '/item/{itemid}/statemodels',
     handler: handler.get_itemStateModel,
     options: {
-
-      auth: auth.item_guest,
+      //auth: auth.item_guest,
       description: 'Get all statemodel for a items',
       notes: 'Returns all statemodel for a items',
-      tags: ['api', 'items', 'database', 'instance', 'state'], // Tags for swagger
+      tags: ['api', 'itemStatemodel'], // Tags for swagger
+      validate: validate.get_itemStateModels
     }
   },
 
@@ -352,13 +469,27 @@ module.exports = [
   {
     method: 'GET',
     path: '/item/{itemid}/statemodel/{statemodelid}',
-    handler: handler.get_itemStateModelFilterStateModelId,
+    handler: handler.get_itemStateModelFilterStateModelID,
     options: {
-
-      auth: auth.item_guest,
+      //auth: auth.item_guest,
       description: 'Get a specific statemodelid for a item',
       notes: 'Returns a specific statemodelid for a item',
-      tags: ['api', 'items', 'database', 'instance', 'state'], // Tags for swagger
+      tags: ['api', 'itemStatemodel'], // Tags for swagger
+      validate: validate.get_itemStateModelFilterStateModelID
+    }
+  },
+
+  // localhost:8000/item/{itemid}/property
+  {
+    method: 'POST',
+    path: '/item/{itemid}/statemodel',
+    handler: handler.post_itemStateModel,
+    options: {
+      //auth: auth.item_admin,
+      description: 'Create a statemodel for a specific item',
+      notes: 'Create a statemodel for a specific item',
+      tags: ['api', 'itemStatemodel', ], // Tags for swagger
+      validate: validate.post_itemStateModel
     }
   },
 
@@ -366,13 +497,12 @@ module.exports = [
   {
     method: 'PUT',
     path: '/item/{itemid}/statemodel',
-    handler: handler.post_itemStateModel,
+    handler: handler.put_itemStateModel,
     options: {
-
-      auth: auth.item_admin,
+      //auth: auth.item_admin,
       description: 'Update a statemodel for a specific item',
       notes: 'Update statemodel based on item class',
-      tags: ['api', 'item', 'database', 'instance', 'state'], // Tags for swagger
+      tags: ['api', 'itemStatemodel'], // Tags for swagger
       validate: validate.put_itemStateModel
     }
   },

@@ -30,7 +30,7 @@ async function queryTransactionSave(queriesData) {
       logger.debug('Result: ' + JSON.stringify(res));
     }
     await client.query('COMMIT')
-    return (undefined, "User added to database");
+    return (undefined, "transactional query succesfull");
   } catch (err) {
     await client.query('ROLLBACK')
     logger.error('Error during transactional query: ' + err);

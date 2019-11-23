@@ -3,7 +3,7 @@
 CAUTION: Do not modify this file unless you know what you are doing.
          Unexpected results may occur if the code is changed deliberately.
 -->
-<dbmodel pgmodeler-ver="0.9.2-beta1" last-position="256,16" last-zoom="1" max-obj-count="14"
+<dbmodel pgmodeler-ver="0.9.2-beta2" last-position="177,0" last-zoom="1" max-obj-count="14"
 	 default-owner="postgres">
 <role name="pguser"
       encrypted="true"
@@ -31,7 +31,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="&quot;itemClass&quot;"/>
 	<role name="pguser"/>
 	<comment><![CDATA[Item Class Master]]></comment>
-	<position x="20" y="100"/>
+	<position x="20" y="60"/>
 	<column name="ItemClassID" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -81,7 +81,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="&quot;itemClass&quot;"/>
 	<role name="pguser"/>
 	<comment><![CDATA[State Model Master]]></comment>
-	<position x="340" y="60"/>
+	<position x="440" y="60"/>
 	<column name="StateModelID" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -134,13 +134,13 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<column name="Description">
 		<type name="varchar" length="0"/>
 	</column>
-	<column name="FromState" not-null="true">
+	<column name="FromStateID" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
-	<column name="ToState" not-null="true">
+	<column name="ToStateID" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
-	<column name="StateModel" not-null="true">
+	<column name="StateModelID" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
 	<constraint name="StateTransitions_pk" type="pk-constr" table="&quot;itemClass&quot;.&quot;StateTransitions&quot;">
@@ -152,7 +152,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	<schema name="items"/>
 	<role name="pguser"/>
 	<comment><![CDATA[Item Master]]></comment>
-	<position x="80" y="480"/>
+	<position x="20" y="500"/>
 	<column name="ItemID" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -173,7 +173,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 <table name="Properties" layer="0" collapse-mode="2" max-obj-count="4">
 	<schema name="items"/>
 	<role name="postgres"/>
-	<position x="340" y="480"/>
+	<position x="320" y="500"/>
 	<column name="PropertyID" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
@@ -193,17 +193,17 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	</constraint>
 </table>
 
-<table name="StateModel" layer="0" collapse-mode="2" max-obj-count="4">
+<table name="StateModels" layer="0" collapse-mode="2" max-obj-count="4">
 	<schema name="items"/>
 	<role name="postgres"/>
-	<position x="640" y="640"/>
+	<position x="580" y="700"/>
 	<column name="StateModelID" not-null="true">
 		<type name="serial" length="0"/>
 	</column>
-	<column name="ItemClassStateModel" not-null="true">
+	<column name="ItemClassStateModelID" not-null="true">
 		<type name="integer" length="0"/>
 	</column>
-	<column name="State">
+	<column name="StateID">
 		<type name="integer" length="0"/>
 		<comment><![CDATA[Actual State]]></comment>
 	</column>
@@ -232,19 +232,19 @@ CAUTION: Do not modify this file unless you know what you are doing.
 
 <constraint name="FromStateID_fk" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;State&quot;" table="&quot;itemClass&quot;.&quot;StateTransitions&quot;">
-	<columns names="FromState" ref-type="src-columns"/>
+	<columns names="FromStateID" ref-type="src-columns"/>
 	<columns names="StateID" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="ToStateID" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="NO ACTION" del-action="NO ACTION" ref-table="&quot;itemClass&quot;.&quot;State&quot;" table="&quot;itemClass&quot;.&quot;StateTransitions&quot;">
-	<columns names="ToState" ref-type="src-columns"/>
+	<columns names="ToStateID" ref-type="src-columns"/>
 	<columns names="StateID" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="StateModel_fk" type="fk-constr" comparison-type="MATCH FULL"
 	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;StateModel&quot;" table="&quot;itemClass&quot;.&quot;StateTransitions&quot;">
-	<columns names="StateModel" ref-type="src-columns"/>
+	<columns names="StateModelID" ref-type="src-columns"/>
 	<columns names="StateModelID" ref-type="dst-columns"/>
 </constraint>
 
@@ -267,20 +267,20 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </constraint>
 
 <constraint name="ItemID_fk" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="CASCADE" del-action="CASCADE" ref-table="items.&quot;Items&quot;" table="items.&quot;StateModel&quot;">
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="items.&quot;Items&quot;" table="items.&quot;StateModels&quot;">
 	<columns names="ItemID" ref-type="src-columns"/>
 	<columns names="ItemID" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="ItemClassStateModel_fk" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;StateModel&quot;" table="items.&quot;StateModel&quot;">
-	<columns names="ItemClassStateModel" ref-type="src-columns"/>
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;StateModel&quot;" table="items.&quot;StateModels&quot;">
+	<columns names="ItemClassStateModelID" ref-type="src-columns"/>
 	<columns names="StateModelID" ref-type="dst-columns"/>
 </constraint>
 
 <constraint name="ItemClassState_fk" type="fk-constr" comparison-type="MATCH FULL"
-	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;State&quot;" table="items.&quot;StateModel&quot;">
-	<columns names="State" ref-type="src-columns"/>
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="&quot;itemClass&quot;.&quot;State&quot;" table="items.&quot;StateModels&quot;">
+	<columns names="StateID" ref-type="src-columns"/>
 	<columns names="StateID" ref-type="dst-columns"/>
 </constraint>
 
@@ -314,23 +314,31 @@ CAUTION: Do not modify this file unless you know what you are doing.
 	 dst-table="&quot;itemClass&quot;.&quot;ItemClass&quot;" reference-fk="ItemClass_fk"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="&quot;rel_Properties_Items&quot;" type="relfk" layer="0"
+<relationship name="rel_Properties_Items" type="relfk" layer="0"
 	 src-table="items.&quot;Properties&quot;"
 	 dst-table="items.&quot;Items&quot;" reference-fk="Item_fk"
-	 src-required="false" dst-required="false"/>
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="-5.33124" y="1.70422"/>
+	</label>
+</relationship>
 
 <relationship name="&quot;rel_Properties_Properties&quot;" type="relfk" layer="0"
 	 src-table="items.&quot;Properties&quot;"
 	 dst-table="&quot;itemClass&quot;.&quot;Properties&quot;" reference-fk="ItemClassProperty_fk"
 	 src-required="false" dst-required="false"/>
 
-<relationship name="&quot;rel_StateModel_Items&quot;" type="relfk" layer="0"
-	 src-table="items.&quot;StateModel&quot;"
+<relationship name="rel_StateModel_Items" type="relfk" layer="0"
+	 src-table="items.&quot;StateModels&quot;"
 	 dst-table="items.&quot;Items&quot;" reference-fk="ItemID_fk"
-	 src-required="false" dst-required="false"/>
+	 src-required="false" dst-required="false">
+	<label ref-type="name-label">
+		<position x="6.66876" y="5.56626"/>
+	</label>
+</relationship>
 
 <relationship name="rel_StateModel_StateModel" type="relfk" layer="0"
-	 src-table="items.&quot;StateModel&quot;"
+	 src-table="items.&quot;StateModels&quot;"
 	 dst-table="&quot;itemClass&quot;.&quot;StateModel&quot;" reference-fk="ItemClassStateModel_fk"
 	 src-required="false" dst-required="false">
 	<label ref-type="name-label">
@@ -339,7 +347,7 @@ CAUTION: Do not modify this file unless you know what you are doing.
 </relationship>
 
 <relationship name="&quot;rel_StateModel_State&quot;" type="relfk" layer="0"
-	 src-table="items.&quot;StateModel&quot;"
+	 src-table="items.&quot;StateModels&quot;"
 	 dst-table="&quot;itemClass&quot;.&quot;State&quot;" reference-fk="ItemClassState_fk"
 	 src-required="false" dst-required="false"/>
 

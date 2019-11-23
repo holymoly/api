@@ -10,14 +10,14 @@ const getItemClasses = {
 
 // Returns a Items filtered by ClassID
 const getItemClassFilterClassId = {
-  query: `SELECT * FROM Items WHERE "itemClass"."ItemClassID" = $1;`,
+  query: `SELECT * FROM "itemClass"."ItemClass" WHERE "ItemClassID" = $1;`,
   parameters: []
 }
 
 // Create ItemClass -> use transactional secure
 const createItemClass = {
   queries: [{
-    query: `INSERT INTO "itemClass"."ItemClass" (Name, Description, Type) VALUES ( $1, $2, $3);`,
+    query: `INSERT INTO "itemClass"."ItemClass" ("Name", "Description", "Type") VALUES ( $1, $2, $3);`,
     parameters: []
   }]
 }
@@ -25,7 +25,7 @@ const createItemClass = {
 // Deletes a ItemClass by ID
 const deleteItemClass = {
   queries: [{
-    query: `DELETE FROM "itemClass"."ItemClass"  WHERE ItemClassID like $1;`,
+    query: `DELETE FROM "itemClass"."ItemClass" WHERE "ItemClassID" = $1;`,
     parameters: []
   }]
 }
@@ -33,21 +33,21 @@ const deleteItemClass = {
 // ########## Items Class Properties #############
 
 // Returns all Properties in  Properties Table
-const getItemClassProperties = {
-  query: 'SELECT * FROM "itemClass"."Poperties";',
+const getItemClassPropertiesFilterItemClassID = {
+  query: 'SELECT * FROM "itemClass"."Properties" WHERE "ItemClassID" = $1;',
   parameters: []
 }
 
 // Returns a Properties filtered by PropertyId
-const getItemClasssPropertiesFilterPropertyId = {
-  query: `SELECT * FROM "itemClass"."Popertes" WHERE PopertyID = $1;`,
+const getItemClasssPropertiesFilterPropertyID = {
+  query: `SELECT * FROM "itemClass"."Properties" WHERE "PropertyID" = $1 AND "ItemClassID" = $2;`,
   parameters: []
 }
 
 // Create Property -> use transactional secure
 const createItemClassProperty = {
   queries: [{
-    query: `INSERT INTO "itemClass"."Properties" (Name, Description, Type, ItemClassID, UoM) VALUES ( $1, $2, $3, $4, $5);`,
+    query: `INSERT INTO "itemClass"."Properties" ("Name", "Description", "Type", "ItemClassID", "UoM") VALUES ( $1, $2, $3, $4, $5);`,
     parameters: []
   }]
 }
@@ -55,7 +55,7 @@ const createItemClassProperty = {
 // Deletes a Properties by ID
 const deleteItemClassProperty = {
   queries: [{
-    query: `DELETE FROM "itemClass"."Properties"  WHERE PropertyID like $1;`,
+    query: `DELETE FROM "itemClass"."Properties"  WHERE "PropertyID" = $1 AND "ItemClassID" = $2;`,
     parameters: []
   }]
 }
@@ -63,21 +63,21 @@ const deleteItemClassProperty = {
 // ########## Items Class StateModel #############
 
 // Returns all StateModels in StateModel Table
-const getItemClassStateModels = {
-  query: 'SELECT * FROM "itemClass"."StateModel";',
+const getItemClassStateModelsFilterItemClassID = {
+  query: 'SELECT * FROM "itemClass"."StateModel" WHERE "ItemClassID" = $1;',
   parameters: []
 }
 
 // Returns a StateModel filtered by StateModelID
-const getItemClassStateModelFilterStateModelId = {
-  query: `SELECT * FROM "itemClass"."StateModel" WHERE StateModelID = $1;`,
+const getItemClassStateModelFilterStateModelID = {
+  query: `SELECT * FROM "itemClass"."StateModel" WHERE "StateModelID" = $1 AND "ItemClassID" = $2;`,
   parameters: []
 }
 
 // Create StateModel -> use transactional secure
 const createItemClassStateModel = {
   queries: [{
-    query: `INSERT INTO "itemClass"."StateModel" (Name, Description, ItemClassID) VALUES ( $1, $2, $3);`,
+    query: `INSERT INTO "itemClass"."StateModel" ("Name", "Description", "ItemClassID") VALUES ( $1, $2, $3);`,
     parameters: []
   }]
 }
@@ -85,37 +85,38 @@ const createItemClassStateModel = {
 // Deletes a StateModel by ID
 const deleteItemClassStateModel = {
   queries: [{
-    query: `DELETE FROM "itemClass"."StateModel"  WHERE StateModelID like $1;`,
+    query: `DELETE FROM "itemClass"."StateModel"  WHERE "StateModelID" = $1 AND "ItemClassID" = $2;`,
     parameters: []
   }]
 }
 
-// ########## Items Class State #############
+
+// ########## StateModel State #############
 
 // Returns all States in State Table
-const getItemClassStates = {
-  query: 'SELECT * FROM "itemClass"."State";',
+const getStateModelStates = {
+  query: 'SELECT * FROM "itemClass"."State" WHERE "StateModelID" = $1;',
   parameters: []
 }
 
 // Returns a State filtered by StateID
-const getItemClassStateFilterStateId = {
-  query: `SELECT * FROM "itemClass"."State" WHERE StateID = $1;`,
+const getStateModelStateFilterStateID = {
+  query: `SELECT * FROM "itemClass"."State" WHERE "StateID" = $1 AND "StateModelID" = $2;`,
   parameters: []
 }
 
 // Create State -> use transactional secure
-const createItemClassState = {
+const createStateModelState = {
   queries: [{
-    query: `INSERT INTO "itemClass"."State" (Name, Description, StateModelID) VALUES ( $1, $2, $3);`,
+    query: `INSERT INTO "itemClass"."State" ("Name", "Description", "StateModelID") VALUES ( $1, $2, $3);`,
     parameters: []
   }]
 }
 
 // Deletes a State by ID
-const deleteItemClassState = {
+const deleteStateModelState = {
   queries: [{
-    query: `DELETE FROM "itemClass"."State" WHERE StateID like $1;`,
+    query: `DELETE FROM "itemClass"."State" WHERE "StateID" = $1 AND "StateModelID" = $2;`,
     parameters: []
   }]
 }
@@ -123,29 +124,29 @@ const deleteItemClassState = {
 // ########## Items Class State Transition #############
 
 // Returns all StateTransitions in StateTransition Table
-const getItemClassStateTransitions = {
-  query: 'SELECT * FROM "itemClass"."StateTransitions";',
+const getStateModelStateTransitions = {
+  query: 'SELECT * FROM "itemClass"."StateTransitions" WHERE "StateModelID" = $1;',
   parameters: []
 }
 
 // Returns a StateTransition filtered by StateID
-const getItemClassStateTranstionFilterStateTransitionId = {
-  query: `SELECT * FROM "itemClass"."StateTransitions" WHERE StateTransitionID = $1;`,
+const getStateModelStateTranstionFilterStateTransitionId = {
+  query: `SELECT * FROM "itemClass"."StateTransitions" WHERE "StateTransitionID" = $1 AND "StateModelID" = $2;`,
   parameters: []
 }
 
 // Create StateTransition -> use transactional secure
-const createItemClassStateTransition = {
+const createStateModelStateTransition = {
   queries: [{
-    query: `INSERT INTO "itemClass"."StateTransitions" (Name, Description, FromState, ToState, StateModel) VALUES ( $1, $2, $3, $4, $5);`,
+    query: `INSERT INTO "itemClass"."StateTransitions" ("Name", "Description", "FromStateID", "ToStateID", "StateModelID") VALUES ( $1, $2, $3, $4, $5);`,
     parameters: []
   }]
 }
 
 // Deletes a StateTransition by ID
-const deleteItemClassStateTranistion = {
+const deleteStateModelStateTranistion = {
   queries: [{
-    query: `DELETE FROM "itemClass"."StateTransitions" WHERE StateTransitionID like $1;`,
+    query: `DELETE FROM "itemClass"."StateTransitions" WHERE "StateTransitionID" = $1 AND "StateModelID" = $2;;`,
     parameters: []
   }]
 }
@@ -160,14 +161,14 @@ const getItems = {
 
 // Returns a Item filtered by ItemID
 const getItemFilterItemId = {
-  query: `SELECT * FROM Items WHERE "items"."ItemID" = $1;`,
+  query: `SELECT * FROM "items"."Items" WHERE "ItemID" = $1;`,
   parameters: []
 }
 
 // Create Item -> use transactional secure
 const createItem = {
   queries: [{
-    query: 'INSERT INTO "items"."Items" (Name, Description, ItemClassID) VALUES ( $1, $2, $3);',
+    query: 'INSERT INTO "items"."Items" ("Name", "Description", "ItemClassID") VALUES ( $1, $2, $3);',
     parameters: []
   }]
 }
@@ -175,7 +176,7 @@ const createItem = {
 // Deletes a Itme by ID
 const deleteItem = {
   queries: [{
-    query: `DELETE FROM "items"."Items" WHERE ItemID like $1;`,
+    query: `DELETE FROM "items"."Items" WHERE "ItemID" = $1;`,
     parameters: []
   }]
 }
@@ -183,60 +184,59 @@ const deleteItem = {
 // ########## Properties #############
 
 // Returns all Properties in Properties Table
-const getProperties = {
-  query: 'SELECT * FROM "items"."Properties";',
+const getItemProperties = {
+  query: 'SELECT * FROM "items"."Properties" WHERE "ItemID" = $1;',
   parameters: []
 }
 
 // Returns a Property filtered by PropertyID
-const getPropertyFilterPropertyID = {
-  query: `SELECT * FROM "items"."Items" WHERE PropertyID = $1;`,
+const getItemPropertyFilterPropertyID = {
+  query: `SELECT * FROM "items"."Properties" WHERE "PropertyID" = $1 AND "ItemID" = $2;`,
   parameters: []
 }
 
 // Create a Property -> use transactional secure
-const createProperty = {
+const createItemProperty = {
   queries: [{
-    query: `INSERT INTO "items"."Properties" (Name, Description, ItemClassID, Value, ValueType) VALUES ( $1, $2. $3. $4. $5);`,
+    query: `INSERT INTO "items"."Properties" ("ItemID", "Value", "ItemClassPropertyID") VALUES ( $1, $2, $3);`,
     parameters: []
   }]
 }
 
-// Deletes a Property by ID
-const deleteProperty = {
+// Create a Property -> use transactional secure
+const updateItemProperty = {
   queries: [{
-    query: `DELETE FROM "items"."Properties" WHERE PropertyID like $1;`,
+    query: `UPDATE "items"."Properties" SET "Value" = $1 WHERE "PropertyID" = $2;`,
     parameters: []
   }]
 }
-
 
 // ########## State Model #############
 
 // Returns all StateModels in  StateModels Table
-const getStateModels = {
-  query: 'SELECT * FROM "items"."StateModels";',
+const getItemStateModels = {
+  query: 'SELECT * FROM "items"."StateModels" WHERE "ItemID" = $1;',
   parameters: []
 }
 
 // Returns a StateModel filtered by StateModelID
-const getItemsFilterClassId = {
-  query: `SELECT * FROM "items"."Items" WHERE StateModelID = $1;`,
+const getItemStateModelFilterStateModelID = {
+  query: `SELECT * FROM "items"."StateModels" WHERE "StateModelID" = $1 AND "ItemID" = $2;`,
   parameters: []
 }
 
 // Create StateModel -> use transactional secure
-const createStateModel = {
+const createItemStateModel = {
   queries: [{
-    query: `INSERT INTO "items"."StateModels" (Name, Description, ItemClassID) VALUES ( $1, $2, $3);`,
+    query: `INSERT INTO "items"."StateModels" ("ItemClassStateModelID", "StateID", "ItemID") VALUES ( $1, $2, $3);`,
     parameters: []
   }]
 }
 
 // Deletes a ItemClass by ID
-const deleteStateModel = {
+const updateItemStateModel = {
   queries: [{
-    query: `DELETE FROM "items"."StateModels" WHERE StateModelID like $1;`,
+    query: `UPDATE "items"."StateModels" SET "State" = $1 WHERE "PropertyID" = $2;`,
     parameters: []
   }]
 }
@@ -248,38 +248,38 @@ module.exports = {
   createItemClass,
   deleteItemClass,
 
-  getItemClassProperties,
-  getItemClasssPropertiesFilterPropertyId,
+  getItemClassPropertiesFilterItemClassID,
+  getItemClasssPropertiesFilterPropertyID,
   createItemClassProperty,
   deleteItemClassProperty,
 
-  getItemClassStateModels,
-  getItemClassStateModelFilterStateModelId,
+  getItemClassStateModelsFilterItemClassID,
+  getItemClassStateModelFilterStateModelID,
   createItemClassStateModel,
   deleteItemClassStateModel,
 
-  getItemClassStates,
-  getItemClassStateFilterStateId,
-  createItemClassState,
-  deleteItemClassState,
+  getStateModelStates,
+  getStateModelStateFilterStateID,
+  createStateModelState,
+  deleteStateModelState,
 
-  getItemClassStateTransitions,
-  getItemClassStateTranstionFilterStateTransitionId,
-  createItemClassStateTransition,
-  deleteItemClassStateTranistion,
+  getStateModelStateTransitions,
+  getStateModelStateTranstionFilterStateTransitionId,
+  createStateModelStateTransition,
+  deleteStateModelStateTranistion,
 
   getItems,
   getItemFilterItemId,
   createItem,
   deleteItem,
 
-  getProperties,
-  getPropertyFilterPropertyID,
-  createProperty,
-  deleteProperty,
+  getItemProperties,
+  getItemPropertyFilterPropertyID,
+  createItemProperty,
+  updateItemProperty,
 
-  getStateModels,
-  getItemsFilterClassId,
-  createStateModel,
-  deleteStateModel
+  getItemStateModels,
+  getItemStateModelFilterStateModelID,
+  createItemStateModel,
+  updateItemStateModel
 };
