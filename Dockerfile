@@ -93,7 +93,7 @@ WORKDIR /app
 
 RUN npm install pm2 -g
 
-RUN apk add --no-cache --virtual .build-git git alpine-sdk \
+RUN apk add --no-cache --virtual .build-git git python alpine-sdk \
   && git clone https://github.com/holymoly/api && cd api && npm install \
   && apk del .build-git
 
