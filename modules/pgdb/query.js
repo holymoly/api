@@ -8,19 +8,19 @@ const databases = {
 
 // Returns all User in Users Table
 const getUsers = {
-  query: 'SELECT * FROM users;',
+  query: 'SELECT * FROM api.users;',
   parameters: []
 }
 
 // Returns a User filtered by email
 var getUserFilterEmail = {
-  query: `SELECT * FROM users WHERE email = $1;`,
+  query: `SELECT * FROM api.users WHERE email = $1;`,
   parameters: []
 }
 
 // Returns a User filtered by user_id
 var getUserFilterUserId = {
-  query: `SELECT * FROM users WHERE user_id = $1;`,
+  query: `SELECT * FROM api.users WHERE user_id = $1;`,
   parameters: []
 }
 
@@ -32,13 +32,13 @@ var deleteUser = {
 
 // Returns a Hash filtered by email
 var getHashByUsername = {
-  query: `SELECT hash FROM passwords WHERE username like $1;`,
+  query: `SELECT hash FROM api.passwords WHERE username like $1;`,
   parameters: []
 }
 
 // Returns a Hash filtered by email
 var getUserGroup = {
-  query: `SELECT isGuest,isUser,isAdmin FROM groups WHERE username = $1;`,
+  query: `SELECT isGuest,isUser,isAdmin FROM api.groups WHERE username = $1;`,
   parameters: []
 }
 
