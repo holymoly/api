@@ -1,160 +1,186 @@
-'use strict';
+"use strict";
 
 // Load logger
-const logger = require('../../logger/logger').logRoutes;
+const logger = require("../../logger/logger").logRoutes;
 
 // Load sql queries
-const handler = require('./config/handler');
+const handler = require("./config/handler");
 
 // Load auth config
-const auth = require('./config/auth');
+const auth = require("./config/auth");
 
 // Load validation
-const validate = require('./config/validate');
+const validate = require("./config/validate");
 
 // Export all routes to other modules
 module.exports = [
   // localhost:8000/
   {
-    method: 'GET',
-    path: '/',
+    method: "GET",
+    path: "/",
     config: {
       handler: handler.get_root,
-      description: 'answer if root path was called',
+      description: "answer if root path was called",
       notes: 'Returns "welcome to the root"',
-      tags: ['api'], // Tags for swagger
+      tags: ["api"] // Tags for swagger
     }
   },
 
   // localhost:8000/login
   {
-    method: 'GET',
-    path: '/login',
+    method: "GET",
+    path: "/login",
     config: {
+      cors: {
+        origin: ["*"],
+        credentials: true
+      },
       auth: auth.login,
       handler: handler.get_login,
-      description: 'Used for initial authentification',
+      description: "Used for initial authentification",
       notes: `Use Basic Authentification with username and password. Returns a
       cookie with the session information on success. Also returns a json with
       authenticate = true/false. Cookie must be used to authenticate against
       routes with Cookie Auth`,
-      tags: ['api', 'auth', 'scope'], // Tags for swagger
+      tags: ["api", "auth", "scope"] // Tags for swagger
     }
   },
 
   // localhost:8000/logout
   {
-    method: 'GET',
-    path: '/logout',
+    method: "GET",
+    path: "/logout",
     config: {
       handler: handler.get_logout,
-      description: 'Used for initial authentification',
+      description: "Used for initial authentification",
       notes: `Clears the cookie session`,
-      tags: ['api', 'auth', 'scope'], // Tags for swagger
+      tags: ["api", "auth", "scope"] // Tags for swagger
+    }
+  },
+
+  // localhost:8000/lights
+  {
+    method: "GET",
+    path: "/lights",
+    config: {
+      cors: {
+        origin: ["*"],
+        credentials: true
+      },
+      handler: handler.get_lights,
+      auth: auth.lights,
+      description: "Get all lights",
+      notes:
+        "Returns the inventory of the lights plugin. It will contain all light nodes and rooms",
+      tags: ["api"] // Tags for swagger
     }
   },
 
   // localhost:8000/hello/{id}
   {
-    method: 'GET',
-    path: '/hello/{id}',
+    method: "GET",
+    path: "/hello/{id}",
     config: {
+      cors: {
+        origin: ["*"],
+        credentials: true
+      },
       handler: handler.get_hello_id,
       auth: auth.hello_id,
-      description: 'Get back id',
-      notes: 'Returns the passed {id}',
-      tags: ['api'], // Tags for swagger
+      description: "Get back id",
+      notes: "Returns the passed {id}",
+      tags: ["api"], // Tags for swagger
       validate: validate.get_hello_id
     }
   },
 
   // localhost:8000/databases
   {
-    method: 'GET',
-    path: '/databases',
+    method: "GET",
+    path: "/databases",
     config: {
       handler: handler.get_databases,
-      description: 'Get databases',
-      notes: 'Returns all databases',
-      tags: ['api', 'database'], // Tags for swagger
+      description: "Get databases",
+      notes: "Returns all databases",
+      tags: ["api", "database"] // Tags for swagger
     }
   },
 
   // localhost:8000/users
   {
-    method: 'POST',
-    path: '/users',
+    method: "POST",
+    path: "/users",
     config: {
       handler: handler.post_user,
-      description: 'Create a user',
-      notes: 'Creates user, set groups and store hashed password in database',
-      tags: ['api', 'database', 'users'], // Tags for swagger
+      description: "Create a user",
+      notes: "Creates user, set groups and store hashed password in database",
+      tags: ["api", "database", "users"], // Tags for swagger
       validate: validate.post_user
     }
   },
 
   // localhost:8000/users
   {
-    method: 'GET',
-    path: '/users',
+    method: "GET",
+    path: "/users",
     config: {
       handler: handler.get_users,
-      description: 'Returns all users',
-      notes: 'Returns array of users',
-      tags: ['api', 'database', 'users'], // Tags for swagger
+      description: "Returns all users",
+      notes: "Returns array of users",
+      tags: ["api", "database", "users"] // Tags for swagger
     }
   },
 
   // localhost:8000/user
   {
-    method: 'GET',
-    path: '/user/email',
+    method: "GET",
+    path: "/user/email",
     config: {
       handler: handler.get_user_email,
-      description: 'Returns a user filtered by email',
-      notes: 'Returns a user filtered by email',
-      tags: ['api', 'database', 'users'], // Tags for swagger
+      description: "Returns a user filtered by email",
+      notes: "Returns a user filtered by email",
+      tags: ["api", "database", "users"], // Tags for swagger
       validate: validate.get_user_email
     }
   },
 
   // localhost:8000/user
   {
-    method: 'GET',
-    path: '/user/user_id',
+    method: "GET",
+    path: "/user/user_id",
     config: {
       handler: handler.get_user_userId,
-      description: 'Returns a user filtered by user_id',
-      notes: 'Returns a user filtered by user_id',
-      tags: ['api', 'database', 'users'], // Tags for swagger
+      description: "Returns a user filtered by user_id",
+      notes: "Returns a user filtered by user_id",
+      tags: ["api", "database", "users"], // Tags for swagger
       validate: validate.get_user_userId
     }
   },
 
   // localhost:8000/user
   {
-    method: 'DELETE',
-    path: '/user',
+    method: "DELETE",
+    path: "/user",
     config: {
       handler: handler.del_user,
-      description: 'Deletes a user by email',
-      notes: 'Deletes a user by email',
-      tags: ['api', 'database', 'users'], // Tags for swagger
+      description: "Deletes a user by email",
+      notes: "Deletes a user by email",
+      tags: ["api", "database", "users"], // Tags for swagger
       validate: validate.del_user
     }
   },
 
   // localhost:8000/management
   {
-    method: 'POST',
-    path: '/ipc/{rec_module}',
+    method: "POST",
+    path: "/ipc/{rec_module}",
     config: {
       handler: handler.post_ipc,
       auth: auth.ipc,
-      description: 'Post a message on the IPC bus',
-      notes: 'Post a message on the IPC bus',
-      tags: ['api', 'ipc', 'messag bus'], // Tags for swagger
+      description: "Post a message on the IPC bus",
+      notes: "Post a message on the IPC bus",
+      tags: ["api", "ipc", "messag bus"], // Tags for swagger
       validate: validate.post_ipc
     }
   }
-]
+];

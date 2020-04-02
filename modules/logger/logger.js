@@ -1,122 +1,159 @@
 // Winston logging
-'use strict';
+"use strict";
 
 // Load winston logger
-const winston = require('winston');
+const winston = require("winston");
 
 // Load Config
-var config = require('../../config/config');
+var config = require("../../config/config");
 
 // transporter for console
-const con = new(winston.transports.Console)({
-  format: winston.format.combine(
-    winston.format.colorize()
-  )
-})
+const con = new winston.transports.Console({
+  format: winston.format.combine(winston.format.colorize())
+});
 
 // Log rotation
-const fileAuth = new(require('winston-daily-rotate-file'))({
-  filename: './logs/auth_',
-  datePattern: 'YYYY-MM-DD',
+const fileAuth = new (require("winston-daily-rotate-file"))({
+  filename: "./logs/auth_",
+  datePattern: "YYYY-MM-DD",
   prepend: false
-})
+});
 
 // Log rotation
-const fileDb = new(require('winston-daily-rotate-file'))({
-  filename: './logs/auth_',
-  datePattern: 'YYYY-MM-DD',
+const fileDb = new (require("winston-daily-rotate-file"))({
+  filename: "./logs/db_",
+  datePattern: "YYYY-MM-DD",
   prepend: false
-})
+});
 
 // Log rotation
-const fileRoutes = new(require('winston-daily-rotate-file'))({
-  filename: './logs/routes_',
-  datePattern: 'YYYY-MM-DD',
+const fileRoutes = new (require("winston-daily-rotate-file"))({
+  filename: "./logs/routes_",
+  datePattern: "YYYY-MM-DD",
   prepend: false
-})
+});
 
 // Log rotation
-const fileApp = new(require('winston-daily-rotate-file'))({
-  filename: './logs/app_',
-  datePattern: 'YYYY-MM-DD',
+const fileApp = new (require("winston-daily-rotate-file"))({
+  filename: "./logs/app_",
+  datePattern: "YYYY-MM-DD",
   prepend: false
-})
+});
 
 // Databus
-const fileDatabus = new(require('winston-daily-rotate-file'))({
-  filename: './logs/app_',
-  datePattern: 'YYYY-MM-DD',
+const fileDatabus = new (require("winston-daily-rotate-file"))({
+  filename: "./logs/databus_",
+  datePattern: "YYYY-MM-DD",
   prepend: false
-})
+});
+
+// Plugins
+const filePlugins = new (require("winston-daily-rotate-file"))({
+  filename: "./logs/plugins_",
+  datePattern: "YYYY-MM-DD",
+  prepend: false
+});
 
 // logger for authentication stuff
 const logAuth = winston.createLogger({
   level: config.logger.level.auth,
   format: winston.format.combine(
     winston.format.label({
-      label: 'AUTH '
+      label: "AUTH "
     }),
     winston.format.timestamp(),
     winston.format.colorize(),
-    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+    winston.format.printf(
+      info =>
+        `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`
+    )
   ),
   transports: [con, fileAuth]
 });
 
 // logger for Database stuff
-const logDb = new(winston.createLogger)({
+const logDb = new winston.createLogger({
   level: config.logger.level.db,
   format: winston.format.combine(
     winston.format.label({
-      label: 'DB   '
+      label: "DB   "
     }),
     winston.format.timestamp(),
     winston.format.colorize(),
-    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+    winston.format.printf(
+      info =>
+        `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`
+    )
   ),
   transports: [con, fileDb]
 });
 
 // logger for route stuff
-const logRoutes = new(winston.createLogger)({
+const logRoutes = new winston.createLogger({
   level: config.logger.level.routes,
   format: winston.format.combine(
     winston.format.label({
-      label: 'ROUTE'
+      label: "ROUTE"
     }),
     winston.format.timestamp(),
     winston.format.colorize(),
-    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+    winston.format.printf(
+      info =>
+        `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`
+    )
   ),
   transports: [con, fileRoutes]
 });
 
 // logger on application stuff
-const logApp = new(winston.createLogger)({
+const logApp = new winston.createLogger({
   level: config.logger.level.app,
   format: winston.format.combine(
     winston.format.label({
-      label: 'APP  '
+      label: "APP  "
     }),
     winston.format.timestamp(),
     winston.format.colorize(),
-    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+    winston.format.printf(
+      info =>
+        `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`
+    )
   ),
   transports: [con, fileApp]
 });
 
 // logger on application stuff
-const logDatabus = new(winston.createLogger)({
+const logDatabus = new winston.createLogger({
   level: config.logger.level.databus,
   format: winston.format.combine(
     winston.format.label({
-      label: 'Databus  '
+      label: "Databus  "
     }),
     winston.format.timestamp(),
     winston.format.colorize(),
-    winston.format.printf(info => `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`)
+    winston.format.printf(
+      info =>
+        `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`
+    )
   ),
   transports: [con, fileDatabus]
+});
+
+// logger on application stuff
+const logPlugins = new winston.createLogger({
+  level: config.logger.level.plugins,
+  format: winston.format.combine(
+    winston.format.label({
+      label: "Plugins  "
+    }),
+    winston.format.timestamp(),
+    winston.format.colorize(),
+    winston.format.printf(
+      info =>
+        `[${info.timestamp}] [${info.label}] ${info.level}: ${info.message}`
+    )
+  ),
+  transports: [con, filePlugins]
 });
 
 module.exports = {
@@ -124,5 +161,6 @@ module.exports = {
   logDb,
   logRoutes,
   logApp,
-  logDatabus
+  logDatabus,
+  logPlugins
 };

@@ -1,46 +1,58 @@
-'use strict';
+"use strict";
 
 // mqtt
-var mqtt = require('mqtt')
+var mqtt = require("mqtt");
 
 // Load logger
-var logger = require('../logger/logger').logDatabus;
+var logger = require("../logger/logger").logDatabus;
 
 // event for receiving message
-const events = require('events');
+const EventEmitter = require("events");
 
-module.exports = class databusMqtt {
+module.exports = class databusMqtt extends EventEmitter {
   constructor(topic, options, databusModulName) {
+    super();
     var that = this;
-    logger.debug('Databus config: ' + JSON.stringify(options));
-    this._eventEmitter = new events.EventEmitter();
+    logger.debug("Databus config: " + JSON.stringify(options));
+
     this._topic = topic;
-    options.clientId = 'databusSubscriber' + databusModulName;
+
+    options.clientId = "databusSubscriber" + databusModulName;
     this._client = mqtt.connect(options);
 
-    this._client.on('connect', function() {
+    // connect to mqtt server
+    this._client.on("connect", function() {
       that._client.subscribe(that._topic, function(err) {
         if (err) {
           logger.error(err);
         }
-        that.publish('databus', databusModulName + ' connected to databus');
-        logger.debug('Ready for topic: ' + JSON.stringify(topic));
-      })
-    })
-    this._client.on('message', function(topic, message) {
+        that.publish(
+          topic,
+          JSON.stringify({
+            node: "api",
+            type: "debug",
+            message: "api server connected to mqtt broker"
+          })
+        );
+        logger.debug("Ready for topic: " + JSON.stringify(topic));
+      });
+    });
+
+    // on receiving mqtt message
+    this._client.on("message", function(topic, message) {
       // message is Buffer
-      that._eventEmitter.emit('databus', {
+      that.emit("databus", {
         topic: topic,
         message: message
       });
-      logger.debug('Databus message: ' + message.toString());
-    })
-    this._client.on('error', function(error) {
+      logger.debug("Databus message: " + message.toString());
+    });
+    this._client.on("error", function(error) {
       logger.error(error);
-    })
-    this._client.on('reconnect', function(error) {
-      logger.debug('Databus subscriber client reconnect');
-    })
+    });
+    this._client.on("reconnect", function(error) {
+      logger.debug("Databus subscriber client reconnect");
+    });
   }
 
   // Setter and getter
@@ -58,4 +70,4 @@ module.exports = class databusMqtt {
   end() {
     this._client.end();
   }
-}
+};

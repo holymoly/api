@@ -1,63 +1,66 @@
-'use strict';
+"use strict";
 // Api Documentation /documentation
-const Inert = require('inert');
-const Vision = require('vision');
-const HapiSwagger = require('hapi-swagger');
-const Pack = require('./package');
-const Cookie = require('@hapi/cookie');
+const Inert = require("inert");
+const Vision = require("vision");
+const HapiSwagger = require("hapi-swagger");
+const Pack = require("./package");
+const Cookie = require("@hapi/cookie");
 
 // Basic Auth
-const BasicAuth = require('@hapi/basic');
+const BasicAuth = require("@hapi/basic");
 
 // Load hapi module
-const Hapi = require('@hapi/hapi');
+const Hapi = require("@hapi/hapi");
 
 // Load Config
-var config = require('./config/config');
-
-// plugins
-var plugins = require('./modules/hapijs/plugins/plugins');
+var config = require("./config/config");
 
 // Load routes definition
-var routes = require('./modules/hapijs/routes/routes');
+var routes = require("./modules/hapijs/routes/routes");
 
 // Load routes auth
-var validate = require('./modules/hapijs/auth').validate;
+var validate = require("./modules/hapijs/auth").validate;
 
 // Load logger
-var logger = require('./modules/logger/logger').logApp;
+var logger = require("./modules/logger/logger").logApp;
 
 // databus client
-// var Databus = require('./modules/databus/databusClient');
+var Databus = require("./modules/databus/databusClient");
+
+/*
 // setup databus
-// var databusClient = new Databus('databus', config.databus, 'APP');
+var databusClient = new Databus("light/#", config.databus, "APP");
 
-
+// #############################DATABUS########################################
 // Receiving databus events
-//var recDatabus = function recDatabus(data) {
-//  logger.debug(data);
-//};
-// databusClient._eventEmitter.on('databus', recDatabus);
 
-(async() => {
+var recDatabus = function recDatabus(data) {
+  logger.debug(data);
+};
+// check if databus received mqtt messages
+databusClient.on("databus", recDatabus);
+*/
+
+// #############################Server#########################################
+// Server initialization
+(async () => {
   // Create a server with a host and port
-  const server = new Hapi.Server(
-    config.hapiServer
-  );
+  const server = new Hapi.Server(config.hapiServer);
 
   //server.connection(config.hapiServer);
 
   const swaggerOptions = {
     info: {
-      title: 'Test API Documentation',
-      version: Pack.version,
-    },
+      title: "Test API Documentation",
+      version: Pack.version
+    }
   };
 
   // register plugins
   await server.register([
     Inert,
-    Vision, {
+    Vision,
+    {
       plugin: HapiSwagger,
       options: swaggerOptions
     },
@@ -65,21 +68,21 @@ var logger = require('./modules/logger/logger').logApp;
     BasicAuth
   ]);
 
-  logger.info('Hapi Server registered plugins');
+  logger.info("Hapi Server registered plugins");
 
   // Activate simple auth
-  server.auth.strategy('simple', 'basic', {
+  server.auth.strategy("simple", "basic", {
     validate
   });
 
   // Activate session auth
-  server.auth.strategy('session', 'cookie', {
+  server.auth.strategy("session", "cookie", {
     cookie: {
-      name: 'api-session',
-      password: 'SuperMegaHyperAwesomeSecretPassword',
+      name: "api-session",
+      password: "SuperMegaHyperAwesomeSecretPassword",
       isSecure: false
     }
-  })
+  });
 
   // Add all routes,
   server.route(routes);
@@ -89,24 +92,24 @@ var logger = require('./modules/logger/logger').logApp;
 
   function start() {
     // Start server
-    server.start((err) => {
+    server.start(err => {
       if (err) {
         logger.error(err);
         throw err;
       } else {
-        logger.info('Server running at:', server.info.uri);
+        logger.info("Server running at:", server.info.uri);
       }
     });
   }
 
   function stop() {
     // Start server
-    server.stop((err) => {
+    server.stop(err => {
       if (err) {
         logger.error(err);
         throw err;
       } else {
-        logger.info('Server stoped!');
+        logger.info("Server stoped!");
       }
     });
   }
