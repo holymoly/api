@@ -64,6 +64,7 @@ module.exports = class databusMqtt extends EventEmitter {
   }
 
   publish(topic, message) {
+    logger.debug("Databus send message: " + message.toString());
     this._client.publish(topic, message);
   }
 

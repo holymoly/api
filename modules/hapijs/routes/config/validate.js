@@ -3,13 +3,62 @@
 // Parameter validation
 const Joi = require("joi");
 
-// localhost:8000/hello
-const get_hello_id = {
-  params: {
-    // Validate the id parameter
-    id: Joi.number()
+const post_light_room_node = {
+  params: Joi.object({
+    room: Joi.string()
       .required()
-      .description("the id for the todo item")
+      .description("room of the node"),
+    node: Joi.string()
+      .required()
+      .description("node name to be adressed")
+  }),
+  payload: {
+    type: Joi.string()
+      .required()
+      .description("command for specific light"),
+    cmd: Joi.string()
+      .optional()
+      .description("comand to be executed"),
+    value: Joi.string()
+      .optional()
+      .description("value for command"),
+    red: Joi.string()
+      .optional()
+      .description("value for command"),
+    green: Joi.string()
+      .optional()
+      .description("value for command"),
+    blue: Joi.string()
+      .optional()
+      .description("value for command")
+  }
+};
+
+const post_light_room = {
+  params: Joi.object({
+    room: Joi.string()
+      .required()
+      .description("room of the node")
+  }),
+  payload: {
+    type: Joi.string()
+      .required()
+      .description("command for specific light"),
+    cmd: Joi.string()
+      .optional()
+      .description("comand to be executed"),
+    value: Joi.string()
+      .optional()
+      .description("value for command"),
+    red: Joi.string()
+      .optional()
+      .description("value for command"),
+    green: Joi.string()
+      .optional()
+      .description("value for command"),
+    blue: Joi.string()
+      .optional()
+      .description("value for command")
   }
 };
 
@@ -78,20 +127,11 @@ const del_user = {
   }
 };
 
-const post_ipc = {
-  payload: {
-    // Validate the message
-    message: Joi.string()
-      .required()
-      .description(" ipc message")
-  }
-};
-
 module.exports = {
-  get_hello_id,
   post_user,
   get_user_email,
   get_user_userId,
   del_user,
-  post_ipc
+  post_light_room_node,
+  post_light_room
 };

@@ -50,14 +50,30 @@ const get_logout = (request, h) => {
   });
 };
 
-// localhost:8000/hello/{id}
-const get_hello_id = (request, h) => {
-  return replyToClient(undefined, { id: request.params.id });
+// localhost:8000/light/{room}
+const post_light_room = async (request, h) => {
+  var data = request.payload;
+  var result = { message: "sucsess" };
+  var topic = "light/space/" + request.params.room + "/";
+  //var topic = "light/space/" + "meeting" + "/";
+
+  lightPlugin.publish(topic, JSON.stringify(data));
+  logger.debug("Send data to topic " + topic + ": " + JSON.stringify(data));
+
+  return replyToClient(undefined, result);
 };
 
-// localhost:8000/databases
-const get_databases = async (request, h) => {
-  var result = await pgdb.query(query.databases).catch(errorHandling);
+// localhost:8000/light/{room}/{node}
+const post_light_room_node = async (request, h) => {
+  var data = request.payload;
+  var result = { message: "sucsess" };
+  var topic =
+    "light/space/" + request.params.room + "/" + request.params.node + "/";
+  //var topic = "light/space/" + "meeting" + "/" + "heinz/";
+
+  lightPlugin.publish(topic, JSON.stringify(data));
+  logger.debug("Send data to topic " + topic + ": " + JSON.stringify(data));
+
   return replyToClient(undefined, result);
 };
 
@@ -126,18 +142,6 @@ const del_user = async (request, h) => {
   return replyToClient(undefined, result);
 };
 
-// localhost:8000/ipc/{rec_module}
-const post_ipc = (request, h) => {
-  var data = request.payload;
-  logger.debug(
-    "IPC message for module " +
-      request.params.rec_module +
-      ": " +
-      JSON.stringify(data)
-  );
-  return replyToClient(undefined, "generic response");
-};
-
 const get_lights = async (request, h) => {
   var result = await lightPlugin.inventory;
   return replyToClient(undefined, result);
@@ -163,13 +167,12 @@ module.exports = {
   get_root,
   get_login,
   get_logout,
-  get_hello_id,
-  get_databases,
   post_user,
   get_users,
   get_user_email,
   get_user_userId,
   del_user,
-  post_ipc,
-  get_lights
+  get_lights,
+  post_light_room_node,
+  post_light_room
 };

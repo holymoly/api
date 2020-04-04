@@ -76,33 +76,40 @@ module.exports = [
     }
   },
 
-  // localhost:8000/hello/{id}
+  // localhost:8000/{light}/{room}
   {
-    method: "GET",
-    path: "/hello/{id}",
+    method: "POST",
+    path: "/lights/{room}",
     config: {
       cors: {
         origin: ["*"],
         credentials: true
       },
-      handler: handler.get_hello_id,
-      auth: auth.hello_id,
-      description: "Get back id",
-      notes: "Returns the passed {id}",
-      tags: ["api"], // Tags for swagger
-      validate: validate.get_hello_id
+      handler: handler.post_light_room,
+      auth: auth.lights,
+      description: "Sends data to a specific room",
+      notes:
+        "Sends data to a specific room. Will be received by all lights in the room",
+      tags: ["api", "light"], // Tags for swagger
+      validate: validate.post_light_room
     }
   },
 
-  // localhost:8000/databases
+  // localhost:8000/light/{room}/{node}
   {
-    method: "GET",
-    path: "/databases",
+    method: "POST",
+    path: "/lights/{room}/{node}",
     config: {
-      handler: handler.get_databases,
-      description: "Get databases",
-      notes: "Returns all databases",
-      tags: ["api", "database"] // Tags for swagger
+      cors: {
+        origin: ["*"],
+        credentials: true
+      },
+      handler: handler.post_light_room_node,
+      auth: auth.lights,
+      description: "Sends data to a specific node",
+      notes: "Sends data to a specific node",
+      tags: ["api", "light"], // Tags for swagger
+      validate: validate.post_light_room_node
     }
   },
 
@@ -167,20 +174,6 @@ module.exports = [
       notes: "Deletes a user by email",
       tags: ["api", "database", "users"], // Tags for swagger
       validate: validate.del_user
-    }
-  },
-
-  // localhost:8000/management
-  {
-    method: "POST",
-    path: "/ipc/{rec_module}",
-    config: {
-      handler: handler.post_ipc,
-      auth: auth.ipc,
-      description: "Post a message on the IPC bus",
-      notes: "Post a message on the IPC bus",
-      tags: ["api", "ipc", "messag bus"], // Tags for swagger
-      validate: validate.post_ipc
     }
   }
 ];

@@ -24,6 +24,7 @@ module.exports = class light {
 
 		this._uid = uuidv1();
 		this.databusClient = new Databus("light/#", config.databus, "lightPlugin");
+
 		this.databusClient.on("databus", data => {
 			if (
 				JSON.parse(data.message).hasOwnProperty("wtf") &
@@ -56,6 +57,9 @@ module.exports = class light {
 		let lightArrayPos;
 
 		try {
+			// check if rooms should be romove due to timeout
+			this.timeFilter(this._inventory.rooms, 60000);
+
 			// check if room exists
 			roomArrayPos = await this.valueExists(
 				this._inventory.rooms,
@@ -74,6 +78,7 @@ module.exports = class light {
 				// create new room
 				await this._inventory.rooms.push({
 					name: JSON.parse(data.message).room,
+					lastUpdate: Date.now(),
 					lights: []
 				});
 
@@ -85,7 +90,8 @@ module.exports = class light {
 
 				// create new light in new room
 				this._inventory.rooms[tempRoomArrayPos].lights.push({
-					name: JSON.parse(data.message).device
+					name: JSON.parse(data.message).device,
+					lastUpdate: Date.now()
 				});
 				logger.info("Added room and light to inventory");
 			}
@@ -93,7 +99,8 @@ module.exports = class light {
 			// room exist but no light dont exists
 			if (roomArrayPos !== undefined && lightArrayPos === undefined) {
 				this._inventory.rooms[roomArrayPos].lights.push({
-					name: JSON.parse(data.message).device
+					name: JSON.parse(data.message).device,
+					lastUpdate: Date.now()
 				});
 				logger.info("Added light to room in inventory");
 			}
@@ -108,10 +115,29 @@ module.exports = class light {
 		var exists = undefined;
 		for (var i = array.length - 1; i >= 0; i--) {
 			if (array[i].name === name) {
+				// Update laste time seen if exists
+				array[i].lastUpdate = Date.now();
 				exists = i;
 			}
 		}
 		return exists;
+	}
+
+	// filters rooms/lights timebased (sec)
+	timeFilter(array, duration) {
+		for (var i = array.length - 1; i >= 0; i--) {
+			//console.log(Date.now() - array[i].lastUpdate);
+			if (Date.now() - array[i].lastUpdate > duration) {
+				logger.debug("Remove room");
+				array.splice(i, 1);
+			}
+			for (var y = array[i].lights.length - 1; y >= 0; y--) {
+				if (Date.now() - array[i].lights[y].lastUpdate > duration) {
+					logger.debug("Remove light");
+					array[i].lights.splice(y, 1);
+				}
+			}
+		}
 	}
 
 	get inventory() {
@@ -120,5 +146,9 @@ module.exports = class light {
 
 	set inventory(data) {
 		this._inventory = data;
+	}
+
+	publish(topic, message) {
+		this.databusClient.publish(topic, message);
 	}
 };
