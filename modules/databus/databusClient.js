@@ -17,7 +17,12 @@ module.exports = class databusMqtt extends EventEmitter {
 
     this._topic = topic;
 
-    options.clientId = "databusSubscriber" + databusModulName;
+    options.clientId =
+      databusModulName +
+      Math.random()
+        .toString(16)
+        .substr(2, 8);
+
     this._client = mqtt.connect(options);
 
     // connect to mqtt server
