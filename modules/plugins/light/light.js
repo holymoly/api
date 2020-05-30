@@ -12,6 +12,12 @@ const config = require("./../../../config/config");
 // needed for unique ids
 const { v1: uuidv1 } = require("uuid");
 
+// pgdb
+const pgdb = require("./../../pgdb/pgdb");
+
+// Load sql queries
+const queryDeviceConfig = require("./../../pgdb/query").getConfigByDeviceId;
+
 // #############################DATABUS########################################
 // Receiving databus events
 
@@ -26,12 +32,18 @@ module.exports = class light {
 		this.databusClient = new Databus("light/#", config.databus, "lightPlugin");
 
 		this.databusClient.on("databus", data => {
+			logger.info("Databuclient message received");
+			logger.info(data);
 			if (
 				JSON.parse(data.message).hasOwnProperty("wtf") &
 				(JSON.parse(data.message).uid == this._uid)
 			) {
-				logger.info("Light wtf message received");
-				this.updateIventory(data);
+				if (JSON.parse(data.message).device === "undefined") {
+					this.requestDeviceConfig(JSON.parse(data.message).chipid);
+				} else {
+					logger.info("Light wtf message received");
+					this.updateIventory(data);
+				}
 			}
 		});
 
@@ -137,6 +149,30 @@ module.exports = class light {
 					array[i].lights.splice(y, 1);
 				}
 			}
+		}
+	}
+
+	// returns undefined or position in array
+	async requestDeviceConfig(deviceId) {
+		try {
+			logger.info("Request config for device: " + deviceId);
+			queryDeviceConfig.parameters = [deviceId];
+			var result = await pgdb.query(queryDeviceConfig);
+			logger.info("Check config for device: " + deviceId);
+
+			this.databusClient.publish(
+				"light/",
+				JSON.stringify({
+					type: "cmd",
+					cmd: "config",
+					name: result.rows[0].device_name,
+					room: result.rows[0].device_room,
+					leds: result.rows[0].device_leds,
+					deviceId: deviceId
+				})
+			);
+		} catch (e) {
+			logger.error(e);
 		}
 	}
 

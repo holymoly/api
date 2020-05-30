@@ -4,26 +4,24 @@
   "description": "hapi api demo",
   "main": "app.js",
   "dependencies": {
-    "@hapi/basic": "^5.1.1",
-    "@hapi/cookie": "^10.1.2",
-    "@hapi/hapi": "^18.4.0",
-    "@hapi/inert": "^5.2.2",
-    "@hapi/vision": "^5.5.4",
-    "bcrypt": "^3.0.6",
-    "hapi-swagger": "^10.2.0",
-    "inert": "^5.1.3",
-    "joi": "^14.3.1",
-    "mariadb": "^2.1.2",
-    "mqtt": "^3.0.0",
-    "pg": "^7.12.1",
-    "uuid": "^7.0.2",
-    "vision": "^5.4.4",
-    "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^3.10.0"
+    "@hapi/basic": "6.0.0",
+    "@hapi/cookie": "11.0.1",
+    "@hapi/hapi": "19.1.1",
+    "@hapi/inert": "^6.0.1",
+    "@hapi/joi": "^17.1.1",
+    "@hapi/vision": "^6.0.0",
+    "bcrypt": "4.0.1",
+    "hapi-swagger": "13.0.0",
+    "mariadb": "2.3.1",
+    "mqtt": "4.0.1",
+    "pg": "8.1.0",
+    "uuid": "^7.0.0",
+    "winston": "3.2.1",
+    "winston-daily-rotate-file": "4.4.2"
   },
   "devDependencies": {
-    "assert": "^1.5.0",
-    "vows": "^0.8.3"
+    "assert": "2.0.0",
+    "vows": "0.8.3"
   },
   "repository": {
     "type": "git",

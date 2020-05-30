@@ -1,7 +1,7 @@
 "use strict";
 
 // Parameter validation
-const Joi = require("joi");
+const Joi = require("@hapi/joi");
 
 const post_light_room_node = {
   params: Joi.object({
@@ -30,6 +30,9 @@ const post_light_room_node = {
       .description("value for command"),
     blue: Joi.string()
       .optional()
+      .description("value for command"),
+    speed: Joi.string()
+      .optional()
       .description("value for command")
   }
 };
@@ -57,6 +60,9 @@ const post_light_room = {
       .optional()
       .description("value for command"),
     blue: Joi.string()
+      .optional()
+      .description("value for command"),
+    speed: Joi.string()
       .optional()
       .description("value for command")
   }
@@ -90,16 +96,16 @@ const post_user = {
       .required()
       .description("password of user"),
     isGuest: Joi.boolean()
-      .truthy(["1", 1])
-      .falsy(["0", 0])
+      .truthy("1")
+      .falsy("0")
       .description("is User Guest"),
     isUser: Joi.boolean()
-      .truthy(["1", 1])
-      .falsy(["0", 0])
+      .truthy("1")
+      .falsy("0")
       .description("is User User"),
     isAdmin: Joi.boolean()
-      .truthy(["1", 1])
-      .falsy(["0", 0])
+      .truthy("1")
+      .falsy("0")
       .description("is User Admin"),
     email: Joi.string()
       .email()

@@ -1,7 +1,7 @@
 "use strict";
 // Api Documentation /documentation
-const Inert = require("inert");
-const Vision = require("vision");
+const Inert = require("@hapi/inert");
+const Vision = require("@hapi/vision");
 const HapiSwagger = require("hapi-swagger");
 const Pack = require("./package");
 const Cookie = require("@hapi/cookie");
@@ -43,7 +43,7 @@ databusClient.on("databus", recDatabus);
 
 // #############################Server#########################################
 // Server initialization
-(async () => {
+const init = async () => {
   // Create a server with a host and port
   const server = new Hapi.Server(config.hapiServer);
 
@@ -84,33 +84,24 @@ databusClient.on("databus", recDatabus);
     }
   });
 
+  server.validator(require("@hapi/joi"));
   // Add all routes,
   server.route(routes);
 
-  // Start Server
-  await start();
+  // Start server
+  await server.start();
+  logger.info("Server running at: " + server.info.uri);
 
-  function start() {
+  async function stop() {
     // Start server
-    server.start(err => {
-      if (err) {
-        logger.error(err);
-        throw err;
-      } else {
-        logger.info("Server running at:", server.info.uri);
-      }
-    });
+    await server.stop();
+    logger.info("Server stoped!");
   }
+};
 
-  function stop() {
-    // Start server
-    server.stop(err => {
-      if (err) {
-        logger.error(err);
-        throw err;
-      } else {
-        logger.info("Server stoped!");
-      }
-    });
-  }
-})();
+process.on("unhandledRejection", err => {
+  console.log(err);
+  process.exit(1);
+});
+
+init();
