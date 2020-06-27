@@ -68,6 +68,21 @@ var getConfigByDeviceId = {
   parameters: []
 };
 
+var getConfig = {
+  query: `SELECT device_id,device_name,device_room,device_leds FROM api.devices;`,
+  parameters: []
+};
+
+var updateConfig = {
+  query: `UPDATE api.devices SET device_name = $2, device_room = $3, device_leds = $4 WHERE device_id = $1;`,
+  parameters: []
+};
+
+var createConfig = {
+  query: `INSERT INTO api.devices (device_id,device_name, device_room, device_leds ) VALUES ($1, $2,$3,$4);`,
+  parameters: []
+};
+
 module.exports = {
   databases,
   createUser,
@@ -77,5 +92,8 @@ module.exports = {
   deleteUser,
   getHashByUsername,
   getUserGroup,
-  getConfigByDeviceId
+  getConfigByDeviceId,
+  getConfig,
+  updateConfig,
+  createConfig
 };

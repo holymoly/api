@@ -38,7 +38,8 @@ const get_root = (request, h) => {
 // localhost:8000/login
 const get_login = (request, h) => {
   return replyToClient(undefined, {
-    authenticated: true
+    authenticated: true,
+    scope: request.auth.credentials.scope
   });
 };
 
@@ -147,6 +148,41 @@ const get_lights = async (request, h) => {
   return replyToClient(undefined, result);
 };
 
+const get_config = async (request, h) => {
+  var result = await pgdb.query(query.getConfig).catch(errorHandling);
+  return replyToClient(undefined, JSON.stringify({ config: result.rows }));
+};
+
+// localhost:8000/config
+const post_config_update = async (request, h) => {
+  var id = request.payload.device_id;
+  var name = request.payload.device_name;
+  var room = request.payload.device_room;
+  var leds = request.payload.device_leds;
+  query.updateConfig.parameters = [id, name, room, leds];
+
+  var result = await pgdb.query(query.updateConfig).catch(errorHandling);
+
+  lightPlugin.requestDeviceConfig(id);
+
+  return replyToClient(undefined, result);
+};
+
+// localhost:8000/config
+const post_config_create = async (request, h) => {
+  var id = request.payload.device_id;
+  var name = request.payload.device_name;
+  var room = request.payload.device_room;
+  var leds = request.payload.device_leds;
+  query.createConfig.parameters = [id, name, room, leds];
+
+  var result = await pgdb.query(query.createConfig).catch(errorHandling);
+
+  //lightPlugin.requestDeviceConfig(id);
+
+  return replyToClient(undefined, result);
+};
+
 // Helper function for reply
 function replyToClient(err, data) {
   if (err) {
@@ -174,5 +210,8 @@ module.exports = {
   del_user,
   get_lights,
   post_light_room_node,
-  post_light_room
+  post_light_room,
+  get_config,
+  post_config_update,
+  post_config_create
 };

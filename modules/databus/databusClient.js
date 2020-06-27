@@ -12,6 +12,7 @@ const EventEmitter = require("events");
 module.exports = class databusMqtt extends EventEmitter {
   constructor(topic, options, databusModulName) {
     super();
+    logger.debug("Create Databusclient");
     var that = this;
     logger.debug("Databus config: " + JSON.stringify(options));
 
@@ -31,14 +32,6 @@ module.exports = class databusMqtt extends EventEmitter {
         if (err) {
           logger.error(err);
         }
-        that.publish(
-          topic,
-          JSON.stringify({
-            node: "api",
-            type: "debug",
-            message: "api server connected to mqtt broker"
-          })
-        );
         logger.debug("Ready for topic: " + JSON.stringify(topic));
       });
     });

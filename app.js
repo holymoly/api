@@ -25,7 +25,7 @@ var validate = require("./modules/hapijs/auth").validate;
 var logger = require("./modules/logger/logger").logApp;
 
 // databus client
-var Databus = require("./modules/databus/databusClient");
+//var Databus = require("./modules/databus/databusClient");
 
 /*
 // setup databus

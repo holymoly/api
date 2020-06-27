@@ -175,5 +175,58 @@ module.exports = [
       tags: ["api", "database", "users"], // Tags for swagger
       validate: validate.del_user
     }
+  },
+
+  // localhost:8000/config
+  {
+    method: "GET",
+    path: "/config",
+    config: {
+      cors: {
+        origin: ["*"],
+        credentials: true
+      },
+      handler: handler.get_config,
+      auth: auth.lights,
+      description: "Returns a config of light nodes",
+      notes: "Returns a config of light nodes",
+      tags: ["api", "database", "nodes", "config"] // Tags for swagger
+    }
+  },
+
+  // localhost:8000/config
+  {
+    method: "POST",
+    path: "/config/update",
+    config: {
+      cors: {
+        origin: ["*"],
+        credentials: true
+      },
+      handler: handler.post_config_update,
+      auth: auth.lights,
+      description: "Updates node config",
+      notes: "Updates node config",
+      tags: ["api", "database", "nodes", "config"], // Tags for swagger
+      validate: validate.post_config_update
+    }
+  },
+
+  // localhost:8000/config
+  {
+    method: "POST",
+    path: "/config/create",
+    config: {
+      cors: {
+        origin: ["*"],
+        credentials: true
+      },
+      handler: handler.post_config_create,
+      auth: auth.lights,
+      description: "Updates node config",
+      notes: "Updates node config",
+      tags: ["api", "database", "nodes", "config"], // Tags for swagger
+      validate: validate.post_config_create
+    }
   }
 ];

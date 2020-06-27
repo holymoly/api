@@ -133,11 +133,74 @@ const del_user = {
   }
 };
 
+const post_config_update = {
+  payload: {
+    // Validate the firstname
+    device_id: Joi.string()
+      .alphanum()
+      .required()
+      .description("id of node"),
+    // Validate the lastname
+    device_name: Joi.string()
+      .alphanum()
+      .max(12)
+      .required()
+      .description("name of node"),
+    // Validate the lastname
+    device_room: Joi.string()
+      .alphanum()
+      .max(12)
+      .required()
+      .description("room of node"),
+    device_leds: Joi.number()
+      .required()
+      .description("Amount of leds")
+  }
+};
+
+const post_config_create = {
+  failAction: async (request, h, err) => {
+    if (process.env.NODE_ENV === "production") {
+      // In prod, log a limited error message and throw the default Bad Request error.
+      console.error("ValidationError:", err.message);
+      throw Boom.badRequest(`Invalid request payload input`);
+    } else {
+      // During development, log and respond with the full error.
+      console.error(err);
+      throw err;
+    }
+  },
+  payload: {
+    // Validate the firstname
+    device_id: Joi.string()
+      .alphanum()
+      .required()
+      .description("id of node"),
+    // Validate the lastname
+    device_name: Joi.string()
+      .alphanum()
+      .max(12)
+      .required()
+      .description("name of node"),
+    // Validate the lastname
+    device_room: Joi.string()
+      .alphanum()
+      .max(12)
+      .required()
+      .description("room of node"),
+    device_leds: Joi.number()
+      .required()
+      .description("Amount of leds")
+  }
+};
+
 module.exports = {
   post_user,
   get_user_email,
   get_user_userId,
   del_user,
   post_light_room_node,
-  post_light_room
+  post_light_room,
+  post_config_update,
+  post_config_create
 };
