@@ -15,17 +15,16 @@ const validate = require('./config/validate');
 // Export all routes to other modules
 module.exports = [
   // localhost:8000/
-  {
+{
     method: 'GET',
     path: '/',
     config: {
-      handler: handler.get_root,
-      description: 'answer if root path was called',
-      notes: 'Returns "welcome to the root"',
-      tags: ['api'], // Tags for swagger
+        handler: handler.get_root,
+        description: 'answer if root path was called',
+        notes: 'Returns "welcome to the root"',
+        tags: ['api'], // Tags for swagger
     }
-  },
-
+},
   // localhost:8000/login
   {
     method: 'GET',
