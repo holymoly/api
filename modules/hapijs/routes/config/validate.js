@@ -26,11 +26,11 @@ const post_user = {
             .description('username of user'),
         password: Joi.string().min(6).required()
             .description('password of user'),
-        isGuest: Joi.boolean().truthy(['1', 1]).falsy(['0', 0])
+        isGuest: Joi.boolean().truthy('1', 1).falsy('0', 0)
             .description('is User Guest'),
-        isUser: Joi.boolean().truthy(['1', 1]).falsy(['0', 0])
+        isUser: Joi.boolean().truthy('1', 1).falsy('0', 0)
             .description('is User User'),
-        isAdmin: Joi.boolean().truthy(['1', 1]).falsy(['0', 0])
+        isAdmin: Joi.boolean().truthy('1', 1).falsy('0', 0)
             .description('is User Admin'),
         email: Joi.string().email()
             .description('email of user'),
