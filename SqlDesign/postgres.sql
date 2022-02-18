@@ -20,13 +20,13 @@ SET row_security = off;
 
 --
 -- TOC entry 11 (class 2615 OID 24586)
--- Name: api; Type: SCHEMA; Schema: -; Owner: pguser
+-- Name: api; Type: SCHEMA; Schema: -; Owner: postgres
 --
 
 CREATE SCHEMA api;
 
 
-ALTER SCHEMA api OWNER TO pguser;
+ALTER SCHEMA api OWNER TO postgres;
 
 SET default_tablespace = '';
 
@@ -34,7 +34,7 @@ SET default_table_access_method = heap;
 
 --
 -- TOC entry 209 (class 1259 OID 24589)
--- Name: groups; Type: TABLE; Schema: api; Owner: pguser
+-- Name: groups; Type: TABLE; Schema: api; Owner: postgres
 --
 
 CREATE TABLE api.groups (
@@ -47,11 +47,11 @@ CREATE TABLE api.groups (
 );
 
 
-ALTER TABLE api.groups OWNER TO pguser;
+ALTER TABLE api.groups OWNER TO postgres;
 
 --
 -- TOC entry 208 (class 1259 OID 24587)
--- Name: groups_group_id_seq; Type: SEQUENCE; Schema: api; Owner: pguser
+-- Name: groups_group_id_seq; Type: SEQUENCE; Schema: api; Owner: postgres
 --
 
 CREATE SEQUENCE api.groups_group_id_seq
@@ -62,12 +62,12 @@ CREATE SEQUENCE api.groups_group_id_seq
     CACHE 1;
 
 
-ALTER TABLE api.groups_group_id_seq OWNER TO pguser;
+ALTER TABLE api.groups_group_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 2958 (class 0 OID 0)
 -- Dependencies: 208
--- Name: groups_group_id_seq; Type: SEQUENCE OWNED BY; Schema: api; Owner: pguser
+-- Name: groups_group_id_seq; Type: SEQUENCE OWNED BY; Schema: api; Owner: postgres
 --
 
 ALTER SEQUENCE api.groups_group_id_seq OWNED BY api.groups.group_id;
@@ -75,7 +75,7 @@ ALTER SEQUENCE api.groups_group_id_seq OWNED BY api.groups.group_id;
 
 --
 -- TOC entry 211 (class 1259 OID 24599)
--- Name: passwords; Type: TABLE; Schema: api; Owner: pguser
+-- Name: passwords; Type: TABLE; Schema: api; Owner: postgres
 --
 
 CREATE TABLE api.passwords (
@@ -86,11 +86,11 @@ CREATE TABLE api.passwords (
 );
 
 
-ALTER TABLE api.passwords OWNER TO pguser;
+ALTER TABLE api.passwords OWNER TO postgres;
 
 --
 -- TOC entry 210 (class 1259 OID 24597)
--- Name: passwords_password_id_seq; Type: SEQUENCE; Schema: api; Owner: pguser
+-- Name: passwords_password_id_seq; Type: SEQUENCE; Schema: api; Owner: postgres
 --
 
 CREATE SEQUENCE api.passwords_password_id_seq
@@ -101,12 +101,12 @@ CREATE SEQUENCE api.passwords_password_id_seq
     CACHE 1;
 
 
-ALTER TABLE api.passwords_password_id_seq OWNER TO pguser;
+ALTER TABLE api.passwords_password_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 2959 (class 0 OID 0)
 -- Dependencies: 210
--- Name: passwords_password_id_seq; Type: SEQUENCE OWNED BY; Schema: api; Owner: pguser
+-- Name: passwords_password_id_seq; Type: SEQUENCE OWNED BY; Schema: api; Owner: postgres
 --
 
 ALTER SEQUENCE api.passwords_password_id_seq OWNED BY api.passwords.password_id;
@@ -114,7 +114,7 @@ ALTER SEQUENCE api.passwords_password_id_seq OWNED BY api.passwords.password_id;
 
 --
 -- TOC entry 213 (class 1259 OID 24606)
--- Name: users; Type: TABLE; Schema: api; Owner: pguser
+-- Name: users; Type: TABLE; Schema: api; Owner: postgres
 --
 
 CREATE TABLE api.users (
@@ -127,11 +127,11 @@ CREATE TABLE api.users (
 );
 
 
-ALTER TABLE api.users OWNER TO pguser;
+ALTER TABLE api.users OWNER TO postgres;
 
 --
 -- TOC entry 212 (class 1259 OID 24604)
--- Name: users_user_id_seq; Type: SEQUENCE; Schema: api; Owner: pguser
+-- Name: users_user_id_seq; Type: SEQUENCE; Schema: api; Owner: postgres
 --
 
 CREATE SEQUENCE api.users_user_id_seq
@@ -142,12 +142,12 @@ CREATE SEQUENCE api.users_user_id_seq
     CACHE 1;
 
 
-ALTER TABLE api.users_user_id_seq OWNER TO pguser;
+ALTER TABLE api.users_user_id_seq OWNER TO postgres;
 
 --
 -- TOC entry 2960 (class 0 OID 0)
 -- Dependencies: 212
--- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: api; Owner: pguser
+-- Name: users_user_id_seq; Type: SEQUENCE OWNED BY; Schema: api; Owner: postgres
 --
 
 ALTER SEQUENCE api.users_user_id_seq OWNED BY api.users.user_id;
@@ -155,7 +155,7 @@ ALTER SEQUENCE api.users_user_id_seq OWNED BY api.users.user_id;
 
 --
 -- TOC entry 2799 (class 2604 OID 24592)
--- Name: groups group_id; Type: DEFAULT; Schema: api; Owner: pguser
+-- Name: groups group_id; Type: DEFAULT; Schema: api; Owner: postgres
 --
 
 ALTER TABLE ONLY api.groups ALTER COLUMN group_id SET DEFAULT nextval('api.groups_group_id_seq'::regclass);
@@ -163,7 +163,7 @@ ALTER TABLE ONLY api.groups ALTER COLUMN group_id SET DEFAULT nextval('api.group
 
 --
 -- TOC entry 2804 (class 2604 OID 24602)
--- Name: passwords password_id; Type: DEFAULT; Schema: api; Owner: pguser
+-- Name: passwords password_id; Type: DEFAULT; Schema: api; Owner: postgres
 --
 
 ALTER TABLE ONLY api.passwords ALTER COLUMN password_id SET DEFAULT nextval('api.passwords_password_id_seq'::regclass);
@@ -171,7 +171,7 @@ ALTER TABLE ONLY api.passwords ALTER COLUMN password_id SET DEFAULT nextval('api
 
 --
 -- TOC entry 2806 (class 2604 OID 24609)
--- Name: users user_id; Type: DEFAULT; Schema: api; Owner: pguser
+-- Name: users user_id; Type: DEFAULT; Schema: api; Owner: postgres
 --
 
 ALTER TABLE ONLY api.users ALTER COLUMN user_id SET DEFAULT nextval('api.users_user_id_seq'::regclass);
@@ -180,37 +180,36 @@ ALTER TABLE ONLY api.users ALTER COLUMN user_id SET DEFAULT nextval('api.users_u
 --
 -- TOC entry 2948 (class 0 OID 24589)
 -- Dependencies: 209
--- Data for Name: groups; Type: TABLE DATA; Schema: api; Owner: pguser
+-- Data for Name: groups; Type: TABLE DATA; Schema: api; Owner: postgres
 --
 
-COPY api.groups (group_id, username, isguest, isuser, isadmin, created) FROM stdin;
-\.
+-- COPY api.groups (group_id, username, isguest, isuser, isadmin, created) FROM stdin;
+
 
 
 --
 -- TOC entry 2950 (class 0 OID 24599)
 -- Dependencies: 211
--- Data for Name: passwords; Type: TABLE DATA; Schema: api; Owner: pguser
+-- Data for Name: passwords; Type: TABLE DATA; Schema: api; Owner: postgres
 --
 
-COPY api.passwords (password_id, hash, username, created) FROM stdin;
-\.
+-- COPY api.passwords (password_id, hash, username, created) FROM stdin;
+
 
 
 --
 -- TOC entry 2952 (class 0 OID 24606)
 -- Dependencies: 213
--- Data for Name: users; Type: TABLE DATA; Schema: api; Owner: pguser
+-- Data for Name: users; Type: TABLE DATA; Schema: api; Owner: postgres
 --
 
-COPY api.users (user_id, firstname, lastname, username, email, created) FROM stdin;
-\.
+-- COPY api.users (user_id, firstname, lastname, username, email, created) FROM stdin;
 
 
 --
 -- TOC entry 2961 (class 0 OID 0)
 -- Dependencies: 208
--- Name: groups_group_id_seq; Type: SEQUENCE SET; Schema: api; Owner: pguser
+-- Name: groups_group_id_seq; Type: SEQUENCE SET; Schema: api; Owner: postgres
 --
 
 SELECT pg_catalog.setval('api.groups_group_id_seq', 1, true);
@@ -219,7 +218,7 @@ SELECT pg_catalog.setval('api.groups_group_id_seq', 1, true);
 --
 -- TOC entry 2962 (class 0 OID 0)
 -- Dependencies: 210
--- Name: passwords_password_id_seq; Type: SEQUENCE SET; Schema: api; Owner: pguser
+-- Name: passwords_password_id_seq; Type: SEQUENCE SET; Schema: api; Owner: postgres
 --
 
 SELECT pg_catalog.setval('api.passwords_password_id_seq', 1, true);
@@ -228,7 +227,7 @@ SELECT pg_catalog.setval('api.passwords_password_id_seq', 1, true);
 --
 -- TOC entry 2963 (class 0 OID 0)
 -- Dependencies: 212
--- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: api; Owner: pguser
+-- Name: users_user_id_seq; Type: SEQUENCE SET; Schema: api; Owner: postgres
 --
 
 SELECT pg_catalog.setval('api.users_user_id_seq', 1, true);
@@ -236,7 +235,7 @@ SELECT pg_catalog.setval('api.users_user_id_seq', 1, true);
 
 --
 -- TOC entry 2810 (class 2606 OID 24625)
--- Name: groups idx_24589_primary; Type: CONSTRAINT; Schema: api; Owner: pguser
+-- Name: groups idx_24589_primary; Type: CONSTRAINT; Schema: api; Owner: postgres
 --
 
 ALTER TABLE ONLY api.groups
@@ -245,7 +244,7 @@ ALTER TABLE ONLY api.groups
 
 --
 -- TOC entry 2812 (class 2606 OID 24624)
--- Name: passwords idx_24599_primary; Type: CONSTRAINT; Schema: api; Owner: pguser
+-- Name: passwords idx_24599_primary; Type: CONSTRAINT; Schema: api; Owner: postgres
 --
 
 ALTER TABLE ONLY api.passwords
@@ -254,7 +253,7 @@ ALTER TABLE ONLY api.passwords
 
 --
 -- TOC entry 2816 (class 2606 OID 24626)
--- Name: users idx_24606_primary; Type: CONSTRAINT; Schema: api; Owner: pguser
+-- Name: users idx_24606_primary; Type: CONSTRAINT; Schema: api; Owner: postgres
 --
 
 ALTER TABLE ONLY api.users
@@ -263,7 +262,7 @@ ALTER TABLE ONLY api.users
 
 --
 -- TOC entry 2808 (class 1259 OID 24614)
--- Name: idx_24589_fk_username_idx; Type: INDEX; Schema: api; Owner: pguser
+-- Name: idx_24589_fk_username_idx; Type: INDEX; Schema: api; Owner: postgres
 --
 
 CREATE INDEX idx_24589_fk_username_idx ON api.groups USING btree (username);
@@ -271,7 +270,7 @@ CREATE INDEX idx_24589_fk_username_idx ON api.groups USING btree (username);
 
 --
 -- TOC entry 2813 (class 1259 OID 24612)
--- Name: idx_24599_username_unique; Type: INDEX; Schema: api; Owner: pguser
+-- Name: idx_24599_username_unique; Type: INDEX; Schema: api; Owner: postgres
 --
 
 CREATE UNIQUE INDEX idx_24599_username_unique ON api.passwords USING btree (username);
@@ -279,7 +278,7 @@ CREATE UNIQUE INDEX idx_24599_username_unique ON api.passwords USING btree (user
 
 --
 -- TOC entry 2814 (class 1259 OID 24617)
--- Name: idx_24606_email_unique; Type: INDEX; Schema: api; Owner: pguser
+-- Name: idx_24606_email_unique; Type: INDEX; Schema: api; Owner: postgres
 --
 
 CREATE UNIQUE INDEX idx_24606_email_unique ON api.users USING btree (email);
@@ -287,7 +286,7 @@ CREATE UNIQUE INDEX idx_24606_email_unique ON api.users USING btree (email);
 
 --
 -- TOC entry 2817 (class 1259 OID 24615)
--- Name: idx_24606_user_id_unique; Type: INDEX; Schema: api; Owner: pguser
+-- Name: idx_24606_user_id_unique; Type: INDEX; Schema: api; Owner: postgres
 --
 
 CREATE UNIQUE INDEX idx_24606_user_id_unique ON api.users USING btree (user_id);
@@ -295,7 +294,7 @@ CREATE UNIQUE INDEX idx_24606_user_id_unique ON api.users USING btree (user_id);
 
 --
 -- TOC entry 2818 (class 1259 OID 24618)
--- Name: idx_24606_username_unique; Type: INDEX; Schema: api; Owner: pguser
+-- Name: idx_24606_username_unique; Type: INDEX; Schema: api; Owner: postgres
 --
 
 CREATE UNIQUE INDEX idx_24606_username_unique ON api.users USING btree (username);
@@ -303,7 +302,7 @@ CREATE UNIQUE INDEX idx_24606_username_unique ON api.users USING btree (username
 
 --
 -- TOC entry 2819 (class 2606 OID 24627)
--- Name: groups fk_username; Type: FK CONSTRAINT; Schema: api; Owner: pguser
+-- Name: groups fk_username; Type: FK CONSTRAINT; Schema: api; Owner: postgres
 --
 
 ALTER TABLE ONLY api.groups
@@ -312,7 +311,7 @@ ALTER TABLE ONLY api.groups
 
 --
 -- TOC entry 2820 (class 2606 OID 24632)
--- Name: passwords username; Type: FK CONSTRAINT; Schema: api; Owner: pguser
+-- Name: passwords username; Type: FK CONSTRAINT; Schema: api; Owner: postgres
 --
 
 ALTER TABLE ONLY api.passwords
@@ -324,4 +323,3 @@ ALTER TABLE ONLY api.passwords
 --
 -- PostgreSQL database dump complete
 --
-
