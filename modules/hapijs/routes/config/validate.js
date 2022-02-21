@@ -1,7 +1,7 @@
 'use strict';
 
 // Parameter validation
-const Joi = require('@hapi/joi');
+const Joi = require('joi');
 
 // Load logger
 const logger = require('../../../logger/logger').logRoutes;

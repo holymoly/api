@@ -26,15 +26,15 @@ const postgres = {
 // rabbitmq databus
 const databus = {
   host: process.env.DATABUSHOST || '127.0.0.1',
-  port: process.env.DATABUSPORT || 8883,
-  username: process.env.DATABUSUSER || 'holymoly',
+  port: process.env.DATABUSPORT || 1883,
+  username: process.env.DATABUSUSER || 'test',
   password: process.env.DATABUSPASSWORD || 'test',
   //key: process.env.DATABUSSSLKEY || fs.readFileSync('./config/certs/client-key.pem'),
   //cert: process.env.DATABUSSSLCERT || fs.readFileSync('./config/certs/client-cert.pem'),
   //rejectUnauthorized: process.env.DATABUSSSLREJECTUNAUTHORIZED || false,
   //##### The CA list will be used to determine if server is authorized
   //ca: process.env.DATABUSSSLCA || fs.readFileSync('./config/certs/ca-cert.pem'),
-  protocol: process.env.DATABUSPROTOCOL || 'mqtts'
+  protocol: process.env.DATABUSPROTOCOL || 'mqtt' // mqtt or mqtts
 }
 
 // Logging configuration

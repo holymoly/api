@@ -1,7 +1,7 @@
 'use strict';
 // Api Documentation /documentation
-const Inert = require('inert');
-const Vision = require('vision');
+const Inert = require('@hapi/inert');
+const Vision = require('@hapi/vision');
 const Blipp = require('blipp');
 
 const HapiSwagger = require('hapi-swagger');
