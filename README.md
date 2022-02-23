@@ -27,7 +27,7 @@ Self teaching hapi
   + automated testing
   + ~~nginx as loadbalancer~~ not part of the app
   + ~~example for multiple instances~~ can be handled elswhere (nginx, kubernetes)
-  + jwt integration
+  + ~~jwt integration~~
 
 ## Installing
 
@@ -41,8 +41,8 @@ Self teaching hapi
 
 ## Build the Testenviroment
   1. ```
-  docker pull rabbitmq
-  docker run -d --hostname api-test --name api-test -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test -p 8080:15672 -p 1883:1883 rabbitmq:3-management
-  docker exec -it api-test /bin/bash
-  rabbitmq-plugins enable rabbitmq_mqtt
+    docker pull rabbitmq
+    docker run -d --hostname api-test --name api-test -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test -p 8080:15672 -p 1883:1883 rabbitmq:3-management
+    docker exec -it api-test /bin/bash
+    rabbitmq-plugins enable rabbitmq_mqtt
   ```

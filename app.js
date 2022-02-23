@@ -7,10 +7,8 @@ const Blipp = require('blipp');
 const HapiSwagger = require('hapi-swagger');
 
 const Pack = require('./package');
-const Cookie = require('@hapi/cookie');
 
-// Basic Auth
-const BasicAuth = require('@hapi/basic');
+const Jwt = require('@hapi/jwt');
 
 // Load hapi module
 const Hapi = require('@hapi/hapi');
@@ -27,17 +25,18 @@ var validate = require('./modules/hapijs/auth').validate;
 // Load logger
 var logger = require('./modules/logger/logger').logApp;
 
+
 // databus client
 var Databus = require('./modules/databus/databusClient');
 // setup databus
 var databusClient = new Databus('databus', config.databus, 'APP');
-
 
 // Receiving databus events
 var recDatabus = function recDatabus(data) {
   logger.debug(data);
 }
 databusClient._eventEmitter.on('databus', recDatabus);
+
 
 (async() => {
   // Create a server with a host and port
@@ -53,7 +52,15 @@ databusClient._eventEmitter.on('databus', recDatabus);
       version: Pack.version,
     },
     grouping: 'tags',
-    sortEndpoints: 'ordered'
+    sortEndpoints: 'ordered',
+    securityDefinitions: {
+      'jwt': {
+        'type': 'apiKey',
+        'name': 'Authorization',
+        'in': 'header'
+      }
+    },
+    security: [{ jwt: [] }]
   };
 
   // register plugins
@@ -64,19 +71,27 @@ databusClient._eventEmitter.on('databus', recDatabus);
       plugin: HapiSwagger,
       options: swaggerOptions
     },
-    Cookie
+    Jwt
   ]);
 
   logger.info('Hapi Server registered plugins');
 
-  // Activate session auth
-  server.auth.strategy('session', 'cookie', {
-    cookie: {
-      name: 'api-session',
-      password: 'SuperMegaHyperAwesomeSecretPassword',
-      isSecure: false
-    }
-  })
+  server.auth.strategy('jwt_strategy', 'jwt', {
+      keys: 'some_shared_secret',
+      verify: {
+          aud: false,
+          iss: false,
+          sub: "api-items",
+          maxAgeSec: 14400, // 4 hours
+      },
+      validate: (artifacts, request, h) => {
+          // this function is only executed if the keys and verify section
+          // was successful
+          return {
+              isValid: true,
+          };
+      }
+  });
 
   // Add all routes,
   server.route(routes);

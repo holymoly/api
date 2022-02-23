@@ -1,20 +1,20 @@
 'use strict';
 
 const item_admin = {
-  strategy: 'session',
-  scope: ['isadmin'] // admin only
+  strategy: 'jwt_strategy',
+  scope: ['admin'] // admin only
 }
 
 const item_guest = {
-  strategy: 'session',
-  scope: ['isguest', 'isadmin'] // admin only
+  strategy: 'jwt_strategy',
+  scope: ['guest', 'admin'] // admin only
 }
 
 
 // localhost:8000/ipc
 const ipc = {
-  strategy: 'session',
-  scope: ['isadmin'] // admin only
+  strategy: 'jwt_strategy',
+  scope: ['admin'] // admin only
 }
 
 module.exports = {
