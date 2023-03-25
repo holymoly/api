@@ -45,4 +45,9 @@ Self teaching hapi
     docker run -d --hostname api-test --name api-test -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test -p 8080:15672 -p 1883:1883 rabbitmq:3-management
     docker exec -it api-test /bin/bash
     rabbitmq-plugins enable rabbitmq_mqtt
+    exit
+  ```
+  2. ```
+    docker run -d --name some-postgres -e POSTGRES_PASSWORD=test -p 5432:5432  postgres
+
   ```
