@@ -16,16 +16,16 @@ const hapiServer = {
 
 // postgres configuration
 const postgres = {
-    host: process.env.PGHOST || '10.42.23.10',
+    host: process.env.PGHOST || '127.0.0.1',
     port: process.env.PGPORT || '5432',
-    user: process.env.PGUSER || 'postgres',
-    password: process.env.PGPASSWORD || 'postgres',
+    user: process.env.PGUSER || 'test',
+    password: process.env.PGPASSWORD || 'test',
     database: process.env.PGDATABASE || 'postgres',
 }
 
 // rabbitmq databus
 const databus = {
-    host: process.env.DATABUSHOST || '10.42.23.11',
+    host: process.env.DATABUSHOST || '127.0.0.1',
     port: process.env.DATABUSPORT || 1883,
     username: process.env.DATABUSUSER || 'test',
     password: process.env.DATABUSPASSWORD || 'test',
