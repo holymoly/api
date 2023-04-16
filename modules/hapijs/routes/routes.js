@@ -92,7 +92,7 @@ module.exports = [
     handler: handler.post_itemClass,
     options: {
       tags: ['api', 'ItemClass'], // Tags for swagger
-      //auth: auth.item_guest,
+      auth: auth.item_guest,
       description: 'Create a item class',
       notes: 'Creates item class ',
       validate: validate.post_itemClass,
