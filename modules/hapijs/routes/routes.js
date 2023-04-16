@@ -16,6 +16,7 @@ const validate = require('./config/validate');
 module.exports = [
   // localhost:8000/
 {
+
   method: 'GET',
   path: '/',
   handler: handler.get_root,
