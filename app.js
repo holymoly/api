@@ -42,7 +42,7 @@ databusClient._eventEmitter.on('databus', recDatabus);
   // Create a server with a host and port
   const server = new Hapi.Server(
     config.hapiServer
-  );
+    );
 
   //server.connection(config.hapiServer);
 
@@ -72,25 +72,48 @@ databusClient._eventEmitter.on('databus', recDatabus);
       options: swaggerOptions
     },
     Jwt
-  ]);
+    ]);
 
   logger.info('Hapi Server registered plugins');
 
+
+/*
+{
+  "alg": "HS256",
+  "typ": "JWT"
+}
+
+{
+  "sub": "api-items",
+  "name": "John Doe",
+  "iat": 1679778206,
+  "scope":"admin"
+}
+HMACSHA256(
+  base64UrlEncode(header) + "." +
+  base64UrlEncode(payload),
+
+some_shared_secret
+
+) secret base64 encoded
+*/
+
+
   server.auth.strategy('jwt_strategy', 'jwt', {
-      keys: 'some_shared_secret',
-      verify: {
-          aud: false,
-          iss: false,
-          sub: "api-items",
-          maxAgeSec: 14400, // 4 hours
-      },
-      validate: (artifacts, request, h) => {
-          // this function is only executed if the keys and verify section
-          // was successful
-          return {
-              isValid: true,
-          };
-      }
+    keys: 'some_shared_secret',
+    verify: {
+      aud: false,
+      iss: false,
+      sub: "api-items",
+      maxAgeSec: 345600, // 4 days
+    },
+    validate: (artifacts, request, h) => {
+      // this function is only executed if the keys and verify section
+      // was successful
+      return {
+        isValid: true,
+      };
+    }
   });
 
   // Add all routes,

@@ -20,7 +20,7 @@ const postgres = {
     port: process.env.PGPORT || '5432',
     user: process.env.PGUSER || 'postgres',
     password: process.env.PGPASSWORD || 'test',
-    database: process.env.PGDATABASE || 'postgres',
+    database: process.env.PGDATABASE || 'items',
 }
 
 // rabbitmq databus

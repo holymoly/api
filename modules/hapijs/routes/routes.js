@@ -15,14 +15,15 @@ const validate = require('./config/validate');
 // Export all routes to other modules
 module.exports = [
   // localhost:8000/
-  {
-    method: 'GET',
-    path: '/',
-    handler: handler.get_root,
-    options: {
+{
+  method: 'GET',
+  path: '/',
+  handler: handler.get_root,
+  options: {
       tags: ['api', 'alive'], // Tags for swagger
       description: 'answer if root path was called',
       notes: 'Returns "welcome to the root"',
+      cors: true
     }
   },
 
@@ -35,6 +36,7 @@ module.exports = [
       tags: ['api', 'auth'], // Tags for swagger
       description: 'Used for initial authentification',
       notes: `Clears the cookie session`,
+      cors: true
     }
   },
 
@@ -48,7 +50,8 @@ module.exports = [
       auth: auth.item_guest,
       description: 'Get back id',
       notes: 'Returns the passed {id}',
-      validate: validate.get_hello_id
+      validate: validate.get_hello_id,
+      cors: true
     }
   },
 
@@ -60,9 +63,10 @@ module.exports = [
     handler: handler.get_itemClass,
     options: {
       tags: ['api', 'ItemClass'], // Tags for swagger
-      auth: auth.item_guest,
+      auth: auth.item_admin,
       description: 'Get all item classes',
       notes: 'Returns all item classes',
+      cors: true
     }
   },
 
@@ -76,7 +80,8 @@ module.exports = [
       auth: auth.item_guest,
       description: 'Get item class by id',
       notes: 'Returns item class filtered by id',
-      validate: validate.get_itemClass
+      validate: validate.get_itemClass,
+      cors: true
     }
   },
 
@@ -90,7 +95,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Create a item class',
       notes: 'Creates item class ',
-      validate: validate.post_itemClass
+      validate: validate.post_itemClass,
+      cors: true
     }
   },
 
@@ -104,7 +110,8 @@ module.exports = [
       auth: auth.item_admin,
       description: 'Deletes a item class by id',
       notes: 'Deletes a item class by id',
-      validate: validate.del_itemClass
+      validate: validate.del_itemClass,
+      cors: true
     }
   },
 
@@ -119,7 +126,8 @@ module.exports = [
       auth: auth.item_guest,
       description: 'Get all properties for item class',
       notes: 'Returns all properties for class defined by {classid}',
-      validate: validate.get_itemClassProperties
+      validate: validate.get_itemClassProperties,
+      cors: true
     }
   },
 
@@ -133,7 +141,8 @@ module.exports = [
       auth: auth.item_guest,
       description: 'Get item class property by id',
       notes: 'Returns item class filtered by propertyid and classid',
-      validate: validate.get_itemClassProperty
+      validate: validate.get_itemClassProperty,
+      cors: true
     }
   },
 
@@ -147,7 +156,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Create a property for a specific class',
       notes: 'Create a property for a specific class',
-      validate: validate.post_itemClassProperty
+      validate: validate.post_itemClassProperty,
+      cors: true
     }
   },
 
@@ -161,7 +171,8 @@ module.exports = [
       //auth: auth.item_admin,
       description: 'Deletes a property for a specific class',
       notes: 'Deletes a property for a specific class',
-      validate: validate.del_itemClassProperty
+      validate: validate.del_itemClassProperty,
+      cors: true
     }
   },
 
@@ -176,7 +187,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Get all state models for item class',
       notes: 'Returns all state models for class defined by {classid}',
-      validate: validate.get_itemClassStateModels
+      validate: validate.get_itemClassStateModels,
+      cors: true
     }
   },
 
@@ -190,7 +202,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Get state model for item class filetered by {statemodelid}',
       notes: 'Returns state model for item class filetered by {statemodelid}',
-      validate: validate.get_itemClassStateModel
+      validate: validate.get_itemClassStateModel,
+      cors: true
     }
   },
 
@@ -204,7 +217,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Create a StateModel for a specific class',
       notes: 'Create a StateModel for a specific class', // Tags for swagger
-      validate: validate.post_itemClassStateModel
+      validate: validate.post_itemClassStateModel,
+      cors: true
     }
   },
 
@@ -218,7 +232,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Deletes a StateModel for a specific class',
       notes: 'Deletes a StateModel for a specific class',
-      validate: validate.del_itemClassStateModel
+      validate: validate.del_itemClassStateModel,
+      cors: true
     }
   },
 
@@ -233,7 +248,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Get all state for State Model',
       notes: 'Returns all state for state model by {statemodelid}',
-      validate: validate.get_stateModelStates
+      validate: validate.get_stateModelStates,
+      cors: true
     }
   },
 
@@ -247,7 +263,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Get state for State Model filetered by {stateid}',
       notes: 'Returns state for state model filetered by {stateid}',
-      validate: validate.get_stateModelState
+      validate: validate.get_stateModelState,
+      cors: true
     }
   },
 
@@ -261,7 +278,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Create a Statel for a specific State Model',
       notes: 'Create a State for a specific State Models',
-      validate: validate.post_stateModelState
+      validate: validate.post_stateModelState,
+      cors: true
     }
   },
 
@@ -275,7 +293,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Deletes a State for a specific State Model',
       notes: 'Deletes a State for a specific State Model',
-      validate: validate.del_stateModelState
+      validate: validate.del_stateModelState,
+      cors: true
     }
   },
 
@@ -291,7 +310,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Get all StateTransitions for State Model',
       notes: 'Returns all StateTransitions for state model by {statemodelid}',
-      validate: validate.get_stateModelStateTransitions
+      validate: validate.get_stateModelStateTransitions,
+      cors: true
     }
   },
 
@@ -305,7 +325,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Get state transition for State Model filetered by {statetransitionid}',
       notes: 'Returns state transition for state model filetered by {statetransitionid}',
-      validate: validate.get_stateModelStateTransitionFilterStateTransitionID
+      validate: validate.get_stateModelStateTransitionFilterStateTransitionID,
+      cors: true
     }
   },
 
@@ -319,7 +340,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Create a State Transition for a specific State Model',
       notes: 'Create a State Transition for a specific State Models',
-      validate: validate.post_stateModelStateTransition
+      validate: validate.post_stateModelStateTransition,
+      cors: true
     }
   },
 
@@ -333,7 +355,8 @@ module.exports = [
       //auth: auth.item_guest,
       description: 'Deletes a State Transition for a specific State Model',
       notes: 'Deletes a State Transition for a specific State Model',
-      validate: validate.del_stateModelStateTransition
+      validate: validate.del_stateModelStateTransition,
+      cors: true
     }
   },
 
@@ -348,6 +371,7 @@ module.exports = [
       description: 'Get all items',
       notes: 'Returns all items',
       tags: ['api', 'items', ], // Tags for swagger
+      cors: true
     }
   },
 
@@ -361,7 +385,8 @@ module.exports = [
       description: 'Get item by id',
       notes: 'Returns item filtered by id',
       tags: ['api', 'items', ], // Tags for swagger
-      validate: validate.get_item
+      validate: validate.get_item,
+      cors: true
     }
   },
 
@@ -375,7 +400,8 @@ module.exports = [
       description: 'Create a item',
       notes: 'Creates item based on item class',
       tags: ['api', 'items', ], // Tags for swagger
-      validate: validate.post_item
+      validate: validate.post_item,
+      cors: true
     }
   },
 
@@ -389,7 +415,8 @@ module.exports = [
       description: 'Deletes a item by id',
       notes: 'Deletes a item by id',
       tags: ['api', 'items', ], // Tags for swagger
-      validate: validate.del_item
+      validate: validate.del_item,
+      cors: true
     }
   },
 
@@ -418,7 +445,8 @@ module.exports = [
       description: 'Get a specific property for a item',
       notes: 'Returns a specific property for a item',
       tags: ['api', 'itemProperties', ], // Tags for swagger
-      validate: validate.get_itemPropertyFilterPropertyID
+      validate: validate.get_itemPropertyFilterPropertyID,
+      cors: true
     }
   },
 
@@ -432,7 +460,8 @@ module.exports = [
       description: 'Update a property for a specific item',
       notes: 'Update item based on item class',
       tags: ['api', 'itemProperties', ], // Tags for swagger
-      validate: validate.post_itemProperty
+      validate: validate.post_itemProperty,
+      cors: true
     }
   },
 
@@ -446,7 +475,8 @@ module.exports = [
       description: 'Update a property for a specific item',
       notes: 'Update item based on item class',
       tags: ['api', 'itemProperties', ], // Tags for swagger
-      validate: validate.put_itemProperty
+      validate: validate.put_itemProperty,
+      cors: true
     }
   },
 
@@ -461,7 +491,8 @@ module.exports = [
       description: 'Get all statemodel for a items',
       notes: 'Returns all statemodel for a items',
       tags: ['api', 'itemStatemodel'], // Tags for swagger
-      validate: validate.get_itemStateModels
+      validate: validate.get_itemStateModels,
+      cors: true
     }
   },
 
@@ -475,7 +506,8 @@ module.exports = [
       description: 'Get a specific statemodelid for a item',
       notes: 'Returns a specific statemodelid for a item',
       tags: ['api', 'itemStatemodel'], // Tags for swagger
-      validate: validate.get_itemStateModelFilterStateModelID
+      validate: validate.get_itemStateModelFilterStateModelID,
+      cors: true
     }
   },
 
@@ -489,7 +521,8 @@ module.exports = [
       description: 'Create a statemodel for a specific item',
       notes: 'Create a statemodel for a specific item',
       tags: ['api', 'itemStatemodel', ], // Tags for swagger
-      validate: validate.post_itemStateModel
+      validate: validate.post_itemStateModel,
+      cors: true
     }
   },
 
@@ -503,7 +536,8 @@ module.exports = [
       description: 'Update a statemodel for a specific item',
       notes: 'Update statemodel based on item class',
       tags: ['api', 'itemStatemodel'], // Tags for swagger
-      validate: validate.put_itemStateModel
+      validate: validate.put_itemStateModel,
+      cors: true
     }
   },
-]
+  ]
