@@ -27,11 +27,12 @@ var logger = require('./modules/logger/logger').logApp;
 
 
 // databus client
-var Databus = require('./modules/databus/databusClient');
+// var Databus = require('./modules/databus/databusClient');
 // setup databus
 var databusClient = new Databus('databus', config.databus, 'APP');
 
 // Receiving databus events
+
 var recDatabus = function recDatabus(data) {
   logger.debug(data);
 }

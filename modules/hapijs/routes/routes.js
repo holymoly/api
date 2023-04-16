@@ -84,7 +84,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass
   {
     method: 'POST',
@@ -99,7 +98,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass
   {
     method: 'DELETE',
@@ -130,7 +128,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass/{classid}/properties/{propertyID}
   {
     method: 'GET',
@@ -145,7 +142,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass/{classid}/property/
   {
     method: 'POST',
@@ -160,7 +156,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass/{classid}/property/
   {
     method: 'DELETE',
@@ -175,7 +170,6 @@ module.exports = [
       cors: true
     }
   },
-
   //########## ItemClass StateModel #############
   // localhost:8000/itemClass/{classid}/statemodel
   {
@@ -191,7 +185,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass/{classid}/statemodel/{statemodelid}
   {
     method: 'GET',
@@ -206,7 +199,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass/{classid}/properties/
   {
     method: 'POST',
@@ -221,7 +213,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass/{classid}/statemodel/
   {
     method: 'DELETE',
@@ -236,7 +227,6 @@ module.exports = [
       cors: true
     }
   },
-
   //##########  StateModel State #############
   // localhost:8000/itemClass/{classid}/statemodel
   {
@@ -252,7 +242,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/statemodels/{statemodelid}/state/{stateid}
   {
     method: 'GET',
@@ -267,7 +256,6 @@ module.exports = [
       cors: true
     }
   },
-
   // localhost:8000/itemClass/{classid}/properties/
   {
     method: 'POST',
