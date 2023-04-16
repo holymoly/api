@@ -25,9 +25,9 @@ Self teaching hapi
   + ~~using https~~ (because its 2017!)
   + ~~database example~~
   + automated testing
-  + ---nginx as loadbalancer--- not part of the app
-  + --example for multiple instances--- can be handled elswhere (nginx, kubernetes)
-  + jwt integration
+  + ~~nginx as loadbalancer~~ not part of the app
+  + ~~example for multiple instances~~ can be handled elswhere (nginx, kubernetes)
+  + ~~jwt integration~~
 
 ## Installing
 
@@ -38,3 +38,16 @@ Self teaching hapi
   5. Open <http://localhost:8000/login> in your browser
   6. Open <http://localhost:8000/hello/42> in your browser
   7. Open <http://localhost:8000/documentation> in your browser
+
+## Build the Testenviroment
+  1. ```
+    docker pull rabbitmq
+    docker run -d --hostname api-test --name api-test -e RABBITMQ_DEFAULT_USER=test -e RABBITMQ_DEFAULT_PASS=test -p 8080:15672 -p 1883:1883 rabbitmq:3-management
+    docker exec -it api-test /bin/bash
+    rabbitmq-plugins enable rabbitmq_mqtt
+    exit
+  ```
+  2. ```
+    docker run -d --name some-postgres -e POSTGRES_PASSWORD=test -p 5432:5432  postgres
+
+  ```

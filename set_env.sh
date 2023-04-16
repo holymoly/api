@@ -8,7 +8,7 @@ export PGPORT=5432
 export PGHOST=10.10.10.30
 export PGUSER="pguser"
 export PGPASSWORD="pgpass"
-export PGDATABASE="users"
+export PGDATABASE="items"
 
 export DATABUSHOST=10.10.10.10
 export DATABUSPORT=1883
