@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+CAUTION: Do not modify this file unless you know what you are doing.
+ Unexpected results may occur if the code is changed deliberately.
+-->
+<dbmodel pgmodeler-ver="1.0.2" use-changelog="false" last-position="0,0" last-zoom="1" max-obj-count="4"
+	 default-owner="postgres"
+	 layers="Default layer"
+	 active-layers="0"
+	 layer-name-colors="#000000"
+	 layer-rect-colors="#b4b4b4"
+	 show-layer-names="false" show-layer-rects="false">
+<database name="users" encoding="UTF8" lc-collate="en_US.utf8" lc-ctype="en_US.utf8" is-template="false" allow-conns="true">
+	<role name="postgres"/>
+	<tablespace name="pg_default"/>
+</database>
+
+<schema name="public" layers="0" rect-visible="true" fill-color="#e1e1e1" sql-disabled="true">
+</schema>
+
+<schema name="users" layers="0" rect-visible="true" fill-color="#1d76cd">
+	<role name="postgres"/>
+</schema>
+
+<sequence name="groups_group_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="users"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="groups" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="users"/>
+	<role name="postgres"/>
+	<position x="60" y="60"/>
+	<column name="group_id" not-null="true" sequence="users.groups_group_id_seq">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="username">
+		<type name="character varying" length="45"/>
+	</column>
+	<column name="isguest" not-null="true" default-value="'0'">
+		<type name="character varying" length="4"/>
+	</column>
+	<column name="isuser" not-null="true" default-value="'0'">
+		<type name="character varying" length="4"/>
+	</column>
+	<column name="isadmin" not-null="true" default-value="'0'">
+		<type name="character varying" length="4"/>
+	</column>
+	<column name="created" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="idx_24589_primary" type="pk-constr" table="users.groups">
+		<columns names="group_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="passwords_password_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="users"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="passwords" layers="0" collapse-mode="2" max-obj-count="4" z-value="0">
+	<schema name="users"/>
+	<role name="postgres"/>
+	<position x="60" y="260"/>
+	<column name="password_id" not-null="true" sequence="users.passwords_password_id_seq">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="hash" not-null="true">
+		<type name="character varying" length="60"/>
+	</column>
+	<column name="username">
+		<type name="character varying" length="45"/>
+	</column>
+	<column name="created" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="idx_24599_primary" type="pk-constr" table="users.passwords">
+		<columns names="password_id" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<sequence name="users_user_id_seq" cycle="false" start="1" increment="1" min-value="1" max-value="9223372036854775807" cache="1">
+	<schema name="users"/>
+	<role name="postgres"/>
+</sequence>
+
+<table name="users" layers="0" collapse-mode="2" max-obj-count="7" z-value="0">
+	<schema name="users"/>
+	<role name="postgres"/>
+	<position x="460" y="60"/>
+	<column name="user_id" sequence="users.users_user_id_seq">
+		<type name="bigint" length="0"/>
+	</column>
+	<column name="firstname" not-null="true">
+		<type name="character varying" length="45"/>
+	</column>
+	<column name="lastname" not-null="true">
+		<type name="character varying" length="45"/>
+	</column>
+	<column name="username" not-null="true">
+		<type name="character varying" length="45"/>
+	</column>
+	<column name="email">
+		<type name="character varying" length="100"/>
+	</column>
+	<column name="created" default-value="CURRENT_TIMESTAMP">
+		<type name="timestamp with time zone" length="0" with-timezone="true"/>
+	</column>
+	<constraint name="idx_24606_primary" type="pk-constr" table="users.users">
+		<columns names="username" ref-type="src-columns"/>
+	</constraint>
+	<constraint name="Unique" type="uq-constr" table="users.users">
+		<columns names="email" ref-type="src-columns"/>
+	</constraint>
+</table>
+
+<index name="idx_24589_fk_username_idx" table="users.groups"
+	 concurrent="false" unique="false" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="username"/>
+		</idxelement>
+</index>
+
+<index name="idx_24599_username_unique" table="users.passwords"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="username"/>
+		</idxelement>
+</index>
+
+<index name="idx_24606_email_unique" table="users.users"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="email"/>
+		</idxelement>
+</index>
+
+<index name="idx_24606_user_id_unique" table="users.users"
+	 concurrent="false" unique="true" fast-update="false" buffering="false"
+	 index-type="btree" factor="90">
+		<idxelement use-sorting="false">
+			<column name="user_id"/>
+		</idxelement>
+</index>
+
+<constraint name="fk_username" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="users.users" table="users.groups">
+	<columns names="username" ref-type="src-columns"/>
+	<columns names="username" ref-type="dst-columns"/>
+</constraint>
+
+<constraint name="username" type="fk-constr" comparison-type="MATCH SIMPLE"
+	 upd-action="CASCADE" del-action="CASCADE" ref-table="users.users" table="users.passwords">
+	<columns names="username" ref-type="src-columns"/>
+	<columns names="username" ref-type="dst-columns"/>
+</constraint>
+
+<relationship name="rel_groups_users" type="relfk" layers="0"
+	 custom-color="#dd31a6"
+	 src-table="users.groups"
+	 dst-table="users.users" reference-fk="fk_username"
+	 src-required="false" dst-required="false"/>
+
+<relationship name="rel_passwords_users" type="relfk" layers="0"
+	 custom-color="#3368a7"
+	 src-table="users.passwords"
+	 dst-table="users.users" reference-fk="username"
+	 src-required="false" dst-required="false"/>
+
+</dbmodel>
