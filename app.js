@@ -98,7 +98,6 @@ some_shared_secret
 ) secret base64 encoded
 */
 
-
   server.auth.strategy('jwt_strategy', 'jwt', {
     keys: 'some_shared_secret',
     verify: {

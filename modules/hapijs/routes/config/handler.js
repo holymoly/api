@@ -17,6 +17,14 @@ const get_root = (request, h) => {
   return replyToClient(undefined, 'welcome to the root');
 }
 
+// localhost:8000/login
+const post_login = async(request, h) => {
+  logger.debug(request.payload);
+  var responseData = await auth.validateUser(request.payload);
+
+  return replyToClient(undefined, responseData);
+}
+
 // localhost:8000/logout
 const get_logout = (request, h) => {
   request.cookieAuth.clear();
@@ -38,17 +46,18 @@ const get_itemClass = async(request, h) => {
 }
 
 // localhost:8000/itemClasses/{id}
-const get_itemsFilterClassID = async(request, h) => {
+const get_itemsFilterClassName = async(request, h) => {
   var data = request.params;
-  logger.debug("Query class with ClassID: " + data);
-  query.getItemClassFilterClassId.parameters = [data.classid];
-  var result = await pgdb.query(query.getItemClassFilterClassId).catch(errorHandling);
+  logger.debug("Query class with Class Name: " + data);
+  query.getItemClassFilterClassName.parameters = [data.className];
+  var result = await pgdb.query(query.getItemClassFilterClassName).catch(errorHandling);
   return replyToClient(undefined, result);
 }
 
 // localhost:8000/itemClass
 const post_itemClass = async(request, h) => {
   var data = request.payload;
+
   logger.debug('Create itemClass with data: ' + JSON.stringify(data));
   try {
     query.createItemClass.queries[0].parameters = [data.Name, data.Description, data.Type]
@@ -406,11 +415,12 @@ function errorHandling(reason) {
 
 module.exports = {
   get_root,
+  post_login,
   get_logout,
   get_hello_id,
 
   get_itemClass,
-  get_itemsFilterClassID,
+  get_itemsFilterClassName,
   post_itemClass,
   del_itemClass,
 

@@ -1,5 +1,19 @@
 'use strict';
 
+// ########## Users       #############
+
+// Returns a Hash filtered by email
+var getHashByUsername = {
+  query: `SELECT hash FROM users.passwords WHERE username like $1;`,
+  parameters: []
+}
+
+// Returns a Hash filtered by email
+var getUserGroup = {
+  query: `SELECT isGuest,isUser,isAdmin FROM users.groups WHERE username = $1;`,
+  parameters: []
+}
+
 // ########## Items Class #############
 
 // Returns all Classesin ItemClass Table
@@ -9,8 +23,8 @@ const getItemClasses = {
 }
 
 // Returns a Items filtered by ClassID
-const getItemClassFilterClassId = {
-  query: `SELECT * FROM "itemClass"."ItemClass" WHERE "ItemClassID" = $1;`,
+const getItemClassFilterClassName= {
+  query: `SELECT * FROM "itemClass"."ItemClass" WHERE "Name" = $1;`,
   parameters: []
 }
 
@@ -243,8 +257,12 @@ const updateItemStateModel = {
 
 
 module.exports = {
+
+  getHashByUsername,
+  getUserGroup,
+
   getItemClasses,
-  getItemClassFilterClassId,
+  getItemClassFilterClassName,
   createItemClass,
   deleteItemClass,
 

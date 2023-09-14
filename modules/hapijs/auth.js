@@ -3,6 +3,8 @@
 // crypto lib
 const Bcrypt = require('bcrypt');
 
+const jwt = require('jsonwebtoken');
+
 // Load logger
 var logger = require('../logger/logger').logAuth;
 
@@ -16,43 +18,48 @@ const queryHashByUsername = require('../pgdb/query').getHashByUsername;
 const queryGetUserGroup = require('../pgdb/query').getUserGroup;
 
 // Validating function used for Basic Auth
-const validate = async(request, username, password, h) => {
-  logger.debug('Validation of User: ' + username);
+async function validateUser(payload) {
+  var data = payload;
+  var token = "";
+  logger.debug('Validation of User: ' + data.username);
   try {
-    const hash = await getHashByUsername(username, password);
-    const isValid = await checkPassword(hash, password);
-    const groups = await getUserGroup(username);
+    const hash = await getHashByUsername(data.username);
+    const isValid = await checkPassword(hash, data.password);
+    const groups = await getUserGroup(data.username);
 
-    request.cookieAuth.set({
+    token = jwt.sign(
+    {
+      sub: "api-items",
+      name: data.username,
       scope: groups
+    },
+    "some_shared_secret",
+    {
+      algorithm: 'HS256',
+      expiresIn: "8h"
     });
 
-    logger.debug('Scope: ' + JSON.stringify(groups));
-
     return {
-      isValid: isValid,
-      credentials: {
-        scope: groups
-      }
+      err: undefined,
+      data: token
     };
   } catch (err) {
     return {
-      isValid: false,
-      credentials: {
-        reason: err
-      }
+      err: "not valid",
+      token: ""
     };
   };
 };
 
 async function getHashByUsername(username) {
-  logger.debug('Check hash for user:' + username);
+  logger.debug('Check hash for user: ' + username);
   try {
     queryHashByUsername.parameters = [username];
     var result = await pgdb.query(queryHashByUsername);
     logger.debug('hash: ' + result.rows[0].hash);
     return result.rows[0].hash;
   } catch (err) {
+    logger.debug('Error: ' + err);
     return (err);
   }
 }
@@ -95,7 +102,7 @@ async function getUserGroup(username) {
 
       for (var key in data[0]) {
         if (data[0].hasOwnProperty(key)) {
-          if (data[0][key] === "true") {
+          if (data[0][key] === true) {
             scope.push(key);
           }
         }
@@ -114,12 +121,12 @@ function generateSalt() {
         reject([
           err,
           undefined
-        ])
+          ])
       } else {
         resolve([
           undefined,
           salt
-        ])
+          ])
       }
     });
   });
@@ -133,12 +140,12 @@ function hashPassword(password, salt) {
         reject([
           err,
           undefined
-        ])
+          ])
       } else {
         resolve([
           undefined,
           hash
-        ])
+          ])
       }
     });
   });
@@ -150,7 +157,7 @@ function errorHandling(reason) {
 };
 
 module.exports = {
-  validate,
+  validateUser,
   generateSalt,
   hashPassword
 };

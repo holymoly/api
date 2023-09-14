@@ -27,6 +27,21 @@ module.exports = [
     }
   },
 
+  // localhost:8000/login
+  {
+    method: 'POST',
+    path: '/login',
+    config: {
+      auth: auth.login,
+      handler: handler.post_login,
+      description: 'Used for initial authentification',
+      notes: `Use Basic Authentification with username and password. Returns
+      a JWT that needs to be used for further authentification`,
+      tags: ['api', 'auth', 'scope'], // Tags for swagger
+      cors: true
+    }
+  },
+
   // localhost:8000/logout
   {
     method: 'GET',
@@ -73,12 +88,12 @@ module.exports = [
   // localhost:8000/itemClass/{id}
   {
     method: 'GET',
-    path: '/itemClass/{classid}',
-    handler: handler.get_itemsFilterClassID,
+    path: '/itemClass/{className}',
+    handler: handler.get_itemsFilterClassName,
     options: {
       tags: ['api', 'ItemClass'], // Tags for swagger
       auth: auth.item_guest,
-      description: 'Get item class by id',
+      description: 'Get item class by name',
       notes: 'Returns item class filtered by id',
       validate: validate.get_itemClass,
       cors: true
@@ -92,7 +107,7 @@ module.exports = [
     handler: handler.post_itemClass,
     options: {
       tags: ['api', 'ItemClass'], // Tags for swagger
-      auth: auth.item_guest,
+      auth: auth.item_admin,
       description: 'Create a item class',
       notes: 'Creates item class ',
       validate: validate.post_itemClass,

@@ -19,13 +19,13 @@ const get_hello_id = {
 
 const get_itemClass = {
   params: Joi.object({
-    classid: Joi
-    .number()
-    .integer()
-    .min(1)
-    .max(2147483647)
+    className: Joi
+    .string()
+    .alphanum()
+    .min(3)
+    .max(45)
     .required()
-    .description('ClassID of Item Class')
+    .description('Name of Class'),
   }),
   failAction: logValidateError
 }

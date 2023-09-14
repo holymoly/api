@@ -2,19 +2,19 @@
 
 const item_admin = {
   strategy: 'jwt_strategy',
-  scope: ['admin'] // admin only
+  scope: ['isadmin'] // admin only
 }
 
 const item_guest = {
   strategy: 'jwt_strategy',
-  scope: ['guest', 'admin'] // admin only
+  scope: ['isguest', 'isadmin'] // guest and higher
 }
 
 
 // localhost:8000/ipc
 const ipc = {
   strategy: 'jwt_strategy',
-  scope: ['admin'] // admin only
+  scope: ['isadmin'] // admin only
 }
 
 module.exports = {
