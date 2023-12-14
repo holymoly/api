@@ -14,7 +14,7 @@ Self teaching hapi
   + log output seperated by module (auth, routes, db, logger)
   + uses winston for logging
   + use endpoint to query postgres for data
-  + https example
+  +  ~~https example~~
   
 
 ## Installing
@@ -22,4 +22,8 @@ Self teaching hapi
   1. Install [node](https://nodejs.org/en/download/package-manager/)
   2. `git clone https://github.com/holymoly/api`
   3. `cd api && npm install`
-  4. `node app.js`
+  4. `cd certs`
+  5. `chmod +x generate.sh`
+  6. `./generate.sh`
+  8. `cd ..`
+  7. `node app.js`

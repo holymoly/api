@@ -30,7 +30,13 @@ const SWAGGER_OPTIONS = {
 };
 
 const init = async () => {
-  const server = Hapi.server({ port: 3000, host: 'localhost' });
+  const server = Hapi.server({ 
+    port: 3000, 
+    host: 'localhost',
+    tls: {
+        key: fs.readFileSync(path.join(__dirname + "/certs", 'key.pem')),
+        cert: fs.readFileSync(path.join(__dirname + "/certs", 'cert.pem'))
+    } });
 
   await registerPlugins(server);
   defineAuthStrategy(server);
