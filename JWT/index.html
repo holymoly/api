@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JWT Generator</title>
+    <script src="https://cdn.jsdelivr.net/npm/jsrsasign@10.5.0/lib/jsrsasign-all-min.js"></script>
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <h1>JWT Generator</h1>
+    <form id="jwtForm">
+        <label for="scope">Scope:</label>
+        <input type="text" id="scope" name="scope"> <- this is checked by the API endpoints<br><br>
+        <label for="user">User:</label>
+        <input type="text" id="user" name="user"><br><br>
+        <label for="password">Password/Secret:</label>
+        <input type="text" id="password" name="password"> <- this needs to match the password in index.js <br><br>
+        <input type="submit" value="Generate JWT">
+    </form>
+    <p>Generated JWT:</p>
+    <textarea id="jwtOutput" rows="5" cols="50"></textarea>
+</body>
+</html>
