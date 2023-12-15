@@ -2,9 +2,10 @@
   "name": "hapi-boilerplate",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha tests/**/*.test.js",
+    "start": "node app.js"
   },
   "keywords": [],
   "author": "holymoly",
@@ -18,5 +19,10 @@
     "chokidar": "^3.5.3",
     "hapi-swagger": "^17.2.0",
     "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "chai": "^4.3.10",
+    "mocha": "^10.2.0",
+    "supertest": "^6.3.3"
   }
 }
