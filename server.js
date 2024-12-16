@@ -6,6 +6,7 @@ const Jwt = require('@hapi/jwt');
 const Blipp = require('blipp');
 const fs = require('fs');
 const path = require('path');
+const Joi = require('@hapi/joi');
 
 const JWT_SECRET = 'some_shared_secret';
 const SWAGGER_OPTIONS = {
@@ -28,6 +29,11 @@ const SWAGGER_OPTIONS = {
     security: [{ jwt: [] }],
 };
 
+const BLIPP_OPTIONS = { 
+    showAuth: true,
+    showScope:true
+};
+
 process.on('unhandledRejection', (err) => {
     console.error('Unhandled Rejection:', err);
     process.exit(1);
@@ -47,8 +53,12 @@ const initServer = async () => {
         Jwt, // Register JWT plugin here
         Inert,
         Vision,
-        Blipp,
-        { plugin: HapiSwagger, options: SWAGGER_OPTIONS },
+        { plugin: HapiSwagger,
+          options: SWAGGER_OPTIONS
+        },
+        { plugin: Blipp, 
+          options: BLIPP_OPTIONS
+        }
     ]);
 
     defineAuthStrategy(server);
@@ -73,20 +83,48 @@ const defineAuthStrategy = (server) => {
 
 const loadRoutes = async (server) => {
     const versions = fs.readdirSync(path.join(__dirname, 'routes'));
+    
+    const loadResourceRoutes = (basePath, resourcePath) => {
+        let resourceRoutes = [];
+        const currentPath = path.join(__dirname, 'routes', ...resourcePath);
+        
+        const items = fs.readdirSync(currentPath);
+        
+        items.forEach((item) => {
+            const fullPath = path.join(currentPath, item);
+            const stat = fs.statSync(fullPath);
+            
+            if (stat.isDirectory()) {
+                // Recursively load routes from subdirectory
+                const subRoutes = loadResourceRoutes(
+                    basePath, 
+                    [...resourcePath, item]
+                );
+                resourceRoutes = [...resourceRoutes, ...subRoutes];
+            } else if (item.endsWith('.js') && !item.includes('schema')) {
+                // Load routes from file
+                const routeModulePath = `./${path.join('routes', ...resourcePath, item)}`;
+                const routes = require(routeModulePath);
+                
+                routes.forEach((route) => {
+                    // Construct the full path
+                    const apiPath = [...basePath, ...resourcePath].join('/');
+                    route.path = `/api/${apiPath}${route.path}`;
+                    resourceRoutes.push(route);
+                });
+            }
+        });
+        
+        return resourceRoutes;
+    };
+
     versions.forEach((version) => {
         const resources = fs.readdirSync(path.join(__dirname, 'routes', version));
         resources.forEach((resource) => {
-            const methodFolders = fs.readdirSync(
-                path.join(__dirname, 'routes', version, resource)
-            );
-            methodFolders.forEach((methodFolder) => {
-                const routeModulePath = `./routes/${version}/${resource}/${methodFolder}`;
-                const routes = require(routeModulePath);
-                routes.forEach((route) => {
-                    route.path = `/api/${version}/${resource}`;
-                    server.route(route);
-                });
-            });
+            const routes = loadResourceRoutes([version], [version, resource]);
+            if (routes.length > 0) {
+                server.route(routes);
+            }
         });
     });
 };

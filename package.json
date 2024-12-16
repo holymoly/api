@@ -11,10 +11,13 @@
   "author": "holymoly",
   "license": "MIT",
   "dependencies": {
+    "@hapi/boom": "^10.0.1",
     "@hapi/hapi": "^21.3.2",
     "@hapi/inert": "^7.1.0",
+    "@hapi/joi": "^17.1.1",
     "@hapi/jwt": "^3.2.0",
     "@hapi/vision": "^7.0.3",
+    "bcrypt": "^5.1.1",
     "blipp": "^4.0.2",
     "chokidar": "^3.5.3",
     "hapi-swagger": "^17.2.0",
