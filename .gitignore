@@ -66,4 +66,5 @@ typings/
 pgdata/
 
 # ignore certs
-*.pem.env
+*.pem
+.env
