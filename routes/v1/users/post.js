@@ -1,5 +1,8 @@
 const schemas = require('./schema');
 const Joi = require('joi');
+const users = require('../../../DBM/users');
+const bcrypt = require('bcrypt');
+const Boom = require('@hapi/boom');
 
 const routes = [
     {
@@ -20,51 +23,33 @@ const routes = [
                 schema: schemas.response.single
             },
             handler: async (request, h) => {
-                return {
-                    status: 'success',
-                    data: {
-                        userId: 123, // Generated ID
-                        username: request.payload.username,
-                        email: request.payload.email,
-                        firstName: request.payload.firstName,
-                        lastName: request.payload.lastName,
-                        role: request.payload.role || 'user',
-                        isActive: true,
-                        createdAt: new Date().toISOString(),
-                        lastLogin: null
+                try {
+                    const { username, password, role } = request.payload;
+                    
+                    // Check if username already exists
+                    const existingUser = await users.findByUsername(username);
+                    if (existingUser) {
+                        throw Boom.conflict('Username already exists');
                     }
-                };
-            }
-        }
-    },
-    {
-        method: 'POST',
-        path: '/login',
-        options: {
-            auth: false,
-            description: 'User login',
-            notes: 'Authenticates a user and returns a JWT token',
-            tags: ['api', 'users', 'auth', 'v1'],
-            validate: {
-                payload: schemas.payload.login
-            },
-            response: {
-                schema: schemas.response.login
-            },
-            handler: async (request, h) => {
-                return {
-                    status: 'success',
-                    data: {
-                        token: 'jwt.token.here',
-                        user: {
-                            userId: 1,
-                            username: request.payload.username,
-                            role: 'user',
-                            firstName: 'Test',
-                            lastName: 'User'
-                        }
+
+                    // Hash password
+                    const saltRounds = 10;
+                    const passwordHash = await bcrypt.hash(password, saltRounds);
+
+                    // Create user
+                    const newUser = await users.create(username, passwordHash, role);
+
+                    return {
+                        status: 'success',
+                        data: newUser
+                    };
+                } catch (error) {
+                    console.error('Error creating user:', error);
+                    if (error.isBoom) {
+                        throw error;
                     }
-                };
+                    throw Boom.internal('Failed to create user');
+                }
             }
         }
     },
@@ -88,10 +73,40 @@ const routes = [
                 }).label('ChangePasswordResponse')
             },
             handler: async (request, h) => {
-                return {
-                    status: 'success',
-                    message: 'Password changed successfully'
-                };
+                try {
+                    const { currentPassword, newPassword } = request.payload;
+                    const userId = request.auth.credentials.id;
+
+                    // Get user
+                    const user = await users.findById(userId);
+                    if (!user) {
+                        throw Boom.notFound('User not found');
+                    }
+
+                    // Verify current password
+                    const isValid = await bcrypt.compare(currentPassword, user.password_hash);
+                    if (!isValid) {
+                        throw Boom.unauthorized('Current password is incorrect');
+                    }
+
+                    // Hash new password
+                    const saltRounds = 10;
+                    const newPasswordHash = await bcrypt.hash(newPassword, saltRounds);
+
+                    // Update password
+                    await users.update(userId, { password_hash: newPasswordHash });
+
+                    return {
+                        status: 'success',
+                        message: 'Password changed successfully'
+                    };
+                } catch (error) {
+                    console.error('Error changing password:', error);
+                    if (error.isBoom) {
+                        throw error;
+                    }
+                    throw Boom.internal('Failed to change password');
+                }
             }
         }
     }

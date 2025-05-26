@@ -1,5 +1,7 @@
 const schemas = require('./schema');
 const Joi = require('joi');
+const users = require('../../../DBM/users');
+const Boom = require('@hapi/boom');
 
 const routes = [
     {
@@ -17,21 +19,16 @@ const routes = [
                 schema: schemas.response.list
             },
             handler: async (request, h) => {
-                return {
-                    status: 'success',
-                    data: [
-                        {
-                            userId: 1,
-                            username: 'admin',
-                            email: 'admin@example.com',
-                            firstName: 'Admin',
-                            lastName: 'User',
-                            role: 'admin',
-                            isActive: true,
-                            lastLogin: new Date().toISOString()
-                        }
-                    ]
-                };
+                try {
+                    const userList = await users.list();
+                    return {
+                        status: 'success',
+                        data: userList
+                    };
+                } catch (error) {
+                    console.error('Error listing users:', error);
+                    throw Boom.internal('Failed to list users');
+                }
             }
         }
     },
@@ -53,20 +50,22 @@ const routes = [
                 schema: schemas.response.single
             },
             handler: async (request, h) => {
-                return {
-                    status: 'success',
-                    data: {
-                        userId: request.params.userId,
-                        username: 'user1',
-                        email: 'user1@example.com',
-                        firstName: 'Test',
-                        lastName: 'User',
-                        role: 'user',
-                        isActive: true,
-                        createdAt: new Date().toISOString(),
-                        lastLogin: new Date().toISOString()
+                try {
+                    const user = await users.findById(request.params.userId);
+                    if (!user) {
+                        throw Boom.notFound('User not found');
                     }
-                };
+                    return {
+                        status: 'success',
+                        data: user
+                    };
+                } catch (error) {
+                    console.error('Error getting user:', error);
+                    if (error.isBoom) {
+                        throw error;
+                    }
+                    throw Boom.internal('Failed to get user');
+                }
             }
         }
     },
@@ -88,20 +87,22 @@ const routes = [
                 schema: schemas.response.single
             },
             handler: async (request, h) => {
-                return {
-                    status: 'success',
-                    data: {
-                        userId: 1,
-                        username: request.params.username,
-                        email: 'user@example.com',
-                        firstName: 'Test',
-                        lastName: 'User',
-                        role: 'user',
-                        isActive: true,
-                        createdAt: new Date().toISOString(),
-                        lastLogin: new Date().toISOString()
+                try {
+                    const user = await users.findByUsername(request.params.username);
+                    if (!user) {
+                        throw Boom.notFound('User not found');
                     }
-                };
+                    return {
+                        status: 'success',
+                        data: user
+                    };
+                } catch (error) {
+                    console.error('Error getting user:', error);
+                    if (error.isBoom) {
+                        throw error;
+                    }
+                    throw Boom.internal('Failed to get user');
+                }
             }
         }
     }

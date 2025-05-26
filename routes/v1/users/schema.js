@@ -3,7 +3,7 @@ const Joi = require('joi');
 const schemas = {
     params: {
         userId: Joi.object({
-            userId: Joi.number().required().description('ID of the user')
+            userId: Joi.string().guid().required().description('UUID of the user')
         }),
         username: Joi.object({
             username: Joi.string().required().description('Username of the user')
@@ -13,32 +13,22 @@ const schemas = {
         create: Joi.object({
             username: Joi.string().required().min(3).max(30)
                 .description('Username for login'),
-            email: Joi.string().email().required()
-                .description('Email address'),
             password: Joi.string().required().min(8)
                 .description('Password'),
-            firstName: Joi.string().required()
-                .description('First name'),
-            lastName: Joi.string().required()
-                .description('Last name'),
             role: Joi.string().valid('admin', 'user').default('user')
                 .description('User role')
         }).label('CreateUserPayload'),
         update: Joi.object({
-            email: Joi.string().email().optional()
-                .description('Email address'),
-            firstName: Joi.string().optional()
-                .description('First name'),
-            lastName: Joi.string().optional()
-                .description('Last name'),
+            username: Joi.string().optional()
+                .description('Username'),
             role: Joi.string().valid('admin', 'user').optional()
                 .description('User role'),
-            isActive: Joi.boolean().optional()
+            is_active: Joi.boolean().optional()
                 .description('User account status')
         }).label('UpdateUserPayload'),
         login: Joi.object({
             username: Joi.string().required()
-                .description('Username or email'),
+                .description('Username'),
             password: Joi.string().required()
                 .description('Password')
         }).label('LoginPayload'),
@@ -55,28 +45,25 @@ const schemas = {
         single: Joi.object({
             status: Joi.string().required().example('success'),
             data: Joi.object({
-                userId: Joi.number().required(),
+                id: Joi.string().guid().required(),
                 username: Joi.string().required(),
-                email: Joi.string().required(),
-                firstName: Joi.string().required(),
-                lastName: Joi.string().required(),
                 role: Joi.string().required(),
-                isActive: Joi.boolean().required(),
-                createdAt: Joi.date().iso().required(),
-                lastLogin: Joi.date().iso().allow(null)
+                is_active: Joi.boolean().required(),
+                created_at: Joi.date().iso().required(),
+                updated_at: Joi.date().iso().required(),
+                last_login: Joi.date().iso().allow(null)
             })
         }).label('UserResponse'),
         list: Joi.object({
             status: Joi.string().required().example('success'),
             data: Joi.array().items(Joi.object({
-                userId: Joi.number().required(),
+                id: Joi.string().guid().required(),
                 username: Joi.string().required(),
-                email: Joi.string().required(),
-                firstName: Joi.string().required(),
-                lastName: Joi.string().required(),
                 role: Joi.string().required(),
-                isActive: Joi.boolean().required(),
-                lastLogin: Joi.date().iso().allow(null)
+                is_active: Joi.boolean().required(),
+                created_at: Joi.date().iso().required(),
+                updated_at: Joi.date().iso().required(),
+                last_login: Joi.date().iso().allow(null)
             }))
         }).label('UserListResponse'),
         login: Joi.object({
@@ -84,11 +71,9 @@ const schemas = {
             data: Joi.object({
                 token: Joi.string().required(),
                 user: Joi.object({
-                    userId: Joi.number().required(),
+                    id: Joi.string().guid().required(),
                     username: Joi.string().required(),
-                    role: Joi.string().required(),
-                    firstName: Joi.string().required(),
-                    lastName: Joi.string().required()
+                    scope: Joi.array().items(Joi.string()).required()
                 })
             })
         }).label('LoginResponse')

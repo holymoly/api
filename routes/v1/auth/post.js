@@ -27,7 +27,7 @@ const routes = [
                     data: Joi.object({
                         token: Joi.string().required(),
                         user: Joi.object({
-                            id: Joi.number().required(),
+                            id: Joi.string().guid().required(),
                             username: Joi.string().required(),
                             scope: Joi.array().items(Joi.string()).required()
                         })

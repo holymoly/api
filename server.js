@@ -8,7 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const Joi = require('@hapi/joi');
 
-const JWT_SECRET = 'some_shared_secret';
+const JWT_SECRET = process.env.JWT_SECRET || 'some_shared_secret';
 const SWAGGER_OPTIONS = {
     info: {
         title: 'API Documentation',
@@ -41,8 +41,8 @@ process.on('unhandledRejection', (err) => {
 
 const initServer = async () => {
     const server = Hapi.server({
-        port: 3000,
-        host: 'localhost',
+        port: process.env.PORT || 3000,
+        host: process.env.HOST || 'localhost',
         tls: {
             key: fs.readFileSync(path.join(__dirname + '/certs', 'key.pem')),
             cert: fs.readFileSync(path.join(__dirname + '/certs', 'cert.pem')),
@@ -50,7 +50,7 @@ const initServer = async () => {
     });
 
     await server.register([
-        Jwt, // Register JWT plugin here
+        Jwt,
         Inert,
         Vision,
         { plugin: HapiSwagger,
@@ -84,9 +84,9 @@ const defineAuthStrategy = (server) => {
 const loadRoutes = async (server) => {
     const versions = fs.readdirSync(path.join(__dirname, 'routes'));
     
-    const loadResourceRoutes = (basePath, resourcePath) => {
+    const loadResourceRoutes = (version, resource) => {
         let resourceRoutes = [];
-        const currentPath = path.join(__dirname, 'routes', ...resourcePath);
+        const currentPath = path.join(__dirname, 'routes', version, resource);
         
         const items = fs.readdirSync(currentPath);
         
@@ -95,21 +95,20 @@ const loadRoutes = async (server) => {
             const stat = fs.statSync(fullPath);
             
             if (stat.isDirectory()) {
-                // Recursively load routes from subdirectory
-                const subRoutes = loadResourceRoutes(
-                    basePath, 
-                    [...resourcePath, item]
-                );
+                // Load routes from subdirectory
+                const subRoutes = loadResourceRoutes(version, path.join(resource, item));
                 resourceRoutes = [...resourceRoutes, ...subRoutes];
             } else if (item.endsWith('.js') && !item.includes('schema')) {
                 // Load routes from file
-                const routeModulePath = `./${path.join('routes', ...resourcePath, item)}`;
+                const routeModulePath = `./${path.join('routes', version, resource, item)}`;
                 const routes = require(routeModulePath);
                 
                 routes.forEach((route) => {
-                    // Construct the full path
-                    const apiPath = [...basePath, ...resourcePath].join('/');
-                    route.path = `/api/${apiPath}${route.path}`;
+                    // Add version and resource to path if not already present
+                    const basePath = `/api/${version}/${resource}`;
+                    if (!route.path.startsWith(basePath)) {
+                        route.path = basePath + route.path;
+                    }
                     resourceRoutes.push(route);
                 });
             }
@@ -121,7 +120,7 @@ const loadRoutes = async (server) => {
     versions.forEach((version) => {
         const resources = fs.readdirSync(path.join(__dirname, 'routes', version));
         resources.forEach((resource) => {
-            const routes = loadResourceRoutes([version], [version, resource]);
+            const routes = loadResourceRoutes(version, resource);
             if (routes.length > 0) {
                 server.route(routes);
             }

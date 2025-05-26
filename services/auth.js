@@ -1,6 +1,7 @@
 const JWT = require('@hapi/jwt');
 const bcrypt = require('bcrypt');
 const Boom = require('@hapi/boom');
+const users = require('../DBM/users');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'some_shared_secret';
 
@@ -10,8 +11,8 @@ const authService = {
             const token = JWT.token.generate(
                 {
                     sub: 'api-items',
-                    scope: 'admin',
-                    user: 'holymoly'
+                    scope: user.role, // Use user's role from database
+                    user: user.username
                 },
                 {
                     key: JWT_SECRET,
@@ -31,25 +32,36 @@ const authService = {
 
     validateCredentials: async (username, password) => {
         try {
-            // Mock user - replace with database lookup
-            const user = {
-                id: 1,
-                username: 'admin',
-                password: await bcrypt.hash('password', 10), // Generate fresh hash
-                scope: ['admin']
-            };
-
             if (!username || !password) {
                 throw Boom.badRequest('Missing credentials');
             }
 
-            if (username === user.username) {
-                const isValid = await bcrypt.compare(password, user.password);
-                if (isValid) {
-                    return user;
-                }
+            // Get user from database
+            const user = await users.findByUsername(username);
+            if (!user) {
+                throw Boom.unauthorized('Invalid credentials');
             }
-            throw Boom.unauthorized('Invalid credentials');
+
+            // Check if user is active
+            if (!user.is_active) {
+                throw Boom.unauthorized('Account is disabled');
+            }
+
+            // Verify password
+            const isValid = await bcrypt.compare(password, user.password_hash);
+            if (!isValid) {
+                throw Boom.unauthorized('Invalid credentials');
+            }
+
+            // Update last login time
+            await users.updateLastLogin(user.id);
+
+            return {
+                id: user.id,
+                username: user.username,
+                role: user.role,
+                scope: [user.role] // Convert role to scope array
+            };
         } catch (error) {
             console.error('Validation error:', error);
             if (error.isBoom) {

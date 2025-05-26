@@ -1,5 +1,7 @@
 const schemas = require('./schema');
 const Joi = require('joi');
+const users = require('../../../DBM/users');
+const Boom = require('@hapi/boom');
 
 const routes = [
     {
@@ -23,10 +25,29 @@ const routes = [
                 }).label('DeleteUserResponse')
             },
             handler: async (request, h) => {
-                return {
-                    status: 'success',
-                    message: `User ${request.params.userId} deleted successfully`
-                };
+                try {
+                    const { userId } = request.params;
+
+                    // Check if user exists
+                    const existingUser = await users.findById(userId);
+                    if (!existingUser) {
+                        throw Boom.notFound('User not found');
+                    }
+
+                    // Delete user
+                    await users.delete(userId);
+
+                    return {
+                        status: 'success',
+                        message: 'User deleted successfully'
+                    };
+                } catch (error) {
+                    console.error('Error deleting user:', error);
+                    if (error.isBoom) {
+                        throw error;
+                    }
+                    throw Boom.internal('Failed to delete user');
+                }
             }
         }
     }
