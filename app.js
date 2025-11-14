@@ -101,7 +101,7 @@ some_shared_secret
 
 
   server.auth.strategy('jwt_strategy', 'jwt', {
-    keys: 'some_shared_secret',
+    keys: 'some_shared_secret', //get shared secret user specific
     verify: {
       aud: false,
       iss: false,
@@ -147,3 +147,4 @@ some_shared_secret
     });
   }
 })();
+
